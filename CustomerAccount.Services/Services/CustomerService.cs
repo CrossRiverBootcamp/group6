@@ -10,8 +10,9 @@ namespace CustomerAccount.Services.Services
     {
         private IAccountDal _accountDal;
         private IMapper _mapper;
+        private IPasswordHashService _passwordHashService;
 
-        public CustomerService(IAccountDal accountDal)
+        public CustomerService(IAccountDal accountDal, IPasswordHashService passwordHashService)
         {
             _accountDal = accountDal;
             var config = new MapperConfiguration(cfg =>
@@ -19,6 +20,7 @@ namespace CustomerAccount.Services.Services
                 cfg.AddProfile<MapperModelEntity>();
             });
             _mapper = config.CreateMapper();
+            _passwordHashService = passwordHashService;
         }
         public async Task<bool> Register(RegisterModel accountModel)
         {
@@ -31,7 +33,10 @@ namespace CustomerAccount.Services.Services
             Account account = _mapper.Map<Account>(accountModel);
             Customer customer = _mapper.Map<Customer>(accountModel);
             account.Customer = customer;
-            customer.Salt = "rteyyww";
+
+            customer.Salt = _passwordHashService.GenerateSalt(8);
+            customer.Password = _passwordHashService.HashPassword(customer.Password, customer.Salt, 1000, 8);
+
             //add salt to account!
             bool success = await _accountDal.CreateAccount(account,customer);
             return success;

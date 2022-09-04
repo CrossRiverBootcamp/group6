@@ -52,7 +52,7 @@ namespace CustomerAccount.Data
             }
         }
 
-        public  int Login(string email, string password)
+        public async Task<int> Login(string email, string password)
         {
             using var _context = _contextFactory.CreateDbContext();
             try
@@ -65,5 +65,19 @@ namespace CustomerAccount.Data
             }
 
         }
+        public async Task<Customer> GetCustomerByEmail(string email)
+        {
+            using var _context = _contextFactory.CreateDbContext();
+            try
+            {
+                return  await  _context.Customers.Where(c => c.Email == email).FirstOrDefaultAsync();
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
     }
 }
