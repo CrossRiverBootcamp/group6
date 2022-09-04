@@ -15,7 +15,7 @@ namespace CustomerAccount.Services.Models
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public double Balance { get; set; } = 1000;
+        public double Balance { get; set; }
         public DateTime OpenDate { get; set; } 
     }
 }

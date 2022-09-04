@@ -6,7 +6,7 @@ namespace CustomerAccount.Services.Interfaces
 {
     public interface IAccountService
     {
-        AccountModel GetAccountInfo(int AccountID);
-       // int Login(string UserName, string Password);
+        Task<AccountModel> GetAccountInfo(int AccountID);
+        Task<int> Login(string email, string Password);
     }
 }

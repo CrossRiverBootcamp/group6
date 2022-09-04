@@ -5,7 +5,7 @@ namespace CustomerAccount.Services.Interfaces
 {
     public interface ICustomerService
     {
-        bool Register(RegisterModel accountModel);
-        // int Login(string UserName, string Password);
+        Task<bool> Register(RegisterModel accountModel);
+
     }
 }

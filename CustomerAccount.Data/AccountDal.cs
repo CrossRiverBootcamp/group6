@@ -14,23 +14,21 @@ namespace CustomerAccount.Data
             _contextFactory = contextFactory;
         }
         
-        public bool CreateAccount(Account account, Customer customer)
+        public async Task<bool> CreateAccount(Account account, Customer customer)
         {
             using var _contect = _contextFactory.CreateDbContext();
-            account.Customer = customer;
             try
             {
-                 _contect.Customers.AddAsync(customer);
-                 _contect.Accounts.AddAsync(account);
-                 _contect.SaveChangesAsync();
-                return true;
+                 await _contect.Customers.AddAsync(customer);
+                 await _contect.Accounts.AddAsync(account);
+                 await _contect.SaveChangesAsync();
+                  return true;
             }
             catch
             {
                 return false;
             }
             
-
         }
 
         public async Task<bool> EmailExists(string email)
@@ -45,7 +43,8 @@ namespace CustomerAccount.Data
             try
             {
                 //include customer
-                return await _contect.Accounts.FirstAsync(c => c.ID == accountID);
+                Account account = await _contect.Accounts.Include(account=>account.Customer).FirstAsync(c => c.ID == accountID);
+                return account;
             }
             catch
             {
@@ -53,9 +52,18 @@ namespace CustomerAccount.Data
             }
         }
 
-        public int Login(string email, string password)
+        public  int Login(string email, string password)
         {
-            throw new NotImplementedException();
+            using var _context = _contextFactory.CreateDbContext();
+            try
+            {
+                return _context.Accounts.Include(a => a.Customer).FirstAsync(c => c.Customer.Email == email && c.Customer.Password == password).Result.ID;
+            }
+            catch
+            {
+                return -1;
+            }
+
         }
     }
 }
