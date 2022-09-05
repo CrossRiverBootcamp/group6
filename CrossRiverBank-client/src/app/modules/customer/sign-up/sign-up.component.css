@@ -1,0 +1,19 @@
+form{
+    border: 0vmax;
+    box-sizing: border-box;
+   border-style:outset;
+   margin-left: 10%;
+   margin-right: 10%;
+   background-color: rgb(255, 0, 128);
+   border-style: inherit;
+}
+.sidenav{
+    background-position-x: center;
+}
+.style{
+    background-color:black;
+    border-style:dotted;
+    margin-right: 30%;
+    margin-left: 30%;
+    margin-top:10%;
+}
