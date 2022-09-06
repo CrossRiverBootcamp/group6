@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomerAccount.Services.Exceptions
 {
-    internal class DuplicatedException : Exception
+    public class DuplicatedException : Exception
     {
         public DuplicatedException(string? message) : base(message)
         {

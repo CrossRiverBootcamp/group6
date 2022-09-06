@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CustomerAccount.Services.Exceptions
 {
-    internal class NotValidException : Exception
+    public class NotValidException : Exception
     {
         public NotValidException(string? message) : base(message)
         {

@@ -31,26 +31,26 @@ namespace CustomerAccount.WebAPI.Controllers
                 return BadRequest();
             }
            AccountModel account=await _accountService.GetAccountInfo(accountID);
-            if (account is null)
-            {
-                return NotFound();
-            }
+           
            AccountInfoDTO accountInfo = _mapper.Map<AccountInfoDTO>(account);
             return Ok(accountInfo);
         }
         [HttpPost("login")]
         public async Task<ActionResult<int>> Login(LoginDTO person)
         {
-            if (person is null)
+            try
             {
-                return BadRequest();
+                int accountID = await _accountService.Login(person.Email, person.Password);
+                if (accountID < 10)
+                {
+                    return Unauthorized();
+                }
+                return Ok(accountID);
             }
-            int accountID =await _accountService.Login(person.Email, person.Password);
-            if (accountID<10)
+            catch
             {
                 return Unauthorized();
             }
-            return Ok(accountID);
         }
 
     }

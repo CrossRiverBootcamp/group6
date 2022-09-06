@@ -3,6 +3,7 @@ using CustomerAccount.Services.Services;
 using CustomerAccount.Services.Extensions;
 using CustomerAccount.WebAPI.options;
 using Microsoft.Extensions.Options;
+using CustomerAccount.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHandlerErrorsMiddleware();
 
 app.UseHttpsRedirection();
 

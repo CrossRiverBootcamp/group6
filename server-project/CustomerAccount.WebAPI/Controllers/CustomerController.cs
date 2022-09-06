@@ -27,13 +27,19 @@ namespace CustomerAccount.WebAPI.Controllers
         [HttpPost("CreateAccount")]
         public async Task<ActionResult<bool>> Register(RegisterDTO register)
         {
-            if (register is null)
-            {
-                return BadRequest();
-            }
             RegisterModel registerModel = _mapper.Map<RegisterModel>(register);
-            bool success =await _customerService.Register(registerModel);
-                return Ok(success);
+            try
+            {
+                 bool success = await _customerService.Register(registerModel);
+                return(success);
+            } 
+            catch
+            {
+                return Ok(false);
+
+            }
+
+                
         }
     }
 }
