@@ -44,8 +44,6 @@ export class LogInComponent implements OnInit {
              });
       }
  register(){
- // this._loginService.setCard(false);
- // this._loginService.setAccountID(0);
   this._router.navigate(['/signUp']);
  }
 }

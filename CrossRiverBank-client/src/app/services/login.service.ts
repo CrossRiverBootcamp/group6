@@ -26,9 +26,9 @@ private  customerAcountUrl='https://localhost:7120/api/Account';
       setAccountID(_id: number) {
         this.acountId.next(_id);
       }
-      logIn(loginuser: LoginDTO): Observable<number> {
+      logIn(loginUser: LoginDTO): Observable<number> {
         debugger;
-        return this._http.post<number>(this.customerAcountUrl+'/login', loginuser);
+        return this._http.post<number>(this.customerAcountUrl+'/login', loginUser);
       }
 
       
