@@ -34,6 +34,7 @@ export class LogInComponent implements OnInit {
         else{
         this._loginService.setAccountID(res);
         this._loginService.setCard(true);
+        this._loginService.setAccountID(res);
         this._router.navigate(['/main']);
       }
     },
@@ -43,8 +44,9 @@ export class LogInComponent implements OnInit {
              });
       }
  register(){
-  this._loginService.setCard(false);
-   this._router.navigate(['/signUp']);
+ // this._loginService.setCard(false);
+ // this._loginService.setAccountID(0);
+  this._router.navigate(['/signUp']);
  }
 }
 

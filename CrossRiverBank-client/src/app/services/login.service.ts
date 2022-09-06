@@ -10,7 +10,7 @@ import { LoginDTO } from '../models/loginDTO.models';
 export class LoginService {
 private  customerAcountUrl='https://localhost:7120/api/Account';
   isCustomer: boolean = false;
-  ID: number=0;
+  ID: number = 0;
     private card: BehaviorSubject<boolean> = new BehaviorSubject(this.isCustomer);
     private acountId: BehaviorSubject<number> = new BehaviorSubject(this.ID);
 
@@ -27,15 +27,16 @@ private  customerAcountUrl='https://localhost:7120/api/Account';
         this.acountId.next(_id);
       }
       logIn(loginuser: LoginDTO): Observable<number> {
-        debugger
+        debugger;
         return this._http.post<number>(this.customerAcountUrl+'/login', loginuser);
       }
 
       
       GetAccountInfo(cardID: number): Observable<AccountInfoDTO> {
-        debugger
-        return this._http.post<AccountInfoDTO>(this.customerAcountUrl+'/',cardID);
+        debugger;
+        return this._http.get<AccountInfoDTO>(this.customerAcountUrl+`/${cardID}`);
       }
       
     constructor(private _http : HttpClient){}
 }
+//https://localhost:7120/api/Account/13

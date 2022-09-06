@@ -14,7 +14,7 @@ private  customerAcountUrl='https://localhost:7120/api/Customer';
 
       
       register(customer: RegisterDTO): Observable<boolean> {
-        debugger
+        debugger;
         return this._http.post<boolean>(this.customerAcountUrl + '/CreateAccount', customer);
       }
 

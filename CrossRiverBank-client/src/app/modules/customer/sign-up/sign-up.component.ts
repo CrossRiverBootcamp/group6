@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RegisterDTO } from 'src/app/models/registerDTO.models';
 import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
@@ -10,7 +11,9 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 export class SignUPComponent implements OnInit {
 
-  constructor(private _router: Router,private _customerService: CustomerService) { }
+  constructor(private _router: Router,private _customerService: CustomerService) {
+
+   }
 
   ngOnInit(): void {
   }
@@ -23,7 +26,17 @@ export class SignUPComponent implements OnInit {
     }
   );
   register(){
-    
+    var newRegistration: RegisterDTO = this.signUpForm.value;
+    this._customerService.register(newRegistration).subscribe(
+      (res)=>{
+        console.log(res);
+      debugger;
+      alert("your account is ready to do login")
+      this._router.navigate(['/login']);
+      },
+      (err)=>{
+     alert("faild to add customer");
+      });
   }
   home(){
     this._router.navigate(['/login']);
