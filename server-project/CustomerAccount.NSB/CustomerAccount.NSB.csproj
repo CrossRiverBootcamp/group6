@@ -7,4 +7,16 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NServiceBus.Extensions.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="NServiceBus.Persistence.Sql" Version="6.5.1" />
+    <PackageReference Include="NServiceBus.RabbitMQ" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CustomerAccount.Data\CustomerAccount.Data.csproj" />
+    <ProjectReference Include="..\CustomerAccount.Services\CustomerAccount.Services.csproj" />
+    <ProjectReference Include="..\Messages\Messages.csproj" />
+  </ItemGroup>
+
 </Project>

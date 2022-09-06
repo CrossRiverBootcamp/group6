@@ -10,6 +10,8 @@ namespace CustomerAccount.Data.Interfaces
         Task<Account> GetAccountInfo(int accountID);
         Task<bool> EmailExists(string email);
         Task<Customer> GetCustomerByEmail(string email);
+        Task<bool> UpdateAccounts(Account accountFrom, Account accountTo);
+        Task<Account> FindUpdateAccount(int ID);
 
     }
 }
