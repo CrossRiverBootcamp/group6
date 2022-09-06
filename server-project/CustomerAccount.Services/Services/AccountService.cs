@@ -54,9 +54,9 @@ namespace CustomerAccount.Services.Services
             try
             {
                     Customer customer = await _accountDal.GetCustomerByEmail(email);
-                    string hashPassword = _passwordHashService.HashPassword(customer.Password, customer.Salt, 1000, 8);
+                    string hashPassword = _passwordHashService.HashPassword(Password, customer.Salt, 1000, 8);
                 if (hashPassword.Equals(customer.Password.TrimEnd()))
-                      return await _accountDal.Login(email, Password);
+                      return await _accountDal.Login(email, hashPassword);
                 else
                 {
                         throw new NotValidException("password is not right!!!-");
