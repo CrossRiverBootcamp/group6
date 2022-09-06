@@ -9,7 +9,7 @@ namespace CustomerAccount.Data.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         public DateTime OpenDate { get; set; }
-        public double Balance { get; set; }
+        public int Balance { get; set; }
         public int CustomerID { get; set; }
         [ForeignKey("CustomerID")]
         public virtual Customer Customer { get; set; }

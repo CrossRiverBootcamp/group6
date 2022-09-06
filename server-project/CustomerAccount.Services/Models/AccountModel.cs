@@ -10,6 +10,6 @@ namespace CustomerAccount.Services.Models
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public double Balance { get; set; }
+        public int Balance { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Services;
 using CustomerAccount.Services.Extensions;
-using CustomerAccount.WebAPI.options;
 using Microsoft.Extensions.Options;
 using CustomerAccount.WebAPI.Middlewares;
+using CustomerAccount.Services.options;
 
 var builder = WebApplication.CreateBuilder(args);
 
