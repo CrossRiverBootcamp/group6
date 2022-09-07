@@ -1,7 +1,11 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Messages.Commands;
+using Microsoft.Extensions.DependencyInjection;
 using NServiceBus;
 using NServiceBus.Logging;
 using System.Data.SqlClient;
+using Transaction.Services.Extension;
+using Transaction.Services.Interfaces;
+using Transaction.Services.Services;
 
 public class Program
 {
@@ -12,14 +16,13 @@ public class Program
         Console.Title = "TransactionNSB";
 
         var endpointConfiguration = new EndpointConfiguration("TransactionNsb");
-
+        //from options?
         var databaseConnection = "Data Source=localhost\\sqlexpress;Initial Catalog=Transactions;Integrated Security=True";
         var rabbitMQConnection = @"host=localhost";
 
         var containerSettings = endpointConfiguration.UseContainer(new DefaultServiceProviderFactory());
-/*        containerSettings.ServiceCollection.AddScoped<ISubscriberService, SubscriberService>();
-        containerSettings.ServiceCollection.AddScoped<ISubscriberDAL, SubscriberDAL>();
-        containerSettings.ServiceCollection.AddDbContextFactory<SubscriberContext>(opt => opt.UseSqlServer(databaseConnection));*/
+        containerSettings.ServiceCollection.AddScoped<ITransactionService,TransactionService>();
+        containerSettings.ServiceCollection.AddServices(databaseConnection);
 
         #region ReceiverConfiguration
 
@@ -30,9 +33,10 @@ public class Program
         transport.ConnectionString(rabbitMQConnection);
         transport.UseConventionalRoutingTopology(QueueType.Quorum);
 
-/*        var routing = transport.Routing();
-        routing.RouteToEndpoint(typeof(UpdateTracking), destination: "Tracking");
-        routing.RouteToEndpoint(typeof(UpdateStatus), destination: "Measure");*/
+        var routing = transport.Routing();
+        //change to a veriable
+        routing.RouteToEndpoint(typeof(UpdateBalance), destination: "CustomerAccount");
+
 
         var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
         persistence.ConnectionBuilder(

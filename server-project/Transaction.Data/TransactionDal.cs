@@ -27,5 +27,22 @@ namespace Transaction.Data
                 return -1;
             }
         }
+
+        public async Task<bool> UpdateStatus(int transactionID, Status status, string? failureReason)
+        {
+            using var _context = _factory.CreateDbContext();
+            try
+            {
+                var transaction = _context.Transactions.FirstAsync(t => t.TransactionID == transactionID).Result;
+                transaction.Status = status;
+                transaction.FailureReason = failureReason;
+               await _context.SaveChangesAsync();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Exceptions;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
+using Messages.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +69,22 @@ namespace CustomerAccount.Services.Services
             }
    
            
+        }
+        public async Task<bool> UpdateAccounts(UpdateBalance updateBalanceModel)
+        { 
+            //not null obj
+            if (updateBalanceModel == null) { return false; }
+            //check correctness of accounts ids
+            Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
+            Account accountTo= await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
+            if (accountFrom == null || accountTo == null) { return false; }
+            // check sender balance
+            if (accountFrom.Balance < updateBalanceModel.Amount) { return false; }
+           //update balance
+            accountFrom.Balance-=updateBalanceModel.Amount;
+            accountTo.Balance+=updateBalanceModel.Amount;
+            return await _accountDal.UpdateAccounts(accountFrom, accountTo);
+            
         }
     }
 }

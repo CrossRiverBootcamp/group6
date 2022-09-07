@@ -10,5 +10,6 @@ namespace Transaction.Services.Interfaces
     public interface ITransactionService
     {
         Task<int> AddTransaction(TransactionModel transactionModel);
+        Task<bool> UpdateStatusTransaction(StausModel staus);
     }
 }
