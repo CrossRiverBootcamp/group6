@@ -10,6 +10,7 @@ namespace CustomerAccount.WebAPI
         {
             CreateMap<RegisterDTO, RegisterModel>();
             CreateMap<AccountModel, AccountInfoDTO>();
+            CreateMap<LoginResultModel, LoginResultDTO>();
         }
     }
 }

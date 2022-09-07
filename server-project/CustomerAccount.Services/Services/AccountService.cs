@@ -5,9 +5,12 @@ using CustomerAccount.Services.Exceptions;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
 using Messages.Commands;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -54,7 +57,7 @@ namespace CustomerAccount.Services.Services
            
         }
 
-        public async Task<int> Login(string email, string Password)
+        public async Task<LoginResultModel> Login(string email, string Password)
         {
             bool exists = await _accountDal.EmailExists(email);
             if (!exists)
@@ -66,10 +69,20 @@ namespace CustomerAccount.Services.Services
                     Customer customer = await _accountDal.GetCustomerByEmail(email);
                     string hashPassword = _passwordHashService.HashPassword(Password, customer.Salt, 1000, 8);
                 if (hashPassword.Equals(customer.Password.TrimEnd()))
-                      return await _accountDal.Login(email, hashPassword);
+                {
+                    int accountID = await _accountDal.Login(email, hashPassword);
+                    string token = await getToken(accountID);
+                    LoginResultModel loginResult = new LoginResultModel()
+                    {
+                        AccountID = accountID,
+                        Token=token,
+                    };
+                    return loginResult;
+
+                }
                 else
                 {
-                        throw new NotValidException("password is not right!!!-");
+                    throw new NotValidException("password is not right!!!-");
                 } 
             }
             catch
@@ -79,6 +92,7 @@ namespace CustomerAccount.Services.Services
    
            
         }
+       
         public async Task<string> UpdateAccounts(UpdateBalance updateBalanceModel)
         { 
             //not null obj
@@ -94,6 +108,25 @@ namespace CustomerAccount.Services.Services
             accountTo.Balance+=updateBalanceModel.Amount;
             return await _accountDal.UpdateAccounts(accountFrom, accountTo);
             
+        }
+        
+        public async Task<string> getToken(int AccountID)
+        {
+            //create claims details based on the user information
+            var claims = new[] {
+                        new Claim("AccountID",AccountID.ToString()),
+                        new Claim("Role", "customer")
+                    };
+            var issuer = "https://exemple.com";
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
+            var signIn = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var token = new JwtSecurityToken(
+                issuer,
+                issuer,
+                claims,
+                expires: DateTime.UtcNow.AddMinutes(10),
+                signingCredentials: signIn);
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
