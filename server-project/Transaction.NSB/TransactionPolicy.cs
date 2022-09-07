@@ -26,12 +26,7 @@ namespace Transaction.NSB
         public Task Handle(TransactionAdded message, IMessageHandlerContext context)
         {
             log.Info($"received TransactionAdded id: {message.TransactionID} from {message.FromAccountID} to {message.ToAccountID}");
-            #region
-            //?-this message start the saga
-            //evansully its handled
-            //otherwise the saga wouldnt even start...
-            Data.IsTransactionAdded = true;
-            #endregion
+       
             //update balance-command;
             UpdateBalance update = new UpdateBalance
             {
@@ -46,15 +41,14 @@ namespace Transaction.NSB
         public async Task Handle(AccountsUpdated message, IMessageHandlerContext context)
         {
             log.Info($"recieved AccountUpdated id:{message.TransactionID} status: {message.Success}");
-            Data.IsAmountUpdated = true;
             StausModel status = new StausModel
             {
                  TransactionID=message.TransactionID,
                  Success=message.Success,
                  FailureReason=message.FailureResult
             };
-            bool successUpdateStatus =await _transactionService.UpdateStatusTransaction(status);
-            log.Info($"updateStatus status : {status.Success}");
+            bool successUpdateStatus = await _transactionService.UpdateStatusTransaction(status);
+            log.Info($"updateStatus status : {status.Success} and success updating- {successUpdateStatus}");
             MarkAsComplete();
         }
 
