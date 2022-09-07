@@ -63,20 +63,20 @@ public class AccountDal : IAccountDal
         return acccountToUpDate;
         
     }
-    public async Task<bool> UpdateAccounts(Account accountFrom,Account accountTo)
+    public async Task<string> UpdateAccounts(Account accountFrom,Account accountTo)
     {
         using var _contect = _contextFactory.CreateDbContext();
         try
         { 
-            if(accountFrom==null|| accountTo == null) { return false; } 
+            if(accountFrom==null|| accountTo == null) { return "not enof details"; } 
             _contect.Accounts.Update(accountTo);
             _contect.Accounts.Update(accountFrom);
             _contect.SaveChanges();
-            return true;
+            return null;
         }
         catch
         {
-            return false;
+            return "the transaction systen had a temporry bug try again later";
         }
       
 

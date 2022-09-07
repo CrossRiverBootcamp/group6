@@ -1,12 +1,13 @@
+using NServiceBus;
 using Transaction.Services.Extension;
 using Transaction.Services.Interfaces;
 using Transaction.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiri");
+string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
 #region back-end-use-nservicebus
-/*builder.Host.UseNServiceBus(hostBuilderContext =>
+builder.Host.UseNServiceBus(hostBuilderContext =>
 {
     var endpointConfiguration = new EndpointConfiguration("TransactionAPi");
     endpointConfiguration.SendOnly();
@@ -16,7 +17,7 @@ string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQC
     var conventions = endpointConfiguration.Conventions();
     conventions.DefiningEventsAs(type => type.Namespace == "Messages.Events");
     return endpointConfiguration;
-});*/
+});
 #endregion
 // Add services to the container.
 builder.Services.AddServices(connection);
@@ -36,6 +37,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options => {
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 
 app.UseAuthorization();
 

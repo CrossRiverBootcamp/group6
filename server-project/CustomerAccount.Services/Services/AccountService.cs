@@ -29,6 +29,15 @@ namespace CustomerAccount.Services.Services
             _mapper = config.CreateMapper();
             _passwordHashService = passwordHashService;
         }
+        public AccountService(IAccountDal accountDal)
+        {
+            _accountDal = accountDal;
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<MapperModelEntity>();
+            });
+            _mapper = config.CreateMapper();
+        }
         public async Task<AccountModel> GetAccountInfo(int AccountID)
         {
             try
@@ -70,16 +79,16 @@ namespace CustomerAccount.Services.Services
    
            
         }
-        public async Task<bool> UpdateAccounts(UpdateBalance updateBalanceModel)
+        public async Task<string> UpdateAccounts(UpdateBalance updateBalanceModel)
         { 
             //not null obj
-            if (updateBalanceModel == null) { return false; }
+            if (updateBalanceModel == null) { return "missing deatels"; }
             //check correctness of accounts ids
             Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
             Account accountTo= await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
-            if (accountFrom == null || accountTo == null) { return false; }
+            if (accountFrom == null || accountTo == null) { return "not the right number account"; }
             // check sender balance
-            if (accountFrom.Balance < updateBalanceModel.Amount) { return false; }
+            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account"; }
            //update balance
             accountFrom.Balance-=updateBalanceModel.Amount;
             accountTo.Balance+=updateBalanceModel.Amount;

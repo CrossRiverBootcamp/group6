@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Messages\Messages.csproj" />
     <ProjectReference Include="..\Transaction.Services\Transaction.Services.csproj" />
   </ItemGroup>
 

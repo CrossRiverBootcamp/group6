@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Messages.Events;
+using NServiceBus;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +27,21 @@ namespace Transaction.Services.Services
             });
             _mapper = config.CreateMapper();
         }
-        public Task<int> AddTransaction(TransactionModel transactionModel)
+        public async Task AddTransaction(TransactionModel transactionModel, IMessageSession _session)
         {
             Transaction.Data.Entities.Transaction transaction = _mapper.Map<Transaction.Data.Entities.Transaction>(transactionModel);
             transaction.Status =Status.Processing; 
             transaction.Date = DateTime.UtcNow;
-            return _transactionDal.AddTransaction(transaction);
+            int id= await _transactionDal.AddTransaction(transaction);
+            TransactionAdded transactionEvent = new TransactionAdded
+            {
+                TransactionID = id,
+                FromAccountID = transactionModel.FromAccountId,
+                ToAccountID = transactionModel.ToAccountID,
+                Amount = transactionModel.Amount
+
+            };
+             await  _session.Publish(transactionEvent);
         }
 
         public Task<bool> UpdateStatusTransaction(StausModel staus)

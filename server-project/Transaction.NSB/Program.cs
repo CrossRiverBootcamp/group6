@@ -17,8 +17,9 @@ public class Program
 
         var endpointConfiguration = new EndpointConfiguration("TransactionNsb");
         //from options?
-        var databaseConnection = "Data Source=localhost\\sqlexpress;Initial Catalog=Transactions;Integrated Security=True";
+        var databaseConnection = "Data Source=DESKTOP-411ES1J\\ADMIN;Initial Catalog=TransactionsNSB;Integrated Security=True";
         var rabbitMQConnection = @"host=localhost";
+        ;
 
         var containerSettings = endpointConfiguration.UseContainer(new DefaultServiceProviderFactory());
         containerSettings.ServiceCollection.AddScoped<ITransactionService,TransactionService>();
@@ -35,7 +36,7 @@ public class Program
 
         var routing = transport.Routing();
         //change to a veriable
-        routing.RouteToEndpoint(typeof(UpdateBalance), destination: "CustomerAccount");
+       routing.RouteToEndpoint(typeof(UpdateBalance), destination: "CustomerAccount");
 
 
         var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
