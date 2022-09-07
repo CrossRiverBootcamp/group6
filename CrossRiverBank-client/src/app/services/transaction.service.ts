@@ -10,10 +10,10 @@ import { AddTransactionDTO } from "../models/addTransactionDTO.models";
   providedIn: 'root'
 })
 export class TransactionService {
-private  transactionUrl='https://localhost:7120/api/Customer';   
+private  transactionUrl='https://localhost:7206/api/Transaction';  
       addTransaction(addTransaction: AddTransactionDTO): Observable<boolean> {
         debugger;
-        return this._http.post<boolean>(this.transactionUrl + '/CreateAccount', addTransaction);
+        return this._http.post<boolean>(this.transactionUrl, addTransaction);
       }
     constructor(private _http : HttpClient){}
 }
