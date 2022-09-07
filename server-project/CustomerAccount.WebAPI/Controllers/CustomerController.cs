@@ -28,16 +28,11 @@ namespace CustomerAccount.WebAPI.Controllers
         public async Task<ActionResult<bool>> Register(RegisterDTO register)
         {
             RegisterModel registerModel = _mapper.Map<RegisterModel>(register);
-            try
-            {
+            
                  bool success = await _customerService.Register(registerModel);
                 return(success);
-            } 
-            catch
-            {
-                return Ok(false);
-
-            }
+             
+            
 
                 
         }
