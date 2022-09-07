@@ -36,11 +36,11 @@ namespace CustomerAccount.WebAPI.Controllers
             return Ok(accountInfo);
         }
         [HttpPost("login")]
-        public async Task<ActionResult<int>> Login(LoginDTO person)
+        public async Task<ActionResult<int>> Login(LoginDTO loginDTO)
         {
             try
             {
-                int accountID = await _accountService.Login(person.Email, person.Password);
+                int accountID = await _accountService.Login(loginDTO.Email, loginDTO.Password);
                 if (accountID < 10)
                 {
                     return Unauthorized();
