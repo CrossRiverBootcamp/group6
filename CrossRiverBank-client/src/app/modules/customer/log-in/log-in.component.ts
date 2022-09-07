@@ -28,13 +28,13 @@ export class LogInComponent implements OnInit {
    debugger;
     this._loginService.logIn(this.loginUser).subscribe(
           (res) => {
-            if(res<10){
+            if(res.accountID<10){
               alert("הפרטים שהכנסת שגויים");
             }
         else{
-        this._loginService.setAccountID(res);
+        this._loginService.setAccountID(res.accountID);
         this._loginService.setCard(true);
-        this._loginService.setAccountID(res);
+        this._loginService.setAccountID(res.accountID);
         this._router.navigate(['/main']);
       }
     },

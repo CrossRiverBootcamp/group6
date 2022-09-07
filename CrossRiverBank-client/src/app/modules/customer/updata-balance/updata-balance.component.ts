@@ -29,8 +29,8 @@ export class UpdataBalanceComponent implements OnInit {
     this.addTransaction.fromAccountID=this.accountID;
     this._transactionService.addTransaction(this.addTransaction).subscribe(
       (res)=>{
-        alert("your transaction past sucssefuly");
         this._router.navigate(['/main']);
+        alert("your transaction past sucssefuly");
       },
       (err)=>{
         alert("sorry yor transaction faild check your details and try again");
