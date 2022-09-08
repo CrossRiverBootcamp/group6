@@ -34,7 +34,7 @@ export class LogInComponent implements OnInit {
         else{
         this._loginService.setAccountID(res.accountID);
         this._loginService.setCard(true);
-        this._loginService.setAccountID(res.accountID);
+        // sessionStorage.setItem("token", res.token);
         this._router.navigate(['/main']);
       }
     },
