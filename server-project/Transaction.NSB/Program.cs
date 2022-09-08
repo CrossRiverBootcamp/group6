@@ -17,7 +17,7 @@ public class Program
 
         var endpointConfiguration = new EndpointConfiguration("TransactionNsb");
         //from options?
-        var databaseConnection = "Data Source=DESKTOP-411ES1J\\ADMIN;Initial Catalog=TransactionsNSB;Integrated Security=True";
+        var databaseConnection = "Data Source=localhost\\sqlexpress;Initial Catalog=TransactionsNSB;Integrated Security=True";
         var rabbitMQConnection = @"host=localhost";
         ;
 

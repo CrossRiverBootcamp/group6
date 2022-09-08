@@ -45,15 +45,14 @@ namespace Transaction.NSB
         public async Task Handle(AccountsUpdated message, IMessageHandlerContext context)
         {
             log.Info($"recieved AccountUpdated id:{message.TransactionID} status: {message.Success}");
-           
-            StausModel status = new StausModel
+            UpdateStatus update = new UpdateStatus
             {
-                 TransactionID=message.TransactionID,
-                 Success=message.Success,
-                 FailureReason=message.FailureResult
+                TransactionID = message.TransactionID,
+                Success = message.Success,
+                FailureReason = message.FailureResult
             };
-            bool successUpdateStatus =await _transactionService.UpdateStatusTransaction(status);
-            log.Info($"updateStatus status : {status.Success}");
+            await context.Send(update);
+            log.Info($"updateStatus status : {message.Success}");
             MarkAsComplete();
         }
 

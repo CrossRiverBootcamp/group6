@@ -20,7 +20,7 @@ public class Program
 
         var endpointConfiguration = new EndpointConfiguration("CustomerAccount");
 
-        var databaseConnection = "Data Source=DESKTOP-411ES1J\\ADMIN;Initial Catalog=CustomerAccountNSB;Integrated Security=True";
+        var databaseConnection = "Data Source=localhost\\sqlexpress;Initial Catalog=CustomerAccountNSB;Integrated Security=True";
         var rabbitMQConnection = @"host=localhost";
 
         var containerSettings = endpointConfiguration.UseContainer(new DefaultServiceProviderFactory());

@@ -102,7 +102,7 @@ namespace CustomerAccount.Services.Services
             Account accountTo= await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
             if (accountFrom == null || accountTo == null) { return "not the right number account"; }
             // check sender balance
-            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account"; }
+            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not enugh money in the account"; }
            //update balance
             accountFrom.Balance-=updateBalanceModel.Amount;
             accountTo.Balance+=updateBalanceModel.Amount;
