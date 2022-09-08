@@ -2,6 +2,7 @@
 using Messages.Events;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NServiceBus;
 using Transaction.Services.Interfaces;
 using Transaction.Services.Models;
 using Transaction.WebAPI.DTOs;
@@ -14,10 +15,12 @@ namespace Transaction.WebAPI.Controllers
     {
         private ITransactionService _service;
         private IMapper _mapper;
+        private IMessageSession _session;
 
-        public TransactionController(ITransactionService service)
+        public TransactionController(ITransactionService service, IMessageSession session)
         {
             _service = service;
+            _session = session;
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MapperDTOModel>();
@@ -37,7 +40,7 @@ namespace Transaction.WebAPI.Controllers
                 Amount=model.Amount
                 
             };
-            /*    publish(transactionEvent);*/
+           await _session.Publish(transactionEvent);
             return Ok();
 
         }
