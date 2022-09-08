@@ -23,10 +23,14 @@ namespace Transaction.NSB
         .ToMessage<TransactionAdded>(message => message.TransactionID)
         .ToMessage<AccountsUpdated>(message => message.TransactionID);
         }
-        public Task Handle(TransactionAdded message, IMessageHandlerContext context)
+        public async  Task Handle(TransactionAdded message, IMessageHandlerContext context)
         {
             log.Info($"received TransactionAdded id: {message.TransactionID} from {message.FromAccountID} to {message.ToAccountID}");
-       
+            #region
+            //?-this message start the saga
+            //evansully its handled
+            //otherwise the saga wouldnt even start...
+            #endregion
             //update balance-command;
             UpdateBalance update = new UpdateBalance
             {
@@ -35,20 +39,21 @@ namespace Transaction.NSB
                 FromAccountID = message.FromAccountID,
                 ToAccountID = message.ToAccountID,
             };
-          return context.Send(update);
+              await context.Send(update);
         }
 
         public async Task Handle(AccountsUpdated message, IMessageHandlerContext context)
         {
             log.Info($"recieved AccountUpdated id:{message.TransactionID} status: {message.Success}");
+           
             StausModel status = new StausModel
             {
                  TransactionID=message.TransactionID,
                  Success=message.Success,
                  FailureReason=message.FailureResult
             };
-            bool successUpdateStatus = await _transactionService.UpdateStatusTransaction(status);
-            log.Info($"updateStatus status : {status.Success} and success updating- {successUpdateStatus}");
+            bool successUpdateStatus =await _transactionService.UpdateStatusTransaction(status);
+            log.Info($"updateStatus status : {status.Success}");
             MarkAsComplete();
         }
 

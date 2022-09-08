@@ -36,16 +36,19 @@ namespace CustomerAccount.WebAPI.Controllers
             return Ok(accountInfo);
         }
         [HttpPost("login")]
-        public async Task<ActionResult<int>> Login(LoginDTO loginDTO)
+        public async Task<ActionResult<LoginResultDTO>> Login(LoginDTO loginDTO)
         {
             try
             {
-                int accountID = await _accountService.Login(loginDTO.Email, loginDTO.Password);
-                if (accountID < 10)
+                LoginResultModel loginResult = await _accountService.Login(loginDTO.Email, loginDTO.Password);
+
+                if (loginResult.AccountID < 10)
                 {
                     return Unauthorized();
                 }
-                return Ok(accountID);
+
+                LoginResultDTO loginResultDTO = _mapper.Map<LoginResultDTO>(loginResult);
+                return Ok(loginResultDTO);
             }
             catch
             {

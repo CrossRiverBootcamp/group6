@@ -30,11 +30,7 @@ namespace CustomerAccount.WebAPI.Controllers
             RegisterModel registerModel = _mapper.Map<RegisterModel>(register);
             
                  bool success = await _customerService.Register(registerModel);
-                return(success);
-             
-            
-
-                
+                return Ok(success);
         }
     }
 }

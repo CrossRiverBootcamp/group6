@@ -20,29 +20,19 @@ namespace Transaction.WebAPI.Controllers
         public TransactionController(ITransactionService service, IMessageSession session)
         {
             _service = service;
-            _session = session;
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MapperDTOModel>();
             });
             _mapper = config.CreateMapper();
+            _session = session;
         }
         [HttpPost]
         public async Task<ActionResult> Add(AddTransactionDTO transactionDTO)
         {
             TransactionModel model = _mapper.Map<TransactionModel>(transactionDTO);
-            int id = await _service.AddTransaction(model);
-            TransactionAdded transactionEvent = new TransactionAdded
-            {
-                TransactionID =id,
-                FromAccountID = model.FromAccountId,
-                ToAccountID =model.ToAccountID,
-                Amount=model.Amount
-                
-            };
-           await _session.Publish(transactionEvent);
+            await _service.AddTransaction(model,_session);
             return Ok();
-
         }
     }
 }

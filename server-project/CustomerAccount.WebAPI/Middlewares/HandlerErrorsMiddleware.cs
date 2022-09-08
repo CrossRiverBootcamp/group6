@@ -37,12 +37,7 @@ public class HandlerErrorsMiddleware
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
                 case DuplicatedException e:
-                    await response.WriteAsync((new response
-                    {
-                        StatusCode = (int)HttpStatusCode.BadRequest,
-                        result=false,
-                        ErrorMessage="duplicated"
-                    }).ToString());
+                    await response.WriteAsync("false");
                     // return False
                     break;
                 case EmailNotFoundException e:
@@ -62,6 +57,7 @@ public class HandlerErrorsMiddleware
                    
                     break;
                 case NotSavedException e:
+                    await response.WriteAsync("false");
                     // return false
                     break;
                 case NotValidException e:

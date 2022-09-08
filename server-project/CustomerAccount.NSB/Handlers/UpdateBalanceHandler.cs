@@ -26,12 +26,11 @@ public class UpdateBalanceHandler : IHandleMessages<UpdateBalance>
     {
 
         log.Info($"Received UpdateBalance, TransactionID = {message.TransactionID}");
-        string reason=null;
-        bool success = await _accountService.UpdateAccounts(message);
-        if (!success) {
-             reason = "didnt mange to update";
+        bool success = false; ;
+        string reason = await _accountService.UpdateAccounts(message);
+        if (reason==null) {
+            success = true;
         }
-        
         AccountsUpdated accountsUpdated = new AccountsUpdated()
         {
             Success = success,

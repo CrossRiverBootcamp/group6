@@ -1,4 +1,7 @@
 ﻿using CustomerAccount.Data.Entities;
+using CustomerAccount.Services.Extensions;
+using CustomerAccount.Services.Interfaces;
+using CustomerAccount.Services.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,13 +20,13 @@ public class Program
 
         var endpointConfiguration = new EndpointConfiguration("CustomerAccount");
 
-        var databaseConnection = "Data Source=DESKTOP-411ES1J\\ADMIN;Initial Catalog=CustomerAccount;Integrated Security=True";
+        var databaseConnection = "Data Source=DESKTOP-411ES1J\\ADMIN;Initial Catalog=CustomerAccountNSB;Integrated Security=True";
         var rabbitMQConnection = @"host=localhost";
 
         var containerSettings = endpointConfiguration.UseContainer(new DefaultServiceProviderFactory());
-      
-        containerSettings.ServiceCollection.AddDbContextFactory<CustomerAccountContext>(opt => opt.UseSqlServer(databaseConnection));
-
+        containerSettings.ServiceCollection.AddScoped<IAccountService, AccountService>();
+        containerSettings.ServiceCollection.AddServiceExtension(databaseConnection);
+        
         endpointConfiguration.EnableInstallers();
         endpointConfiguration.EnableOutbox();
 

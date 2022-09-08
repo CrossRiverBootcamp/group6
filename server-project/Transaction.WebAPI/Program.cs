@@ -4,7 +4,7 @@ using Transaction.Services.Interfaces;
 using Transaction.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiri");
+string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
 #region back-end-use-nservicebus
 builder.Host.UseNServiceBus(hostBuilderContext =>
@@ -37,6 +37,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(options => {
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
 
 app.UseAuthorization();
 

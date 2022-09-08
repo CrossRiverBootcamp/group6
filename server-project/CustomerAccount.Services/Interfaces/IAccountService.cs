@@ -9,7 +9,7 @@ namespace CustomerAccount.Services.Interfaces
     {
         Task<AccountModel> GetAccountInfo(int AccountID);
         
-        Task<int> Login(string email, string Password);
-        Task<bool> UpdateAccounts(UpdateBalance updateBalanceModel);
+        Task<LoginResultModel> Login(string email, string Password);
+        Task<string> UpdateAccounts(UpdateBalance updateBalanceModel);
     }
 }
