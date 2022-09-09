@@ -8,14 +8,48 @@ using Serilog;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using NServiceBus;
+using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 IConfigurationRoot configuration = new
             ConfigurationBuilder().AddJsonFile("appsettings.json",
             optional: false, reloadOnChange: true).Build();
-builder.Host.UseSerilog();
 
+string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
+
+#region back-end-use-nservicebus
+builder.Host.UseNServiceBus(hostBuilderContext =>
+{
+    var endpointConfiguration = new EndpointConfiguration("CustomerAccount");
+    endpointConfiguration.EnableInstallers();
+    endpointConfiguration.EnableOutbox();
+
+    var persistence = endpointConfiguration.UsePersistence<SqlPersistence>();
+    persistence.ConnectionBuilder(
+        connectionBuilder: () =>
+        {
+            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+        });
+
+    var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
+    var subscriptions = persistence.SubscriptionSettings();
+    subscriptions.CacheFor(TimeSpan.FromMinutes(1));
+    dialect.Schema("dbo");
+
+    var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
+    transport.ConnectionString(rabbitMQConnection);
+    transport.UseConventionalRoutingTopology(QueueType.Quorum);
+    var conventions = endpointConfiguration.Conventions();
+    conventions.DefiningCommandsAs(type => type.Namespace == "Messages.Commands");
+    conventions.DefiningEventsAs(type => type.Namespace == "Messages.Events");
+    return endpointConfiguration;
+});
+#endregion
+
+
+builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
 builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));

@@ -27,12 +27,12 @@ namespace Transaction.Services.Services
             });
             _mapper = config.CreateMapper();
         }
-        public async Task AddTransaction(TransactionModel transactionModel, IMessageSession _session)
+        public async Task AddTransaction(TransactionModel transactionModel, IMessageSession session)
         {
-            Transaction.Data.Entities.Transaction transaction = _mapper.Map<Transaction.Data.Entities.Transaction>(transactionModel);
-            transaction.Status =Status.Processing; 
+            Transaction.Data.Entities.Transaction transaction = _mapper.Map<Data.Entities.Transaction>(transactionModel);
+            transaction.Status = Status.Processing;
             transaction.Date = DateTime.UtcNow;
-            int id= await _transactionDal.AddTransaction(transaction);
+            int id = await _transactionDal.AddTransaction(transaction);
             TransactionAdded transactionEvent = new TransactionAdded
             {
                 TransactionID = id,
@@ -41,14 +41,17 @@ namespace Transaction.Services.Services
                 Amount = transactionModel.Amount
 
             };
-             await  _session.Publish(transactionEvent);
+            //לתפוס שגיאה ולהזיר false
+            await session.Publish(transactionEvent);
         }
 
         public Task<bool> UpdateStatusTransaction(StausModel staus)
         {
             if (staus.Success)
-             return _transactionDal.UpdateStatus(staus.TransactionID, Status.Success,null);
-             return _transactionDal.UpdateStatus(staus.TransactionID, Status.Fail,staus.FailureReason);
+            {
+                return _transactionDal.UpdateStatus(staus.TransactionID, Status.Success, null);
+            }
+            return _transactionDal.UpdateStatus(staus.TransactionID, Status.Fail, staus.FailureReason);
 
         }
     }

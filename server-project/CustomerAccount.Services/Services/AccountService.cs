@@ -5,6 +5,7 @@ using CustomerAccount.Services.Exceptions;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
 using Messages.Commands;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,9 @@ namespace CustomerAccount.Services.Services
         private IAccountDal _accountDal;
         private IMapper _mapper;
         private IPasswordHashService _passwordHashService;
+        private IConfiguration _configuration;
 
-        public AccountService(IAccountDal accountDal, IPasswordHashService passwordHashService)
+        public AccountService(IAccountDal accountDal, IPasswordHashService passwordHashService, IConfiguration configuration)
         {
             _accountDal = accountDal;
             var config = new MapperConfiguration(cfg =>
@@ -31,6 +33,7 @@ namespace CustomerAccount.Services.Services
             });
             _mapper = config.CreateMapper();
             _passwordHashService = passwordHashService;
+            _configuration = configuration;
         }
         public AccountService(IAccountDal accountDal)
         {
@@ -52,9 +55,9 @@ namespace CustomerAccount.Services.Services
             {
                 throw new KeyNotFoundException("fail to get accountInfo by accountID");
             }
-             
-           
-           
+
+
+
         }
 
         public async Task<LoginResultModel> Login(string email, string Password)
@@ -66,8 +69,8 @@ namespace CustomerAccount.Services.Services
             }
             try
             {
-                    Customer customer = await _accountDal.GetCustomerByEmail(email);
-                    string hashPassword = _passwordHashService.HashPassword(Password, customer.Salt, 1000, 8);
+                Customer customer = await _accountDal.GetCustomerByEmail(email);
+                string hashPassword = _passwordHashService.HashPassword(Password, customer.Salt, 1000, 8);
                 if (hashPassword.Equals(customer.Password.TrimEnd()))
                 {
                     int accountID = await _accountDal.Login(email, hashPassword);
@@ -75,7 +78,7 @@ namespace CustomerAccount.Services.Services
                     LoginResultModel loginResult = new LoginResultModel()
                     {
                         AccountID = accountID,
-                        Token=token,
+                        Token = token,
                     };
                     return loginResult;
 
@@ -83,33 +86,33 @@ namespace CustomerAccount.Services.Services
                 else
                 {
                     throw new NotValidException("password is not right!!!-");
-                } 
+                }
             }
             catch
             {
                 throw new NoAccessException("login not successed");
             }
-   
-           
+
+
         }
-       
+
         public async Task<string> UpdateAccounts(UpdateBalance updateBalanceModel)
-        { 
+        {
             //not null obj
             if (updateBalanceModel == null) { return "missing deatels"; }
             //check correctness of accounts ids
             Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
-            Account accountTo= await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
+            Account accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
             if (accountFrom == null || accountTo == null) { return "not the right number account"; }
             // check sender balance
             if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account"; }
-           //update balance
-            accountFrom.Balance-=updateBalanceModel.Amount;
-            accountTo.Balance+=updateBalanceModel.Amount;
+            //update balance
+            accountFrom.Balance -= updateBalanceModel.Amount;
+            accountTo.Balance += updateBalanceModel.Amount;
             return await _accountDal.UpdateAccounts(accountFrom, accountTo);
-            
+
         }
-        
+
         public async Task<string> getToken(int AccountID)
         {
             //create claims details based on the user information
@@ -130,4 +133,3 @@ namespace CustomerAccount.Services.Services
         }
     }
 }
- 

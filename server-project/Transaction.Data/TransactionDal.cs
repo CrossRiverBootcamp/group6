@@ -7,7 +7,7 @@ namespace Transaction.Data
 {
     public class TransactionDal : ITransactionDal
     {
-        private IDbContextFactory<TransactionContext> _factory;
+        private readonly IDbContextFactory<TransactionContext> _factory;
 
         public TransactionDal(IDbContextFactory<TransactionContext> factory)
         {
@@ -24,19 +24,20 @@ namespace Transaction.Data
             }
             catch
             {
-                return -1;
+                return -1;//לזרוק שגיאה מתאימה
             }
         }
-
+        //guid-אבטחה
+        //dbcontex
         public async Task<bool> UpdateStatus(int transactionID, Status status, string? failureReason)
         {
             using var _context = _factory.CreateDbContext();
             try
             {
-                var transaction = _context.Transactions.FirstAsync(t => t.TransactionID == transactionID).Result;
+                var transaction = await _context.Transactions.FirstAsync(t => t.TransactionID == transactionID).ConfigureAwait(false);
                 transaction.Status = status;
                 transaction.FailureReason = failureReason;
-               await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch

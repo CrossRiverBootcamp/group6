@@ -33,6 +33,7 @@ namespace Transaction.WebAPI.Controllers
             TransactionModel model = _mapper.Map<TransactionModel>(transactionDTO);
             await _service.AddTransaction(model,_session);
             return Ok();
+
         }
     }
 }
