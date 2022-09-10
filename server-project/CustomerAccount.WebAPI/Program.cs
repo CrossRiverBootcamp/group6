@@ -30,7 +30,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     persistence.ConnectionBuilder(
         connectionBuilder: () =>
         {
-            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiriam"));
         });
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
