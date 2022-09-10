@@ -3,47 +3,45 @@
 using Transaction.Data.Entities;
 using Transaction.Data.Interfaces;
 
-namespace Transaction.Data
+namespace Transaction.Data;
+public class TransactionDal : ITransactionDal
 {
-    public class TransactionDal : ITransactionDal
-    {
-        private readonly IDbContextFactory<TransactionContext> _factory;
+    private readonly IDbContextFactory<TransactionContext> _factory;
 
-        public TransactionDal(IDbContextFactory<TransactionContext> factory)
+    public TransactionDal(IDbContextFactory<TransactionContext> factory)
+    {
+        _factory = factory;
+    }
+    public async Task<int> AddTransaction(Entities.Transaction transaction)
+    {
+        using var _context = _factory.CreateDbContext();
+        try
         {
-            _factory = factory;
+            await _context.Transactions.AddAsync(transaction);
+            await _context.SaveChangesAsync();
+            return transaction.TransactionID;
         }
-        public async Task<int> AddTransaction(Entities.Transaction transaction)
+        catch
         {
-            using var _context = _factory.CreateDbContext();
-            try
-            {
-                await _context.Transactions.AddAsync(transaction);
-                await _context.SaveChangesAsync();
-                return transaction.TransactionID;
-            }
-            catch
-            {
-                throw new Exception("didnt add");
-            }
+            throw new Exception("didnt add transation");
         }
-        //guid-אבטחה
-        //dbcontex
-        public async Task<bool> UpdateStatus(int transactionID, Status status, string? failureReason)
+    }
+    //guid-אבטחה
+    //dbcontex
+    public async Task<bool> UpdateStatus(int transactionID, Status status, string? failureReason)
+    {
+        using var _context = _factory.CreateDbContext();
+        try
         {
-            using var _context = _factory.CreateDbContext();
-            try
-            {
-                var transaction = await _context.Transactions.FirstAsync(t => t.TransactionID == transactionID).ConfigureAwait(false);
-                transaction.Status = status;
-                transaction.FailureReason = failureReason;
-                await _context.SaveChangesAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            var transaction = await _context.Transactions.FirstAsync(t => t.TransactionID == transactionID).ConfigureAwait(false);
+            transaction.Status = status;
+            transaction.FailureReason = failureReason;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch
+        {
+            return false;
         }
     }
 }

@@ -24,7 +24,10 @@ public class AccountDal : IAccountDal
             await _contect.SaveChangesAsync();
             return true;
         }
-        catch (Exception ex) { throw ex; }
+        catch 
+        { 
+            throw;
+        }
 
     }
 
@@ -45,9 +48,9 @@ public class AccountDal : IAccountDal
             Account account = await _contect.Accounts.Include(account => account.Customer).FirstAsync(c => c.ID == accountID);
             return account;
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw;
         }
     }
 
@@ -68,7 +71,10 @@ public class AccountDal : IAccountDal
         using var _contect = _contextFactory.CreateDbContext();
         try
         { 
-            if(accountFrom==null|| accountTo == null) { return "not enof details"; } 
+            if(accountFrom==null|| accountTo == null)
+            { 
+                return "not enough details";
+            } 
              _contect.Accounts.Update(accountTo);
              _contect.Accounts.Update(accountFrom);
              await _contect.SaveChangesAsync();
@@ -91,9 +97,9 @@ public class AccountDal : IAccountDal
             Account account = await _context.Accounts.Include(a => a.Customer).FirstAsync(c => c.Customer.Email == email && c.Customer.Password == password);
             return account.ID;
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw;
         }
 
     }
@@ -104,9 +110,9 @@ public class AccountDal : IAccountDal
         {
             return await _context.Customers.Where(c => c.Email == email).FirstOrDefaultAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw;
         }
 
     }

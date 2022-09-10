@@ -15,39 +15,36 @@ public class TransactionService : ITransactionService
 
     public TransactionService(ITransactionDal transactionDal)
     {
-        _transactionDal = transactionDal;
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<MapModelEntity>();
         });
         _mapper = config.CreateMapper();
+        _transactionDal = transactionDal;
     }
     public async Task<bool> AddTransaction(TransactionModel transactionModel, IMessageSession session)
     {
-         
-            TransactionAdded transactionEvent = new TransactionAdded
-            {
-                TransactionEventID = Guid.NewGuid(),
-                FromAccountID = transactionModel.FromAccountId,
-                ToAccountID = transactionModel.ToAccountID,
-                Amount = transactionModel.Amount
+        TransactionAdded transactionEvent = new TransactionAdded
+        {
+            TransactionEventID = Guid.NewGuid(),
+            FromAccountID = transactionModel.FromAccountId,
+            ToAccountID = transactionModel.ToAccountID,
+            Amount = transactionModel.Amount
 
-            };
+        };
+        try
+        {
+            await session.Publish(transactionEvent);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
 
-            try
-            {
-                await session.Publish(transactionEvent);
-                return true;
-            }
-            catch
-            {
-               
-                return false;
-            }
-        
     }
 
-    public  async Task<int> AddTransactionToDB(TransactionModel transactionModel)
+    public async Task<int> AddTransactionToDB(TransactionModel transactionModel)
     {
         Data.Entities.Transaction transaction = _mapper.Map<Data.Entities.Transaction>(transactionModel);
         transaction.Status = Status.Processing;

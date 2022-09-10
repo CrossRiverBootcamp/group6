@@ -15,12 +15,13 @@ namespace CustomerAccount.Services.Services;
 
         public CustomerService(IAccountDal accountDal, IPasswordHashService passwordHashService)
         {
-            _accountDal = accountDal;
+           
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MapperModelEntity>();
             });
             _mapper = config.CreateMapper();
+            _accountDal = accountDal;
             _passwordHashService = passwordHashService;
         }
         public async Task<bool> Register(RegisterModel accountModel)
@@ -29,6 +30,7 @@ namespace CustomerAccount.Services.Services;
             //email exsits
             if (duplicated)
                 throw new DuplicatedException("email address in use!!");
+          
             accountModel.Balance = 1000;
             accountModel.OpenDate = DateTime.UtcNow;
             Account account = _mapper.Map<Account>(accountModel);
@@ -36,13 +38,10 @@ namespace CustomerAccount.Services.Services;
             account.Customer = customer;
             try
             {
-
-            customer.Salt = _passwordHashService.GenerateSalt(8);
-            customer.Password = _passwordHashService.HashPassword(customer.Password, customer.Salt, 1000, 8);
-
-            //add salt to account!
-            bool success = await _accountDal.CreateAccount(account,customer);
-            return success;
+                customer.Salt = _passwordHashService.GenerateSalt(8);
+                customer.Password = _passwordHashService.HashPassword(customer.Password, customer.Salt, 1000, 8);
+                bool success = await _accountDal.CreateAccount(account,customer);
+                return success;
             }
             catch
             {

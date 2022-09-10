@@ -23,13 +23,13 @@ namespace CustomerAccount.Services.Services
 
         public AccountService(IAccountDal accountDal, IPasswordHashService passwordHashService, IConfiguration configuration)
         {
-            _accountDal = accountDal;
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<MapperModelEntity>();
             });
             _mapper = config.CreateMapper();
             _passwordHashService = passwordHashService;
+            _accountDal = accountDal;
             _configuration = configuration;
         }
         public AccountService(IAccountDal accountDal)
@@ -97,12 +97,15 @@ namespace CustomerAccount.Services.Services
         {
             //not null obj
             if (updateBalanceModel == null) { return "missing deatels";}
+
             //check correctness of accounts ids
             Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
             Account accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
             if (accountFrom == null || accountTo == null) { return "not the right number account";}
+
             // check sender balance
             if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account";}
+
             //update balance
             accountFrom.Balance -= updateBalanceModel.Amount;
             accountTo.Balance += updateBalanceModel.Amount;

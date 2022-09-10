@@ -18,7 +18,7 @@ IConfigurationRoot configuration = new
             optional: false, reloadOnChange: true).Build();
 
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
-
+string DBConnection = builder.Configuration.GetConnectionString("CustomerAccountConnectionMiri");
 #region back-end-use-nservicebus
 builder.Host.UseNServiceBus(hostBuilderContext =>
 {
@@ -30,7 +30,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     persistence.ConnectionBuilder(
         connectionBuilder: () =>
         {
-            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+            return new SqlConnection(DBConnection);
         });
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
@@ -48,11 +48,10 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 });
 #endregion
 
-
 builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
-builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+builder.Services.AddServiceExtension(DBConnection);
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();

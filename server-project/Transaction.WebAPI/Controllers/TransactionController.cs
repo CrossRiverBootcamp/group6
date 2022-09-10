@@ -17,12 +17,12 @@ public class TransactionController : ControllerBase
 
     public TransactionController(ITransactionService service, IMessageSession session)
     {
-        _service = service;
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<MapperDTOModel>();
         });
         _mapper = config.CreateMapper();
+        _service = service;
         _session = session;
     }
     [HttpPost]

@@ -1,10 +1,8 @@
 ﻿using Transaction.Data.Entities;
 
-namespace Transaction.Data.Interfaces
+namespace Transaction.Data.Interfaces;
+public interface ITransactionDal
 {
-    public interface ITransactionDal
-    {
-        Task<int> AddTransaction(Entities.Transaction transaction);
-        Task<bool> UpdateStatus(int transactionID,Status status,string? failureReason);
-    }
+    Task<int> AddTransaction(Entities.Transaction transaction);
+    Task<bool> UpdateStatus(int transactionID,Status status,string? failureReason);
 }
