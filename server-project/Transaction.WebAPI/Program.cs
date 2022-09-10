@@ -7,6 +7,7 @@ using Transaction.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
+string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiriam");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
 
 #region back-end-use-nservicebus
@@ -20,7 +21,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     persistence.ConnectionBuilder(
         connectionBuilder: () =>
         {
-            return new SqlConnection(connection);
+            return new SqlConnection(connectionNSB);
         });
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
