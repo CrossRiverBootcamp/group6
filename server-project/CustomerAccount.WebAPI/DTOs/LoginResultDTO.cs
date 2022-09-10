@@ -2,7 +2,7 @@
 {
     public class LoginResultDTO
     {
-        public int CardID { get; set; }
-        public string Token { get; set; }
+        public int AccountID { get; set; }
+        public string? Token { get; set; }
     }
 }

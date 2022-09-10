@@ -24,7 +24,7 @@ namespace Transaction.Data
             }
             catch
             {
-                return -1;//לזרוק שגיאה מתאימה
+                throw new Exception("didnt add");
             }
         }
         //guid-אבטחה

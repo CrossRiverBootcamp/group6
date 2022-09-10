@@ -5,8 +5,8 @@ using CustomerAccount.Services.Exceptions;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
 
-namespace CustomerAccount.Services.Services
-{
+namespace CustomerAccount.Services.Services;
+
     public class CustomerService : ICustomerService
     {
         private IAccountDal _accountDal;
@@ -49,7 +49,5 @@ namespace CustomerAccount.Services.Services
                 throw new NotSavedException("customer & account not Created");
             }
         }
-
- 
     }
-}
+

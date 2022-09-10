@@ -12,7 +12,7 @@ namespace CustomerAccount.Data.Entities
         public int Balance { get; set; }
         public int CustomerID { get; set; }
         [ForeignKey("CustomerID")]
-        public virtual Customer Customer { get; set; }
+        public virtual Customer? Customer { get; set; }
 
     }
 }

@@ -10,8 +10,8 @@ namespace CustomerAccount.WebAPI.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private IAccountService _accountService;
-        private IMapper _mapper;
+        private readonly IAccountService _accountService;
+        private  readonly IMapper _mapper;
 
         public AccountController(IAccountService accountService)
         {

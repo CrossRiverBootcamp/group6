@@ -7,13 +7,10 @@ using CustomerAccount.Services.Models;
 using Messages.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CustomerAccount.Services.Services
 {
@@ -44,11 +41,11 @@ namespace CustomerAccount.Services.Services
             });
             _mapper = config.CreateMapper();
         }
-        public async Task<AccountModel> GetAccountInfo(int AccountID)
+        public async Task<AccountModel> GetAccountInfo(int accountID)
         {
             try
             {
-                Account account = await _accountDal.GetAccountInfo(AccountID);
+                Account account = await _accountDal.GetAccountInfo(accountID);
                 return _mapper.Map<AccountModel>(account);
             }
             catch
@@ -60,7 +57,7 @@ namespace CustomerAccount.Services.Services
 
         }
 
-        public async Task<LoginResultModel> Login(string email, string Password)
+        public async Task<LoginResultModel> Login(string email, string password)
         {
             bool exists = await _accountDal.EmailExists(email);
             if (!exists)
@@ -70,11 +67,11 @@ namespace CustomerAccount.Services.Services
             try
             {
                 Customer customer = await _accountDal.GetCustomerByEmail(email);
-                string hashPassword = _passwordHashService.HashPassword(Password, customer.Salt, 1000, 8);
+                string hashPassword = _passwordHashService.HashPassword(password, customer.Salt, 1000, 8);
                 if (hashPassword.Equals(customer.Password.TrimEnd()))
                 {
                     int accountID = await _accountDal.Login(email, hashPassword);
-                    string token = await getToken(accountID);
+                    string token = await GetToken(accountID);
                     LoginResultModel loginResult = new LoginResultModel()
                     {
                         AccountID = accountID,
@@ -85,7 +82,7 @@ namespace CustomerAccount.Services.Services
                 }
                 else
                 {
-                    throw new NotValidException("password is not right!!!-");
+                    throw new NotValidException("password is not right!!!");
                 }
             }
             catch
@@ -99,13 +96,13 @@ namespace CustomerAccount.Services.Services
         public async Task<string> UpdateAccounts(UpdateBalance updateBalanceModel)
         {
             //not null obj
-            if (updateBalanceModel == null) { return "missing deatels"; }
+            if (updateBalanceModel == null) { return "missing deatels";}
             //check correctness of accounts ids
             Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
             Account accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
-            if (accountFrom == null || accountTo == null) { return "not the right number account"; }
+            if (accountFrom == null || accountTo == null) { return "not the right number account";}
             // check sender balance
-            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account"; }
+            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account";}
             //update balance
             accountFrom.Balance -= updateBalanceModel.Amount;
             accountTo.Balance += updateBalanceModel.Amount;
@@ -113,11 +110,11 @@ namespace CustomerAccount.Services.Services
 
         }
 
-        public async Task<string> getToken(int AccountID)
+        public async Task<string> GetToken(int accountID)
         {
             //create claims details based on the user information
             var claims = new[] {
-                        new Claim("AccountID",AccountID.ToString()),
+                        new Claim("AccountID",accountID.ToString()),
                         new Claim("Role", "customer")
                     };
             var issuer = "https://exemple.com";

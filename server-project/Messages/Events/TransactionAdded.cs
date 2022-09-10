@@ -8,7 +8,7 @@ namespace Messages.Events
 {
     public  class TransactionAdded
     {
-        public int TransactionID { get; set; }
+        public Guid TransactionEventID { get; set; }
         public int FromAccountID { get; set; }
         public int ToAccountID { get; set; }
         public int Amount { get; set; }

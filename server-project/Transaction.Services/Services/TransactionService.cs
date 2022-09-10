@@ -1,58 +1,68 @@
 ﻿using AutoMapper;
 using Messages.Events;
 using NServiceBus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Transaction.Data.Entities;
 using Transaction.Data.Interfaces;
 using Transaction.Services.Interfaces;
 using Transaction.Services.Models;
 
-namespace Transaction.Services.Services
-{
-    public class TransactionService : ITransactionService
-    {
-        private ITransactionDal _transactionDal;
-        private IMapper _mapper;
+namespace Transaction.Services.Services;
 
-        public TransactionService(ITransactionDal transactionDal)
+public class TransactionService : ITransactionService
+{
+    private readonly ITransactionDal _transactionDal;
+    private readonly IMapper _mapper;
+
+    public TransactionService(ITransactionDal transactionDal)
+    {
+        _transactionDal = transactionDal;
+        var config = new MapperConfiguration(cfg =>
         {
-            _transactionDal = transactionDal;
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<MapModelEntity>();
-            });
-            _mapper = config.CreateMapper();
-        }
-        public async Task AddTransaction(TransactionModel transactionModel, IMessageSession session)
-        {
-            Transaction.Data.Entities.Transaction transaction = _mapper.Map<Data.Entities.Transaction>(transactionModel);
-            transaction.Status = Status.Processing;
-            transaction.Date = DateTime.UtcNow;
-            int id = await _transactionDal.AddTransaction(transaction);
+            cfg.AddProfile<MapModelEntity>();
+        });
+        _mapper = config.CreateMapper();
+    }
+    public async Task<bool> AddTransaction(TransactionModel transactionModel, IMessageSession session)
+    {
+         
             TransactionAdded transactionEvent = new TransactionAdded
             {
-                TransactionID = id,
+                TransactionEventID = Guid.NewGuid(),
                 FromAccountID = transactionModel.FromAccountId,
                 ToAccountID = transactionModel.ToAccountID,
                 Amount = transactionModel.Amount
 
             };
-            //לתפוס שגיאה ולהזיר false
-            await session.Publish(transactionEvent);
-        }
 
-        public Task<bool> UpdateStatusTransaction(StausModel staus)
-        {
-            if (staus.Success)
+            try
             {
-                return _transactionDal.UpdateStatus(staus.TransactionID, Status.Success, null);
+                await session.Publish(transactionEvent);
+                return true;
             }
-            return _transactionDal.UpdateStatus(staus.TransactionID, Status.Fail, staus.FailureReason);
+            catch
+            {
+               
+                return false;
+            }
+        
+    }
 
+    public  async Task<int> AddTransactionToDB(TransactionModel transactionModel)
+    {
+        Data.Entities.Transaction transaction = _mapper.Map<Data.Entities.Transaction>(transactionModel);
+        transaction.Status = Status.Processing;
+        transaction.Date = DateTime.UtcNow;
+        int id = await _transactionDal.AddTransaction(transaction);
+        return id;
+
+    }
+    public Task<bool> UpdateStatusTransaction(StausModel status)
+    {
+        if (status.Success)
+        {
+            return _transactionDal.UpdateStatus(status.TransactionID, Status.Success, null);
         }
+        return _transactionDal.UpdateStatus(status.TransactionID, Status.Fail, status.FailureReason);
+
     }
 }

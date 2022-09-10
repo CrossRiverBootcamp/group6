@@ -30,6 +30,7 @@ public class UpdateBalanceHandler : IHandleMessages<UpdateBalance>
             Success = success,
             FailureResult = reason,
             TransactionID = message.TransactionID,
+            TransactionEventID = message.TransactionEventID,
         };
         await context.Publish(accountsUpdated);
 

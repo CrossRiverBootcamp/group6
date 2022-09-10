@@ -2,7 +2,7 @@
 {
     public class ConnectionStrings
     {
-        public string CustomerAccountConnectionMiri { get; set; }
-        public string CustomerAccountConnectionMiriam { get; set; }
+        public string? CustomerAccountConnectionMiri { get; set; }
+        public string? CustomerAccountConnectionMiriam { get; set; }
     }
 }

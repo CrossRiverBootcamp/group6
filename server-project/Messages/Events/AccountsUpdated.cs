@@ -9,6 +9,7 @@ namespace Messages.Events
     public class AccountsUpdated
     {
         public int TransactionID { get; set; }
+        public Guid TransactionEventID { get; set; }
         public bool Success { get; set; }
         public string? FailureResult { get; set; }
     }

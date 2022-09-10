@@ -18,22 +18,35 @@ internal class TransactionPolicy : Saga<TransferData>, IAmStartedByMessages<Tran
     }
     protected override void ConfigureHowToFindSaga(SagaPropertyMapper<TransferData> mapper)
     {
-        mapper.MapSaga(sagaData => sagaData.TransactionID)
-    .ToMessage<TransactionAdded>(message => message.TransactionID)
-    .ToMessage<AccountsUpdated>(message => message.TransactionID);
+        mapper.MapSaga(sagaData => sagaData.TransactionEventID)
+       .ToMessage<TransactionAdded>(message => message.TransactionEventID)
+       .ToMessage<AccountsUpdated>(message => message.TransactionEventID);
     }
     public async Task Handle(TransactionAdded message, IMessageHandlerContext context)
     {
-        log.Info($"received TransactionAdded id: {message.TransactionID} from {message.FromAccountID} to {message.ToAccountID}");
-        #region
-        //?-this message start the saga
-        //evansully its handled
-        //otherwise the saga wouldnt even start...
-        #endregion
+        log.Info($"received TransactionAdded id: {message.TransactionEventID} from {message.FromAccountID} to {message.ToAccountID}");
+        #region addToDB
+        TransactionModel transactionModel = new TransactionModel()
+        {
+            ToAccountID = message.ToAccountID,
+            FromAccountId = message.FromAccountID,
+            Amount = message.Amount,
+        };
+        int id;
+        try
+        {
+            id = await _transactionService.AddTransactionToDB(transactionModel);
+        }
+        catch
+        {
+            throw;
+        }
+        #endregion 
         //update balance-command;
         UpdateBalance update = new UpdateBalance
         {
-            TransactionID = message.TransactionID,
+            TransactionEventID = message.TransactionEventID,
+            TransactionID = id,
             Amount = message.Amount,
             FromAccountID = message.FromAccountID,
             ToAccountID = message.ToAccountID,

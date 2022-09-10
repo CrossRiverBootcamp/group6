@@ -6,6 +6,7 @@ namespace Transaction.Services.Interfaces
     public interface ITransactionService
     {
         Task<bool> UpdateStatusTransaction(StausModel staus);
-        Task AddTransaction(TransactionModel transactionModel, IMessageSession _session);
+        Task<bool> AddTransaction(TransactionModel transactionModel, IMessageSession session);
+        Task<int> AddTransactionToDB(TransactionModel transactionModel);
     }
 }

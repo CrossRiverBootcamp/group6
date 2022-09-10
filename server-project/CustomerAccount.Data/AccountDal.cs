@@ -24,7 +24,7 @@ public class AccountDal : IAccountDal
             await _contect.SaveChangesAsync();
             return true;
         }
-        catch (Exception ex) { throw; }
+        catch (Exception ex) { throw ex; }
 
     }
 
@@ -47,7 +47,7 @@ public class AccountDal : IAccountDal
         }
         catch (Exception ex)
         {
-            throw;
+            throw ex;
         }
     }
 
@@ -69,9 +69,9 @@ public class AccountDal : IAccountDal
         try
         { 
             if(accountFrom==null|| accountTo == null) { return "not enof details"; } 
-            _contect.Accounts.Update(accountTo);
-            _contect.Accounts.Update(accountFrom);
-            _contect.SaveChanges();
+             _contect.Accounts.Update(accountTo);
+             _contect.Accounts.Update(accountFrom);
+             await _contect.SaveChangesAsync();
             return null;
         }
         catch
@@ -88,11 +88,12 @@ public class AccountDal : IAccountDal
         using var _context = _contextFactory.CreateDbContext();
         try
         {
-            return _context.Accounts.Include(a => a.Customer).FirstAsync(c => c.Customer.Email == email && c.Customer.Password == password).Result.ID;
+            Account account = await _context.Accounts.Include(a => a.Customer).FirstAsync(c => c.Customer.Email == email && c.Customer.Password == password);
+            return account.ID;
         }
         catch (Exception ex)
         {
-            throw;
+            throw ex;
         }
 
     }
@@ -105,7 +106,7 @@ public class AccountDal : IAccountDal
         }
         catch (Exception ex)
         {
-            throw;
+            throw ex;
         }
 
     }
