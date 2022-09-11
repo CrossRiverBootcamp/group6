@@ -2,8 +2,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CustomerAccount.Data.Entities
-{
+namespace CustomerAccount.Data.Entities;
+
     [Index("Email", IsUnique = true)]
     public class Customer
     {
@@ -21,4 +21,4 @@ namespace CustomerAccount.Data.Entities
         [Required]
         public string Email { get; set; }
     }
-}
+

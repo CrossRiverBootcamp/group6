@@ -1,6 +1,5 @@
-﻿
-namespace Messages.Commands
-{
+﻿namespace Messages.Commands;
+
     public class UpdateBalance
     {
         public int TransactionID { get; set; }
@@ -9,4 +8,4 @@ namespace Messages.Commands
         public int ToAccountID { get; set; }
         public int Amount { get; set; }
     }
-}
+

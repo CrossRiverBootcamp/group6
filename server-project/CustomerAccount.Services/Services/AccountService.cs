@@ -95,18 +95,30 @@ namespace CustomerAccount.Services.Services
 
         public async Task<string> UpdateAccounts(UpdateBalance updateBalanceModel)
         {
-            //not null obj
-            if (updateBalanceModel == null) { return "missing deatels";}
-            //check correctness of accounts ids
-            Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
-            Account accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
-            if (accountFrom == null || accountTo == null) { return "not the right number account";}
-            // check sender balance
-            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account";}
-            //update balance
-            accountFrom.Balance -= updateBalanceModel.Amount;
-            accountTo.Balance += updateBalanceModel.Amount;
-            return await _accountDal.UpdateAccounts(accountFrom, accountTo);
+            //to add to handler imessagehadlercontext 
+            try
+            {
+                /*merchantAppDBContext.Database.SetDbConnection(context.SynchronizedStorageSession.SqlPersistenceSession().Connection);
+                merchantAppDBContext.Database.UseTransaction(context.SynchronizedStorageSession.SqlPersistenceSession().Transaction);*/
+
+
+                //not null obj
+                if (updateBalanceModel == null) { return "missing deatels"; }
+                //check correctness of accounts ids
+                Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
+                Account accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
+                if (accountFrom == null || accountTo == null) { return "not the right number account"; }
+                // check sender balance
+                if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account"; }
+                //update balance
+                accountFrom.Balance -= updateBalanceModel.Amount;
+                accountTo.Balance += updateBalanceModel.Amount;
+                return await _accountDal.UpdateAccounts(accountFrom, accountTo);
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
 
         }
 

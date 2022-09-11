@@ -8,6 +8,7 @@ namespace CustomerAccount.Data.Entities
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
+        [DataType(DataType.DateTime)]
         public DateTime OpenDate { get; set; }
         public int Balance { get; set; }
         public int CustomerID { get; set; }

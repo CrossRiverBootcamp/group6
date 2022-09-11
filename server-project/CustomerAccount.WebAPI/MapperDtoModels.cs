@@ -10,6 +10,7 @@ public class MapperDtoModels : Profile
         CreateMap<RegisterDTO, RegisterModel>();
         CreateMap<AccountModel, AccountInfoDTO>();
         CreateMap<LoginResultModel, LoginResultDTO>();
+        CreateMap<OperationsHistoryModel, OperationsHistoryDTO>();
     }
 }
 

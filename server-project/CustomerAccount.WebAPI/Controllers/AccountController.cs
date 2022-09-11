@@ -25,11 +25,11 @@ namespace CustomerAccount.WebAPI.Controllers
         [HttpGet("{accountID}")]
         public async Task<ActionResult<AccountInfoDTO>> GetAccountInfo(int accountID)
         {
-            if (accountID<10)
+            if (accountID<=0)
             {
                 return BadRequest();
             }
-           AccountModel account=await _accountService.GetAccountInfo(accountID);
+          AccountModel account=await _accountService.GetAccountInfo(accountID);
            
            AccountInfoDTO accountInfo = _mapper.Map<AccountInfoDTO>(account);
             return Ok(accountInfo);
@@ -41,7 +41,7 @@ namespace CustomerAccount.WebAPI.Controllers
             {
                 LoginResultModel loginResult = await _accountService.Login(loginDTO.Email, loginDTO.Password);
 
-                if (loginResult.AccountID < 10)
+                if (loginResult.AccountID <=0)
                 {
                     return Unauthorized();
                 }

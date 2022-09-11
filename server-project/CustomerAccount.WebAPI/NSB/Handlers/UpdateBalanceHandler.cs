@@ -1,4 +1,6 @@
-﻿using CustomerAccount.Services.Interfaces;
+﻿using AutoMapper;
+using CustomerAccount.Services.Interfaces;
+using CustomerAccount.Services.Models;
 using Messages.Commands;
 using Messages.Events;
 using NServiceBus;
@@ -8,11 +10,22 @@ namespace CustomerAccount.WebAPI.NSB.Handlers;
 public class UpdateBalanceHandler : IHandleMessages<UpdateBalance>
 {
     static ILog log = LogManager.GetLogger<UpdateBalanceHandler>();
-    IAccountService _accountService;
-    public UpdateBalanceHandler(IAccountService accountService)
+   private readonly IAccountService _accountService;
+    private IMapper _mapper;
+    private readonly IOperationsHistoryService _operationsHistoryService;
+
+    public UpdateBalanceHandler(IAccountService accountService, IOperationsHistoryService operationsHistoryService)
     {
         _accountService = accountService;
+        var config = new MapperConfiguration(cfg =>
+        {
+            cfg.AddProfile<MapperDtoModels>();
+        });
+        _mapper = config.CreateMapper();
+        _operationsHistoryService = operationsHistoryService;
     }
+   
+    
 
 
     public async Task Handle(UpdateBalance message, IMessageHandlerContext context)
@@ -24,6 +37,19 @@ public class UpdateBalanceHandler : IHandleMessages<UpdateBalance>
         if (reason == null)
         {
             success = true;
+        }
+        if (success)
+        {
+            //OperationsHistoryToAddModel operationsHistoryToAddModel = _mapper.Map<OperationsHistoryToAddModel>(message);
+            OperationsHistoryToAddModel operationsHistoryToAdd = new OperationsHistoryToAddModel()
+            {
+                Amount = message.Amount,
+                ToAccountID = message.ToAccountID,
+                FromAccountID = message.FromAccountID,
+                TransactionID=message.TransactionID,
+            };
+            await _operationsHistoryService.AddOperationsHistorys(operationsHistoryToAdd);
+
         }
         AccountsUpdated accountsUpdated = new AccountsUpdated()
         {

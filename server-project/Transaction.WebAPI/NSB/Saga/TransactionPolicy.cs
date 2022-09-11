@@ -37,9 +37,9 @@ internal class TransactionPolicy : Saga<TransferData>, IAmStartedByMessages<Tran
         {
             id = await _transactionService.AddTransactionToDB(transactionModel);
         }
-        catch
+        catch(Exception ex)
         {
-            throw;
+            throw ex;
         }
         #endregion 
         //update balance-command;

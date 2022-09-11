@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CustomerAccount.Services.Models;
 
-namespace CustomerAccount.Services.Models
-{
     public class RegisterModel
     {
         public string FirstName { get; set; }
@@ -18,4 +12,4 @@ namespace CustomerAccount.Services.Models
         public double Balance { get; set; }
         public DateTime OpenDate { get; set; } 
     }
-}
+

@@ -12,6 +12,7 @@ namespace CustomerAccount.Services.Extensions
         public static void AddServiceExtension(this IServiceCollection services,string connection)
         {
             services.AddScoped<IAccountDal, AccountDal>();
+            services.AddScoped<IOperationsHistoryDal, OperationsHistoryDal>();
             services.AddDbContextFactory<CustomerAccountContext>(opt => opt.UseSqlServer(connection));
 
         }

@@ -1,5 +1,4 @@
-﻿
-using CustomerAccount.Data.Entities;
+﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -109,6 +108,19 @@ public class AccountDal : IAccountDal
             throw ex;
         }
 
+    }
+    public async Task<int> GetBalanceByID(int accountID)
+    {
+        using var _context = _contextFactory.CreateDbContext();
+        try
+        {
+            Account account = await _context.Accounts.Where(a => a.ID == accountID).FirstAsync();
+            return account.Balance;
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
     }
 
 
