@@ -9,7 +9,7 @@ import { RegisterDTO } from "../models/registerDTO.models";
   providedIn: 'root'
 })
 export class CustomerService {
-private  customerAcountUrl='https://localhost:7206/api/Transaction';  
+private  customerAcountUrl='https://localhost:7120/api/Customer/CreateAccount';  
 
       register(customer: RegisterDTO): Observable<boolean> {
         debugger;
