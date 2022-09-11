@@ -10,6 +10,7 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { MainCustomerComponent } from './main-customer/main-customer.component';
 import { UpdataBalanceComponent } from './updata-balance/updata-balance.component';
 import { OperationsHistoryComponent } from './operations-history/operations-history.component';
+import { TransactionAccountDetailsComponent } from './transaction-account-details/transaction-account-details.component';
 
 const _routes: Routes = [
   {path:"",component:LogInComponent}, 
@@ -19,6 +20,7 @@ const _routes: Routes = [
   {path:"accountInfo",component:AccountInfoComponent},
   {path:"main",component:MainCustomerComponent},
   {path:"transaction",component:UpdataBalanceComponent},
+  {path:"operationsHistory",component:OperationsHistoryComponent},
  
   ]; 
 
@@ -30,7 +32,8 @@ const _routes: Routes = [
     AccountInfoComponent,
     MainCustomerComponent,
     UpdataBalanceComponent,
-    OperationsHistoryComponent
+    OperationsHistoryComponent,
+    TransactionAccountDetailsComponent
   ],
   imports: [
    CommonModule, 
