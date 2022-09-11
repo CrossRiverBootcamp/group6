@@ -1,11 +1,8 @@
 ﻿using CustomerAccount.Services.Models;
 
-
-namespace CustomerAccount.Services.Interfaces
+namespace CustomerAccount.Services.Interfaces;
+public interface ICustomerService
 {
-    public interface ICustomerService
-    {
-        Task<bool> Register(RegisterModel accountModel);
+    Task<bool> Register(RegisterModel accountModel);
 
-    }
 }
