@@ -9,6 +9,7 @@ import { CustomerMenuComponent } from './customer-menu/customer-menu.component';
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { MainCustomerComponent } from './main-customer/main-customer.component';
 import { UpdataBalanceComponent } from './updata-balance/updata-balance.component';
+import { OperationsHistoryComponent } from './operations-history/operations-history.component';
 
 const _routes: Routes = [
   {path:"",component:LogInComponent}, 
@@ -28,7 +29,8 @@ const _routes: Routes = [
     CustomerMenuComponent,
     AccountInfoComponent,
     MainCustomerComponent,
-    UpdataBalanceComponent
+    UpdataBalanceComponent,
+    OperationsHistoryComponent
   ],
   imports: [
    CommonModule, 
