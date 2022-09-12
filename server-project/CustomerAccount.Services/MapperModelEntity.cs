@@ -12,7 +12,8 @@ public class MapperModelEntity : Profile
         CreateMap<RegisterModel, Account>();
         CreateMap<Account, AccountModel>()
             .ForMember(des => des.FirstName, opt => opt.MapFrom(src => src.Customer.FirstName))
-            .ForMember(des => des.LastName, opt => opt.MapFrom(src => src.Customer.LastName));
+            .ForMember(des => des.LastName, opt => opt.MapFrom(src => src.Customer.LastName))
+            .ForMember(des => des.Email, opt => opt.MapFrom(src => src.Customer.Email));
         CreateMap<UpdateBalance, OperationsHistoryToAddModel>()
             .ReverseMap();
         CreateMap<OperationsHistory, OperationsHistoryModel>()

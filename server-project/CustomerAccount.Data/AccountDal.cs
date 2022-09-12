@@ -23,8 +23,8 @@ public class AccountDal : IAccountDal
             await _contect.SaveChangesAsync();
             return true;
         }
-        catch 
-        { 
+        catch
+        {
             throw;
         }
 
@@ -57,33 +57,33 @@ public class AccountDal : IAccountDal
     public async Task<Account> FindUpdateAccount(int ID)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        Account acccountToUpDate = await _contect.Accounts.Where(a => a.ID ==ID).FirstOrDefaultAsync();
+        Account acccountToUpDate = await _contect.Accounts.Where(a => a.ID == ID).FirstOrDefaultAsync();
         if (acccountToUpDate == null)
         {
             return null;
         }
         return acccountToUpDate;
-        
+
     }
-    public async Task<string> UpdateAccounts(Account accountFrom,Account accountTo)
+    public async Task<string> UpdateAccounts(Account accountFrom, Account accountTo)
     {
         using var _contect = _contextFactory.CreateDbContext();
         try
-        { 
-            if(accountFrom==null|| accountTo == null)
-            { 
+        {
+            if (accountFrom == null || accountTo == null)
+            {
                 return "not enough details";
-            } 
-             _contect.Accounts.Update(accountTo);
-             _contect.Accounts.Update(accountFrom);
-             await _contect.SaveChangesAsync();
+            }
+            _contect.Accounts.Update(accountTo);
+            _contect.Accounts.Update(accountFrom);
+            await _contect.SaveChangesAsync();
             return null;
         }
         catch
         {
             return "the transaction systen had a temporry bug try again later";
         }
-      
+
 
 
 
@@ -120,10 +120,11 @@ public class AccountDal : IAccountDal
         using var _context = _contextFactory.CreateDbContext();
         try
         {
+           
             Account account = await _context.Accounts.Where(a => a.ID == accountID).FirstAsync();
             return account.Balance;
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             throw ex;
         }

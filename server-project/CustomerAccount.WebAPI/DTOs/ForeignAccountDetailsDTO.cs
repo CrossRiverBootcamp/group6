@@ -1,10 +1,9 @@
-﻿namespace CustomerAccount.Services.Models;
+﻿namespace CustomerAccount.WebAPI.DTOs;
 
-public class AccountModel
+public class ForeignAccountDetailsDTO
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public int Balance { get; set; }
     public string Email { get; set; }
 }
 

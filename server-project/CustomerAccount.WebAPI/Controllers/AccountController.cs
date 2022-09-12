@@ -34,6 +34,18 @@ namespace CustomerAccount.WebAPI.Controllers
            AccountInfoDTO accountInfo = _mapper.Map<AccountInfoDTO>(account);
             return Ok(accountInfo);
         }
+        [HttpGet()]
+        public async Task<ActionResult<ForeignAccountDetailsDTO>> GetForeignAccountDetails(int foreignAccountID)
+        {
+            if (foreignAccountID <= 0)
+            {
+                return BadRequest();
+            }
+            AccountModel account = await _accountService.GetAccountInfo(foreignAccountID);
+
+            ForeignAccountDetailsDTO accountInfo = _mapper.Map<ForeignAccountDetailsDTO>(account);
+            return Ok(accountInfo);
+        }
         [HttpPost("login")]
         public async Task<ActionResult<LoginResultDTO>> Login(LoginDTO loginDTO)
         {
