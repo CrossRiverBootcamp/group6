@@ -12,7 +12,7 @@ namespace CustomerAccount.WebAPI.Controllers
     [ApiController]
     public class OperationsHistoryController : ControllerBase
     {
-        private  readonly IOperationsHistoryService _operationsHistoryService;
+        private readonly IOperationsHistoryService _operationsHistoryService;
         private readonly IMapper _mapper;
 
         public OperationsHistoryController(IOperationsHistoryService operationsHistoryService)
@@ -40,6 +40,18 @@ namespace CustomerAccount.WebAPI.Controllers
                 return NotFound();
             }
         }
+        [HttpGet("{accountID}")]
+        public async Task<ActionResult<int>> GetNumOfOperation(int accountID)
+        {
+            int numOfOperations =await _operationsHistoryService.GetNumOfOperations(accountID);
+            if (numOfOperations == 0)
+            {
+                return NoContent();
+            }
+            return Ok(numOfOperations);
+        }
+
+
 
 
     }

@@ -67,5 +67,9 @@ public class OperationsHistoryService : IOperationsHistoryService
             throw ex;
         }
     }
+    public Task<int> GetNumOfOperations(int accountID)
+    {
+        return _operationsHistoryDal.GetNumOfOperations(accountID);
+    }
 }
 

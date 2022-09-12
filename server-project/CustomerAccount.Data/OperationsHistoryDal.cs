@@ -34,7 +34,7 @@ public class OperationsHistoryDal : IOperationsHistoryDal
         {
             using var _contect = _contextFactory.CreateDbContext();
 
-            var position = (page - 1) * records;
+            var position = page * records;
             List <OperationsHistory > nextPage = _contect.OperationsHistorys
               .OrderBy(b => b.OperationTime)
               .Where(op => op.AccountId == id)
@@ -52,6 +52,18 @@ public class OperationsHistoryDal : IOperationsHistoryDal
         }
         
 
+    }
+    public async Task<int> GetNumOfOperations(int id)
+    {
+        using var _context = _contextFactory.CreateDbContext();
+        try
+        {
+            return await _context.OperationsHistorys.Where(op => op.AccountId == id).CountAsync();
+        }
+        catch(Exception ex)
+        {
+            throw;
+        }
     }
 
 

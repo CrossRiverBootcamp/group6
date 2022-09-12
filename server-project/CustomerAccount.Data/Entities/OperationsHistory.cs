@@ -9,7 +9,7 @@ namespace CustomerAccount.Data.Entities;
 
 public class OperationsHistory
 {
-    [Key]
+    [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public Guid ID { get; set; }
     [Required]
     public int AccountId { get; set; }

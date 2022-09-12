@@ -9,29 +9,29 @@ namespace CustomerAccount.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+         /*   migrationBuilder.AlterTable(
                 name: "Customers",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    FirstName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Salt = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Customers", x => x.ID);
-                });
+                });*/
 
-            migrationBuilder.CreateTable(
+    /*        migrationBuilder.CreateTable(
                 name: "Accounts",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("SqlServer:Identity", "10, 1"),
                     OpenDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Balance = table.Column<int>(type: "int", nullable: false),
                     CustomerID = table.Column<int>(type: "int", nullable: false)
@@ -45,7 +45,7 @@ namespace CustomerAccount.Data.Migrations
                         principalTable: "Customers",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
-                });
+                });*/
 
             migrationBuilder.CreateTable(
                 name: "OperationsHistorys",
@@ -70,16 +70,16 @@ namespace CustomerAccount.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
+     /*       migrationBuilder.CreateIndex(
                 name: "IX_Accounts_CustomerID",
                 table: "Accounts",
-                column: "CustomerID");
-
+                column: "CustomerID");*/
+/*
             migrationBuilder.CreateIndex(
                 name: "IX_Customers_Email",
                 table: "Customers",
                 column: "Email",
-                unique: true);
+                unique: true);*/
 
             migrationBuilder.CreateIndex(
                 name: "IX_OperationsHistorys_AccountId",
@@ -92,11 +92,11 @@ namespace CustomerAccount.Data.Migrations
             migrationBuilder.DropTable(
                 name: "OperationsHistorys");
 
-            migrationBuilder.DropTable(
+/*            migrationBuilder.DropTable(
                 name: "Accounts");
 
             migrationBuilder.DropTable(
-                name: "Customers");
+                name: "Customers");*/
         }
     }
 }
