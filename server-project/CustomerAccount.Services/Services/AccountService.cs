@@ -12,8 +12,8 @@ using System.Security.Claims;
 using System.Text;
 
 
-namespace CustomerAccount.Services.Services
-{
+namespace CustomerAccount.Services.Services;
+
     public class AccountService : IAccountService
     {
         private IAccountDal _accountDal;
@@ -141,4 +141,4 @@ namespace CustomerAccount.Services.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
-}
+

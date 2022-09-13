@@ -26,6 +26,7 @@ public class OperationsHistoryService : IOperationsHistoryService
     {
         try
         {
+            //להפוך את שתהים לאובקיט אחד
             int balanceTo = await _accountDal.GetBalanceByID(operationsHistoryToAddModel.ToAccountID);
             int balanceFrom = await _accountDal.GetBalanceByID(operationsHistoryToAddModel.FromAccountID);
             OperationsHistory operationsHistoryTO = new OperationsHistory()

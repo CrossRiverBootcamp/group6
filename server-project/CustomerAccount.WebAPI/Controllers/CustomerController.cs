@@ -2,7 +2,6 @@
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
 using CustomerAccount.WebAPI.DTOs;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerAccount.WebAPI.Controllers;

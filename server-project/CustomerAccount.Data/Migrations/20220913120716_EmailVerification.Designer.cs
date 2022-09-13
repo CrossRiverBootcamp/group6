@@ -4,6 +4,7 @@ using CustomerAccount.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerAccount.Data.Migrations
 {
     [DbContext(typeof(CustomerAccountContext))]
-    partial class CustomerAccountContextModelSnapshot : ModelSnapshot
+    [Migration("20220913120716_EmailVerification")]
+    partial class EmailVerification
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,6 +82,24 @@ namespace CustomerAccount.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("CustomerAccount.Data.Entities.EmailVerification", b =>
+                {
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ExpirationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("VerificationCode")
+                        .IsRequired()
+                        .HasMaxLength(4)
+                        .HasColumnType("nvarchar(4)");
+
+                    b.HasKey("Email");
+
+                    b.ToTable("EmailVerifications");
                 });
 
             modelBuilder.Entity("CustomerAccount.Data.Entities.OperationsHistory", b =>

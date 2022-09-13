@@ -13,6 +13,7 @@ namespace CustomerAccount.Services.Extensions
         {
             services.AddScoped<IAccountDal, AccountDal>();
             services.AddScoped<IOperationsHistoryDal, OperationsHistoryDal>();
+            services.AddScoped<IEmailVerificationDal, EmailVerificationDal>();
             services.AddDbContextFactory<CustomerAccountContext>(opt => opt.UseSqlServer(connection));
 
         }

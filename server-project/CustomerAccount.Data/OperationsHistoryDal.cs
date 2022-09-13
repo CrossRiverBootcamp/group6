@@ -44,7 +44,7 @@ public class OperationsHistoryDal : IOperationsHistoryDal
                            select new OperationsHistory()
                            {
                                ID = toOpt.ID,
-                               AccountId = toOpt.AccountId,
+                               AccountId = fromOpt.AccountId,
                                TransactionID = toOpt.TransactionID,
                                Credit = toOpt.Credit,
                                TransactionAmount = toOpt.TransactionAmount,
