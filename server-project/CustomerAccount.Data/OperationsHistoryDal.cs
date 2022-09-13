@@ -51,12 +51,12 @@ public class OperationsHistoryDal : IOperationsHistoryDal
                                Balance = toOpt.Balance,
                                OperationTime = toOpt.OperationTime
                            };
-            nextPage.Skip(position)
+          var result = nextPage.Skip(position)
                      .Take(records)
                      .ToList();
 
 
-            return nextPage.ToList();
+            return result;
         }
         catch (Exception ex)
         {
