@@ -18,6 +18,7 @@ export class OperationsHistoryComponent implements OnInit {
   dataSource = new MatTableDataSource<OperationsHistoryDTO>();
   displayedColumns: string[] = ['credit', 'accountID', 'amount', 'balance', 'date'];
   currentAccountID: number = 0;
+  numOfOperaitons: number = 0;
   foreignAccountDetails!: ForeignAccountDTO;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   constructor(private _loginService: LoginService, private _operationsService: OperationsService) { }
@@ -28,48 +29,42 @@ export class OperationsHistoryComponent implements OnInit {
     if (this.currentAccountID == 0) {
       alert("faild to get your details");
     }
+    this._operationsService.setnumberOperation(this.currentAccountID).subscribe((res) => {
+      //intialize total number of operations-history
+      this.numOfOperaitons = res;
+    }, (err) => { console.log(err); });
+
     this.getOperations();
-    this.foreignAccountDetails={
-      firstName:"ayala",
-      lastName:"bloy",
-      email:"ayalabloy12@gmail.com",
-    }
-    //this.getforeignAccountDetails();
   }
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource<OperationsHistoryDTO>();
-    
-    // this.currentAccountID = this._loginService.getAccountID();
-    // if(this.currentAccountID==0){
-    //   alert("faild to get your details");
-    // }
-    // this.getOperations();
+    //intialize
+    this.foreignAccountDetails = {
+      firstName: "sara",
+      lastName: "sara",
+      email: "sara@gmail.com",
+    }
   }
-  getNumOfOperations() {
-    this._operationsService.getnumberOperation(this.currentAccountID).subscribe((res) => {
-      this.paginator.length = res;
-    }, (err) => { });
-  }
+  //get foreign account details when expansing!
   getforeignAccountDetails(accountID: number) {
-    this._operationsService.getForeignAccountDetails(accountID).subscribe((res) => {
+    this._loginService.GetForeignAccountDetails(accountID).subscribe((res) => {
       this.foreignAccountDetails = res;
-      console.log(res);
-    }, (err) => { });
+    }, (err) => { console.log(err); });
   }
- 
+
   getOperationsFromDB(getOperationDT0: getOperationDTO) {
+    debugger;
     this._operationsService.getOperation(getOperationDT0).subscribe(
       (res) => {
         this.dataSource.data = res;
-        console.log(res);
         debugger;
-        this.getNumOfOperations();
+        this.paginator.length = this.numOfOperaitons;
       }, (err) => {
         alert("faild to get your operations")
       }
     );
   }
-
+  //get operations in first time
   getOperations() {
     const getOperationDT0: getOperationDTO = {
       currentAccountID: this.currentAccountID,
@@ -78,7 +73,7 @@ export class OperationsHistoryComponent implements OnInit {
     }
     this.getOperationsFromDB(getOperationDT0);
   }
-
+  //each page event get operations
   getNextPage(pageEvent: PageEvent) {
     const getOperationDT0: getOperationDTO = {
       currentAccountID: this.currentAccountID,

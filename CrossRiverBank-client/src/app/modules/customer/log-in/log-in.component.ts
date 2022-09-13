@@ -12,21 +12,22 @@ import { LoginService } from 'src/app/services/login.service';
 export class LogInComponent implements OnInit {
 
   constructor(private _router: Router, private _loginService: LoginService) { }
-  loginUser!:LoginDTO;
- ngOnInit(): void {
-   this._loginService.setCard(false);
-   this._loginService.setAccountID(0);
- }
- logInForm: FormGroup = new FormGroup(
-   {
-     "email": new FormControl("", [Validators.required, Validators.email]),
-     'password': new FormControl("", Validators.required)
-   }
- );
- logIn(){
-   this.loginUser=this.logInForm.value
-   debugger;
+  loginUser!: LoginDTO;
+  ngOnInit(): void {
+    this._loginService.setCard(false);
+    this._loginService.setAccountID(0);
+  }
+  logInForm: FormGroup = new FormGroup(
+    {
+      "email": new FormControl("", [Validators.required, Validators.email]),
+      'password': new FormControl("", Validators.required)
+    }
+  );
+  logIn() {
+    this.loginUser = this.logInForm.value
+    debugger;
     this._loginService.logIn(this.loginUser).subscribe(
+<<<<<<< HEAD
           (res) => {
             debugger;
             if(res.accountID<=0){
@@ -48,6 +49,27 @@ export class LogInComponent implements OnInit {
  register(){
   this._router.navigate(['/signUp']);
  }
+=======
+      (res) => {
+        if (res.accountID < 10) {
+          alert("הפרטים שהכנסת שגויים");
+        }
+        else {
+          this._loginService.setAccountID(res.accountID);
+          this._loginService.setCard(true);
+          // sessionStorage.setItem("token", res.token);
+          this._router.navigate(['/main']);
+        }
+      },
+      (err) => {
+        alert("faild to login try again");
+        console.log(err);
+      });
+  }
+  register() {
+    this._router.navigate(['/signUp']);
+  }
+>>>>>>> ab32947bdd3747f7ee483a6ea077d6a9de28a652
 }
 
 
