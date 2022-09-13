@@ -30,7 +30,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     persistence.ConnectionBuilder(
         connectionBuilder: () =>
         {
-            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiriam"));
+            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiri"));
         });
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
@@ -52,7 +52,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
-builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiri"));
 builder.Services.AddScoped<IAccountService, AccountService>(); 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
