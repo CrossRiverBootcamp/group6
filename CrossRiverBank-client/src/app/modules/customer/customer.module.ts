@@ -11,6 +11,7 @@ import { MainCustomerComponent } from './main-customer/main-customer.component';
 import { UpdataBalanceComponent } from './updata-balance/updata-balance.component';
 import { OperationsHistoryComponent } from './operations-history/operations-history.component';
 import { TransactionAccountDetailsComponent } from './transaction-account-details/transaction-account-details.component';
+import { EmailVerificationComponent } from './email-verification/email-verification.component';
 
 const _routes: Routes = [
   {path:"",component:LogInComponent}, 
@@ -33,7 +34,8 @@ const _routes: Routes = [
     MainCustomerComponent,
     UpdataBalanceComponent,
     OperationsHistoryComponent,
-    TransactionAccountDetailsComponent
+    TransactionAccountDetailsComponent,
+    EmailVerificationComponent
   ],
   imports: [
    CommonModule, 
