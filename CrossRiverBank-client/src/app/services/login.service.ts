@@ -2,14 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AccountInfoDTO } from '../models/accountInfoDTO.models';
+import { ForeignAccountDTO } from '../models/foreignAccountDetailsDTO.models';
 import { LoginDTO } from '../models/loginDTO.models';
 import { LoginResultDTO } from '../models/loginResultDTO.models';
-<<<<<<< HEAD
-
-=======
-import { HttpHeaders } from '@angular/common/http';
-import { ForeignAccountDTO } from '../models/foreignAccountDetailsDTO.models';
->>>>>>> ab32947bdd3747f7ee483a6ea077d6a9de28a652
 
 @Injectable({
   providedIn: 'root'
@@ -36,12 +31,8 @@ export class LoginService {
     this.acountId.next(_id);
   }
   logIn(loginUser: LoginDTO): Observable<LoginResultDTO> {
-<<<<<<< HEAD
     debugger;
     return this._http.post<LoginResultDTO>(this.customerAcountUrl + '/login', loginUser);
-=======
-    return this._http.post<LoginResultDTO>(this.customerAcountUrl + '/login', loginUser,);
->>>>>>> ab32947bdd3747f7ee483a6ea077d6a9de28a652
   }
 
 
@@ -62,7 +53,3 @@ export class LoginService {
 
   constructor(private _http: HttpClient) { }
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> ab32947bdd3747f7ee483a6ea077d6a9de28a652
