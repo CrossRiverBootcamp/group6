@@ -4,16 +4,17 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AccountInfoDTO } from '../models/accountInfoDTO.models';
 import { LoginDTO } from '../models/loginDTO.models';
 import { LoginResultDTO } from '../models/loginResultDTO.models';
-import { HttpHeaders } from '@angular/common/http';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   private customerAcountUrl = 'https://localhost:7120/api/Account';
+  
   isCustomer: boolean = false;
   ID: number = 0;
-  // token: string = '';
+  token: string = '';
   private card: BehaviorSubject<boolean> = new BehaviorSubject(this.isCustomer);
   private acountId: BehaviorSubject<number> = new BehaviorSubject(this.ID);
 
@@ -31,7 +32,7 @@ export class LoginService {
   }
   logIn(loginUser: LoginDTO): Observable<LoginResultDTO> {
     debugger;
-    return this._http.post<LoginResultDTO>(this.customerAcountUrl + '/login', loginUser,);
+    return this._http.post<LoginResultDTO>(this.customerAcountUrl + '/login', loginUser);
   }
 
 
@@ -49,4 +50,4 @@ export class LoginService {
 
   constructor(private _http: HttpClient) { }
 }
-//https://localhost:7120/api/Account/13
+

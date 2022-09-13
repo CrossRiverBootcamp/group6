@@ -28,7 +28,8 @@ export class LogInComponent implements OnInit {
    debugger;
     this._loginService.logIn(this.loginUser).subscribe(
           (res) => {
-            if(res.accountID<10){
+            debugger;
+            if(res.accountID<=0){
               alert("הפרטים שהכנסת שגויים");
             }
         else{
@@ -39,6 +40,7 @@ export class LogInComponent implements OnInit {
       }
     },
    (err) => {
+    debugger;
              alert("faild to login try again");
              console.log(err);
              });
