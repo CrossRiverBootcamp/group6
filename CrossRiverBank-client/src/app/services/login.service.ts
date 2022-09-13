@@ -5,6 +5,7 @@ import { AccountInfoDTO } from '../models/accountInfoDTO.models';
 import { LoginDTO } from '../models/loginDTO.models';
 import { LoginResultDTO } from '../models/loginResultDTO.models';
 import { HttpHeaders } from '@angular/common/http';
+import { ForeignAccountDTO } from '../models/foreignAccountDetailsDTO.models';
 
 @Injectable({
   providedIn: 'root'
@@ -30,13 +31,11 @@ export class LoginService {
     this.acountId.next(_id);
   }
   logIn(loginUser: LoginDTO): Observable<LoginResultDTO> {
-    debugger;
     return this._http.post<LoginResultDTO>(this.customerAcountUrl + '/login', loginUser,);
   }
 
 
   GetAccountInfo(cardID: number): Observable<AccountInfoDTO> {
-    debugger;
     // this.token = sessionStorage.getItem('token') || '';
     // const httpOptions = {
     //   Headers: new HttpHeaders({
@@ -46,7 +45,10 @@ export class LoginService {
     // }
     return this._http.get<AccountInfoDTO>(this.customerAcountUrl + `/${cardID}`);
   }
+  //get name and email of other accountID
+  GetForeignAccountDetails(accountID: number): Observable<ForeignAccountDTO> {
+    return this._http.get<ForeignAccountDTO>(this.customerAcountUrl + `?foreignAccountID=${accountID}`);
+  }
 
   constructor(private _http: HttpClient) { }
 }
-//https://localhost:7120/api/Account/13
