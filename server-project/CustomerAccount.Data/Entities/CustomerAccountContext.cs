@@ -1,6 +1,7 @@
 ﻿using CustomerAccount.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CustomerAccount.Data.Entities
 {

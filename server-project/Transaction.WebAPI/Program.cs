@@ -6,8 +6,8 @@ using Transaction.Services.Interfaces;
 using Transaction.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
-string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiriam");
+string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiri");
+string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiri");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
 
 #region back-end-use-nservicebus
@@ -27,7 +27,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
     var subscriptions = persistence.SubscriptionSettings();
     subscriptions.CacheFor(TimeSpan.FromMinutes(1));
-    dialect.Schema("dbo");
+    dialect.Schema("nsb");
 
     var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
     transport.ConnectionString(rabbitMQConnection);
