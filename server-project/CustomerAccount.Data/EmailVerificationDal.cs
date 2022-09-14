@@ -27,7 +27,7 @@ public class EmailVerificationDal : IEmailVerificationDal
     public async Task UpdateEmailVerification(EmailVerification emailVerification)
     {
         using var _contect = _contextFactory.CreateDbContext();
-         _contect.EmailVerifications.Update(emailVerification);
+        _contect.EmailVerifications.Update(emailVerification);
         try
         {
             await _contect.SaveChangesAsync();
@@ -37,13 +37,32 @@ public class EmailVerificationDal : IEmailVerificationDal
             throw ex;
         }
     }
-    public async Task<EmailVerification> GetEmailVerificationByEmail(string email)
+    public async Task<bool> CheckEmailVerifiedByEmail(string email)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        EmailVerification emailVerification= await _contect.EmailVerifications.Where(em => em.Equals(email)).FirstOrDefaultAsync();
-        return emailVerification;
+        var emailVerification = await _contect.EmailVerifications.Where(em => em.Email.Equals(email)).FirstOrDefaultAsync();
+        if(emailVerification == null)
+        {
+            return false;
+        }
+        return true;
     }
-   
+    public async Task<bool> CheckVerification(string email, string verifiCode)
+    {
+        using var _context = _contextFactory.CreateDbContext();
+        DateTime dateTime = DateTime.UtcNow;
+        EmailVerification emailVerification = await _context.EmailVerifications.
+            Where((em) => em.Email.Equals(email) && em.VerificationCode.Equals(verifiCode)
+            && em.ExpirationTime >= dateTime).
+            FirstOrDefaultAsync();
+        if (emailVerification == null)
+        {
+            return false;
+        }
+        return true;
+    }
+
+
 
 }
 

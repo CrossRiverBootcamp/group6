@@ -33,7 +33,12 @@ public class AccountDal : IAccountDal
     public async Task<bool> EmailExists(string email)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        return await _contect.Customers.AnyAsync(c => c.Email == email);
+        var exist= await _contect.Customers.Where((c) => c.Email.Equals(email)).FirstOrDefaultAsync();
+        if(exist == null)
+        {
+            return false;
+        }
+        return true;
     }
 
 

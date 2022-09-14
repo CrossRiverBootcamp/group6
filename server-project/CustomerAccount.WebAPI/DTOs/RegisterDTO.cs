@@ -16,5 +16,8 @@ namespace CustomerAccount.WebAPI.DTOs
         [Required]
         [MinLength(8)]
         public string Password { get; set; }
+        [Required]
+        [StringLength(4)]
+        public string VerifiCode{ get; set; }
     }
 }

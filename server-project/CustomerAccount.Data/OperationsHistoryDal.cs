@@ -34,7 +34,7 @@ public class OperationsHistoryDal : IOperationsHistoryDal
         {
             using var _contect = _contextFactory.CreateDbContext();
 
-            var position = (page - 1) * records;
+            var position = page * records;
 
             var nextPage = from toOpt in _contect.OperationsHistorys
                            join fromOpt in _contect.OperationsHistorys
@@ -44,7 +44,7 @@ public class OperationsHistoryDal : IOperationsHistoryDal
                            select new OperationsHistory()
                            {
                                ID = toOpt.ID,
-                               AccountId = fromOpt.AccountId,
+                               AccountId = toOpt.AccountId,
                                TransactionID = toOpt.TransactionID,
                                Credit = toOpt.Credit,
                                TransactionAmount = toOpt.TransactionAmount,

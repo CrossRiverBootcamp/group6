@@ -8,7 +8,7 @@ namespace CustomerAccount.Services.Services;
 
 public class EmailVerificationService : IEmailVerificationService
 {
-    private IAccountDal _accountDal;
+    private readonly IAccountDal _accountDal;
     private readonly IEmailVerificationDal _emailVerificationDal;
     public EmailVerificationService(IEmailVerificationDal emailVerificationDal, IAccountDal accountDal)
     {
@@ -24,20 +24,24 @@ public class EmailVerificationService : IEmailVerificationService
             if (!exists)
             {
                 //check if this email tried allready to verifi
-                EmailVerification emailVerification = await _emailVerificationDal.GetEmailVerificationByEmail(emailVerificationAddress);
-                if (emailVerification == null)
+                bool emailVerified = await _emailVerificationDal.CheckEmailVerifiedByEmail(emailVerificationAddress);
+                Guid verificationCode = Guid.NewGuid();
+               string verifiCode=verificationCode.ToString("D4");
+                EmailVerification emailVerification = new EmailVerification()
                 {
-                    emailVerification = new EmailVerification()
-                    {
-                        Email = emailVerificationAddress,
-                        VerificationCode = "1234",
-                        ExpirationTime = DateTime.UtcNow.AddMinutes(10),
-                    };
-
+                    Email = emailVerificationAddress,
+                    VerificationCode = verifiCode,
+                    ExpirationTime = DateTime.UtcNow.AddMinutes(10),
+                };
+                if (!emailVerified)
+                {
                     await _emailVerificationDal.AddEmailVerification(emailVerification);
                 }
-                await _emailVerificationDal.UpdateEmailVerification(emailVerification);
-                await this.SendEmail(emailVerificationAddress, "1234");
+                else
+                {
+                    await _emailVerificationDal.UpdateEmailVerification(emailVerification);
+                }
+                await this.SendEmail(emailVerificationAddress, verifiCode);
             }
             else
             {
@@ -46,14 +50,14 @@ public class EmailVerificationService : IEmailVerificationService
         }
         catch (Exception ex)
         {
-              throw ex;
+            throw ex;
         }
 
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-     
-        MailAddress from = new MailAddress("324103357@mby.co.il"); 
+
+        MailAddress from = new MailAddress("324103357@mby.co.il");
         MailAddress to = new MailAddress(email);
         MailMessage mail = new MailMessage(from, to);
         SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
@@ -65,5 +69,11 @@ public class EmailVerificationService : IEmailVerificationService
         SmtpServer.UseDefaultCredentials = false;
         SmtpServer.Send(mail);
     }
+    public async Task<bool> CheckVerification(string email, string verifiCode)
+    {
+        return await _emailVerificationDal.CheckVerification(email, verifiCode);
+
+    }
+
 }
 

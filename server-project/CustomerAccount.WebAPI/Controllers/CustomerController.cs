@@ -12,9 +12,10 @@ public class CustomerController : ControllerBase
 {
 
     private ICustomerService _customerService;
+    private IEmailVerificationService _emailVerificationService;
     private IMapper _mapper;
 
-    public CustomerController(ICustomerService customerService)
+    public CustomerController(ICustomerService customerService,IEmailVerificationService emailVerificationService)
     {
         var config = new MapperConfiguration(cfg =>
         {
@@ -22,10 +23,15 @@ public class CustomerController : ControllerBase
         });
         _mapper = config.CreateMapper();
         _customerService = customerService;
+        _emailVerificationService = emailVerificationService;
     }
     [HttpPost("CreateAccount")]
     public async Task<ActionResult<bool>> Register(RegisterDTO register)
     {
+        bool verified = await _emailVerificationService.CheckVerification(register.Email,register.VerifiCode);
+
+        if (!verified)
+            return BadRequest(false);
         RegisterModel registerModel = _mapper.Map<RegisterModel>(register);
         bool success = await _customerService.Register(registerModel);
         return Ok(success);
