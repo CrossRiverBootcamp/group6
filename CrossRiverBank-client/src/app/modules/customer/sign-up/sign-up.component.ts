@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { RegisterDTO } from 'src/app/models/registerDTO.models';
 import { CustomerService } from 'src/app/services/customer.service';
+import { EmailVerificationComponent } from '../email-verification/email-verification.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,10 +13,18 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 export class SignUPComponent implements OnInit {
 
-  constructor(private _router: Router,private _customerService: CustomerService) {
-
+  constructor(private _router: Router,private _customerService: CustomerService,private _dialog:MatDialog) {
    }
-
+   openDialog(registerDTO:RegisterDTO) {
+    debugger;
+  const dialogRef=  this._dialog.open(EmailVerificationComponent, {
+      data: {
+        registerDTO:registerDTO
+      },
+    });
+    dialogRef.afterClosed()
+    .subscribe((x:any)=>{this.home();} );
+  }
   ngOnInit(): void {
   }
   signUpForm: FormGroup = new FormGroup(
@@ -27,16 +37,7 @@ export class SignUPComponent implements OnInit {
   );
   register(){
     var newRegistration: RegisterDTO = this.signUpForm.value;
-    this._customerService.register(newRegistration).subscribe(
-      (res)=>{
-        console.log(res);
-      debugger;
-      alert("your account is ready to do login")
-      this._router.navigate(['/login']);
-      },
-      (err)=>{
-     alert("faild to add customer");
-      });
+    this.openDialog(newRegistration);
   }
   home(){
     this._router.navigate(['/login']);

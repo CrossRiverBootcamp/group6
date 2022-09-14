@@ -3,4 +3,5 @@ export interface RegisterDTO{
     lastName:string,
     email:string,
     password:string,
+    VerifiCode:string
 }

@@ -7,11 +7,10 @@ import { Observable } from "rxjs";
 })
 export class emailConfirmationService {
     verificationCodeUrl:string = 'https://localhost:7120/api/EmailVerification';
-    ConfirmEmailCode(code: string): Observable<boolean> {
-        return this._http.post<boolean>(this.verificationCodeUrl,code);
+    SendEmailCode(email: string): Observable<boolean> {
+        debugger;
+        return this._http.post<boolean>(this.verificationCodeUrl,email);
     }
-    SendEmailCode():Observable<boolean>{
-        return this._http.get<boolean>(this.verificationCodeUrl);
-    }
+    
     constructor(private _http: HttpClient) { }
 }

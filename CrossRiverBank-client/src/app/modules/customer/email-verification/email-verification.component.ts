@@ -1,7 +1,10 @@
 import { _fixedSizeVirtualScrollStrategyFactory } from '@angular/cdk/scrolling';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { RegisterDTO } from 'src/app/models/registerDTO.models';
 import { CustomerService } from 'src/app/services/customer.service';
 import { emailConfirmationService } from 'src/app/services/emailVerification.services';
 
@@ -13,42 +16,37 @@ import { emailConfirmationService } from 'src/app/services/emailVerification.ser
 })
 export class EmailVerificationComponent implements OnInit {
   confirmEmailCodeForm!: FormGroup;
+  registerFormDTO!:RegisterDTO;
 
-  constructor(private _emailVerification: emailConfirmationService,private _customerService:CustomerService) {
+  constructor(private _router: Router,private _emailVerification: emailConfirmationService,private _customerService:CustomerService,@Inject(MAT_DIALOG_DATA) public data: any) {
     this.confirmEmailCodeForm = new FormGroup({
-      "code": new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
+      "VerifiCode": new FormControl("", [Validators.required, Validators.minLength(4), Validators.maxLength(4)]),
     });
   }
 
   ngOnInit(): void {
-    
+    debugger;
+    this.registerFormDTO=this.data.registerDTO;
   }
-  confirmCode() {
-    this._emailVerification.ConfirmEmailCode(this.confirmEmailCodeForm.value).subscribe((res) => {
-      if(res)
-      {
-        //this._customerService.register(new RegisterDTO())
-        //_router.navigate("/main");
-        //finish comp///
-      }
-      else{
-        alert("you are not permited! try again...");
-        //style="display: inline-block;"
-      }
+  SendCodeAgain() {
+    this._emailVerification.SendEmailCode(this.registerFormDTO.email).subscribe((res) => 
+    {
+      alert("send you a new code");
     }, (err) => { 
       alert("not confirmed your email")
-      //style="display: inline-block;"
+     
     });
   }
-  sendConfirmCode() {
-    this._emailVerification.SendEmailCode().subscribe((res)=>{
-      alert("send you a new code");
+  ConfirmCode() {
+    this.registerFormDTO.VerifiCode=this.confirmEmailCodeForm.value;
+    this._customerService.register(this.registerFormDTO).subscribe((res)=>{
+      alert("your registeration past sucsessfuly your redy to login");
+      this._router.navigate(['/login']);
     },(err)=>{
-      alert("not allowed go to sign up---");
-       //btnSignUp-style="display: inline-block;"
+      alert("not allowed go to sign up--- check your deatield and try again");
       });
   }
   goToRegister(){
-    //_router.nevigate('/signUp');
+    this._router.navigate(['/signUp']);
   }
 }
