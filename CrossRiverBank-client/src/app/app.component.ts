@@ -10,10 +10,7 @@ export class AppComponent {
   card:boolean=false;
   constructor(private _loginService: LoginService) {
     this._loginService.getCard().subscribe((data:any) => {
-  
-      this.card = data;
-  
-
+     this.card = data;
   })
  
   }

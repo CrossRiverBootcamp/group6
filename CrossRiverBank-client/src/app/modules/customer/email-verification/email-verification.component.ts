@@ -15,7 +15,6 @@ import { emailConfirmationService } from 'src/app/services/emailVerification.ser
   styleUrls: ['./email-verification.component.css']
 })
 export class EmailVerificationComponent implements OnInit {
-  //confirmEmailCodeForm!: FormGroup;
   registerFormDTO!:RegisterDTO;
 
 
