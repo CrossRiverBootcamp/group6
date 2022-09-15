@@ -90,24 +90,15 @@ export class OperationsHistoryComponent implements OnInit {
     this.numberOfRecords = pageEvent.pageSize;
     this.getOperationsFromDB();
   }
-  //get foreign account details when expansing!
+  //get foreign account details 
   getforeignAccountDetails(accountID: number) {
-    this._loginService.GetForeignAccountDetails(accountID).subscribe((res) => {
-      this.foreignAccountDetails = {
-        accountId: accountID,
-        firstName: res.firstName,
-        lastName: res.lastName,
-        email: res.email,
-      };
-      this.openDialog(this.foreignAccountDetails);
-
-    }, (err) => { console.log(err); });
+      this.openDialog(accountID);
   }
-  openDialog(details: ForeignAccountDTO) {
-    debugger
-    const dialogRef = this._dialog.open(ForeignAccountInfoComponent, {
+
+  openDialog(accountID: number){
+  const dialogRef=  this._dialog.open(ForeignAccountInfoComponent, {
       data: {
-        accountDetails: details
+        accountID: accountID,
       },
     });
   }
