@@ -32,9 +32,9 @@ export class OperationsHistoryComponent implements OnInit {
   index1 = 0;
   currentAccountID = 0;
   pageNumber = 0;
-  numberOfRecords = 10;
+  numberOfRecords = 4;
   // };
-  foreignAccountDetails: ForeignAccountDTO | null = {
+  foreignAccountDetails: ForeignAccountDTO = {
     accountId: 0,
     firstName: " ",
     lastName: " ",
