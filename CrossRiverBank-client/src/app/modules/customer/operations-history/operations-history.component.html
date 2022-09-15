@@ -13,18 +13,18 @@
       </ng-container>
 
       <!-- AccountID Column -->
-      <ng-container matColumnDef="accountID">
+      <ng-container matColumnDef="accountId">
         <th mat-header-cell *matHeaderCellDef> AccountID </th>
-        <td mat-cell *matCellDef="let operation">
-          <mat-expansion-panel hideToggle (click) = "getforeignAccountDetails(operation.accountId)">
-            <mat-expansion-panel-header>
-              <mat-panel-title>
+        <td mat-cell *matCellDef="let operation" (click) = "getforeignAccountDetails(operation.accountId)">
+          <!-- <mat-expansion-panel hideToggle (click) = "getforeignAccountDetails(operation.accountId)"> -->
+            <!-- <mat-expansion-panel-header>
+              <mat-panel-title> -->
                 {{operation.accountId}}
-              </mat-panel-title>
+              <!-- </mat-panel-title>
             </mat-expansion-panel-header>
             <p>{{foreignAccountDetails.firstName}} {{foreignAccountDetails.lastName}} </p>
             <p>{{foreignAccountDetails.email}}</p>
-          </mat-expansion-panel>
+          </mat-expansion-panel> -->
         </td>
       </ng-container>
 

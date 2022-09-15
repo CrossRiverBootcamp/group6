@@ -1,1 +1,12 @@
-<p>foreign-account-info works!</p>
+
+<html>
+<h1 mat-dialog-title> {{accountDetails.accountId}} </h1>
+
+<div mat-dialog-content>
+    <h3>Hi !!!!!!!!!!!!!{{accountDetails.firstName}} {{accountDetails.lastName}}</h3>
+    <h5>{{accountDetails.email}}</h5>
+</div>
+<div mat-dialog-actions>
+    <input  type="button" value="X" (click)="CloseDialog()"/>
+</div>
+</html>
