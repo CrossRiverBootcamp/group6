@@ -14,7 +14,7 @@ export class AccountInfoComponent implements OnInit {
   accountInfoDTO!: AccountInfoDTO;
   accountInfoID!: number;
 
-  constructor(private _loginService: LoginService, private _router: Router)//,private _router: Route) 
+  constructor(private _loginService: LoginService, private _router: Router)
   {
 
   }
