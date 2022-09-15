@@ -13,9 +13,11 @@ export class LogInComponent implements OnInit {
 
   constructor(private _router: Router, private _loginService: LoginService) { }
   loginUser!: LoginDTO;
+
   ngOnInit(): void {
     this._loginService.setCard(false);
     this._loginService.setAccountID(0);
+    sessionStorage.setItem('token',"");
   }
   logInForm: FormGroup = new FormGroup(
     {
@@ -30,12 +32,13 @@ export class LogInComponent implements OnInit {
           (res) => {
             debugger;
             if(res.accountID<=0){
-              alert("הפרטים שהכנסת שגויים");
+              alert("check your details somthing there is ronge");
             }
         else{
         this._loginService.setAccountID(res.accountID);
         this._loginService.setCard(true);
-        // sessionStorage.setItem("token", res.token);
+    
+        sessionStorage.setItem('token', res.token)
         this._router.navigate(['/main']);
       }
     },
@@ -46,7 +49,7 @@ export class LogInComponent implements OnInit {
              });
       }
  register(){
-  this._router.navigate(['/signUp']);
+  this._router.navigate(['/signsUp']);
  }
 }
 
