@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { RegisterDTO } from 'src/app/models/registerDTO.models';
 import { CustomerService } from 'src/app/services/customer.service';
+import { emailConfirmationService } from 'src/app/services/emailVerification.services';
 import { EmailVerificationComponent } from '../email-verification/email-verification.component';
 
 @Component({
@@ -13,17 +14,15 @@ import { EmailVerificationComponent } from '../email-verification/email-verifica
 })
 export class SignUPComponent implements OnInit {
 
-  constructor(private _router: Router,private _customerService: CustomerService,private _dialog:MatDialog) {
+  constructor(private _router: Router,private _customerService: CustomerService,private _dialog:MatDialog,private _emailVerification: emailConfirmationService) {
    }
-   openDialog(registerDTO:RegisterDTO) {
+   openDialog(registerForm:RegisterDTO) {
     debugger;
   const dialogRef=  this._dialog.open(EmailVerificationComponent, {
       data: {
-        registerDTO:registerDTO
+        registerForm:registerForm
       },
     });
-    dialogRef.afterClosed()
-    .subscribe((x:any)=>{this.home();} );
   }
   ngOnInit(): void {
   }
@@ -37,9 +36,20 @@ export class SignUPComponent implements OnInit {
   );
   register(){
     var newRegistration: RegisterDTO = this.signUpForm.value;
+    this.sendEmail(newRegistration.email);
     this.openDialog(newRegistration);
   }
   home(){
     this._router.navigate(['/login']);
   }
+
+sendEmail(email:string){
+  this._emailVerification.SendEmailCode(email).subscribe((res) => 
+  {
+    alert("send you a new code");
+  }, (err) => { 
+    alert("not confirmed your email")
+   
+  });
+}
 }
