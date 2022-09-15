@@ -2,8 +2,6 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { ForeignAccountDTO } from 'src/app/models/foreignAccountDetailsDTO.models';
 import { getOperationDTO } from 'src/app/models/getOperationDTO.models';
 import { OperationsHistoryDTO } from 'src/app/models/OperationsHistoryDTO.models';
@@ -30,7 +28,6 @@ export class OperationsHistoryComponent implements OnInit {
   numOfOperaitons: number = 0;
   pageSizeOptions = [2, 4, 6];
   index1 = 0;
-  // getOperationDT0:  getOperationDTO ={
     currentAccountID = 0;
     pageNumber = 0;
     numberOfRecords =10;
@@ -71,7 +68,6 @@ export class OperationsHistoryComponent implements OnInit {
     }, (err) => { console.log(err); });
   }
   getOperationsFromDB() {
-    // this.currentOperations.subscribe((res) => {
       const getOperationDT0 : getOperationDTO ={
         currentAccountID : this.currentAccountID,
         pageNumber :this.pageNumber,

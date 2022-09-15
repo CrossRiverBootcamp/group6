@@ -12,6 +12,7 @@ import { UpdataBalanceComponent } from './updata-balance/updata-balance.componen
 import { OperationsHistoryComponent } from './operations-history/operations-history.component';
 import { TransactionAccountDetailsComponent } from './transaction-account-details/transaction-account-details.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
+import { ForeignAccountInfoComponent } from './foreign-account-info/foreign-account-info.component';
 
 const _routes: Routes = [
   {path:"",component:LogInComponent}, 
@@ -36,7 +37,8 @@ const _routes: Routes = [
     UpdataBalanceComponent,
     OperationsHistoryComponent,
     TransactionAccountDetailsComponent,
-    EmailVerificationComponent
+    EmailVerificationComponent,
+    ForeignAccountInfoComponent
   ],
   imports: [
    CommonModule, 
