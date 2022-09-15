@@ -37,13 +37,7 @@ export class LoginService {
 
 
   GetAccountInfo(cardID: number): Observable<AccountInfoDTO> {
-    // this.token = sessionStorage.getItem('token') || '';
-    // const httpOptions = {
-    //   Headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'Bearer ' + this.token,
-    //   })
-    // }
+    
     return this._http.get<AccountInfoDTO>(this.customerAcountUrl + `/${cardID}`);
   }
   //get name and email of other accountID
