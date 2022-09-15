@@ -13,17 +13,18 @@ import { OperationsHistoryComponent } from './operations-history/operations-hist
 import { TransactionAccountDetailsComponent } from './transaction-account-details/transaction-account-details.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { ForeignAccountInfoComponent } from './foreign-account-info/foreign-account-info.component';
+import { CustomerIsActiveGuard } from 'src/app/guards/customer-is-active.guard';
 
 const _routes: Routes = [
   {path:"",component:LogInComponent}, 
   {path:"login",component:LogInComponent},
   {path:"signUp",component:SignUPComponent},
-  {path:"menu",component:CustomerMenuComponent},
-  {path:"accountInfo",component:AccountInfoComponent},
-  {path:"main",component:MainCustomerComponent},
-  {path:"transaction",component:UpdataBalanceComponent},
-  {path:"operationsHistory",component:OperationsHistoryComponent},
-  {path:"EmailVerification",component:EmailVerificationComponent},
+  {path:"menu",component:CustomerMenuComponent,canActivate:[CustomerIsActiveGuard]},
+  {path:"accountInfo",component:AccountInfoComponent,canActivate:[CustomerIsActiveGuard]},
+  {path:"main",component:MainCustomerComponent,canActivate:[CustomerIsActiveGuard]},
+  {path:"transaction",component:UpdataBalanceComponent,canActivate:[CustomerIsActiveGuard]},
+  {path:"operationsHistory",component:OperationsHistoryComponent,canActivate:[CustomerIsActiveGuard]},
+  {path:"EmailVerification",component:EmailVerificationComponent,canActivate:[CustomerIsActiveGuard]},
  
   ]; 
 
