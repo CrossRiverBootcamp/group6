@@ -32,6 +32,7 @@ export class SignUPComponent implements OnInit {
       'password': new FormControl("", [Validators.required, Validators.minLength(8)]),
       'firstName': new FormControl("", Validators.required),
       'lastName': new FormControl("", Validators.required),
+      'VerifiCode': new FormControl("",),
     }
   );
   register(){

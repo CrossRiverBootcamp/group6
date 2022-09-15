@@ -1,7 +1,16 @@
-<form  [formGroup]="confirmEmailCodeForm">
-    <label for="confirmation">confirm code:</label>
-    <input type="text" placeholder="VerifiCode" id="confirmation"  formControlName="VerifiCode"/>
-    <input *ngIf="confirmEmailCodeForm.value" type="button" value="confirm" (click)="ConfirmCode()"/>
+<html>
+<h1 mat-dialog-title>Hi {{registerFormDTO.firstName}} </h1>
+<h3>we just want to make sure its you</h3>
+<p> check your email and confirm</p>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>VerifiCode</mat-label>
+    <input matInput [(ngModel)]="registerFormDTO.VerifiCode"> 
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <input  type="button" value="confirm" (click)="ConfirmCode()"/>
     <input type="button" value="send again" (click)="SendCodeAgain()"/>
-    <input type="button" value="reset-sign-up-form"  (click)="goToRegister()"/>  
-</form>
+    <input type="button" value="reset-sign-up-form"  (click)="goToRegister()"/> 
+</div>
+</html>
