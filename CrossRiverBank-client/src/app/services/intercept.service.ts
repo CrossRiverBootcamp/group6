@@ -20,7 +20,7 @@ export class InterceptService implements HttpInterceptor, OnDestroy {
 
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    
+    debugger;
       const tokenreq = req.clone({ headers: req.headers.set('Authorization', 'Bearer '  ) });
       return next.handle(tokenreq);
     }
