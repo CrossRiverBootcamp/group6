@@ -33,22 +33,20 @@ export class EmailVerificationComponent implements OnInit {
       }
       else{
         alert("you are not permited! try again...");
-        //style="display: inline-block;"
       }
     }, (err) => { 
       alert("not confirmed your email")
-      //style="display: inline-block;"
+
     });
   }
   sendConfirmCode() {
     this._emailVerification.SendEmailCode().subscribe((res)=>{
       alert("send you a new code");
     },(err)=>{
-      alert("not allowed go to sign up---");
-       //btnSignUp-style="display: inline-block;"
+      alert("not allowed go to sign up---");   
       });
   }
   goToRegister(){
-    //_router.nevigate('/signUp');
+    //this._router.nevigate('/signUp');
   }
 }

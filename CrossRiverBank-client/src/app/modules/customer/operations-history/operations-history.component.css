@@ -16,4 +16,40 @@ table {
   
   .mat-expansion-panel-header {
     padding: 0; 
+}
+/* <--not expand--> */
+tr.operation-detail-row {
+    height: 0;
   }
+  
+  tr.operation-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  
+  tr.operation-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .operation-row td {
+    border-bottom-width: 0;
+  }
+  
+  .operation-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .operation-credit {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .operation-description {
+    padding: 16px;
+  }
+  
+  .operation-description-attribution {
+    opacity: 0.5;
+  }
+  

@@ -3,5 +3,5 @@
     <input type="text" placeholder="code" id="confirmation"  formControlName="code"/>
     <input *ngIf="confirmEmailCodeForm.value" type="button" value="confirm" (click)="confirmCode()"/>
     <input type="button" value="send again" (click)="sendConfirmCode()"/>
-    <input type="button" value="=>sign-up-again" style="display: none;" (click)="goToRegister()"/>  
+    <input type="button" value="=>sign-up-again" (click)="goToRegister()"/>  
 </form>

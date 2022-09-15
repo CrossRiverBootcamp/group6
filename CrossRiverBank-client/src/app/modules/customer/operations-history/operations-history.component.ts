@@ -1,3 +1,4 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,20 +13,30 @@ import { OperationsService } from 'src/app/services/operation.service';
 
 @Component({
   selector: 'app-operations-history',
-  templateUrl: './operations-history.component.html',
+  templateUrl: './operations-history1.componant.html',
   styleUrls: ['./operations-history.component.css'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class OperationsHistoryComponent implements OnInit {
   dataSource = new MatTableDataSource<OperationsHistoryDTO>();
-  displayedColumns: string[] = ['credit', 'accountID', 'amount', 'balance', 'date'];
+  displayedColumns: string[] = ['credit', 'accountId', 'amount', 'balance', 'date'];
+  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   numOfOperaitons: number = 0;
   pageSizeOptions = [2, 4, 6];
+  index1 = 0;
   // getOperationDT0:  getOperationDTO ={
     currentAccountID = 0;
     pageNumber = 0;
-    numberOfRecords =2;
+    numberOfRecords =10;
   // };
-  foreignAccountDetails: ForeignAccountDTO={
+  foreignAccountDetails: ForeignAccountDTO | null = {
+    accountId:0,
     firstName:" ",
     lastName:" ",
     email:" ",
@@ -44,7 +55,13 @@ export class OperationsHistoryComponent implements OnInit {
   //get foreign account details when expansing!
   getforeignAccountDetails(accountID: number) {
     this._loginService.GetForeignAccountDetails(accountID).subscribe((res) => {
-      this.foreignAccountDetails = res;
+      this.foreignAccountDetails = {
+        accountId:accountID,
+        firstName : res.firstName,
+        lastName : res.lastName,
+        email : res.email,
+      };
+      
     }, (err) => { console.log(err); });
   }
   getNumOfOperations() {

@@ -4,4 +4,5 @@ export interface OperationsHistoryDTO{
     amount:number;
     balance:number;
     date: Date;
+    rowId?:number;
 }
