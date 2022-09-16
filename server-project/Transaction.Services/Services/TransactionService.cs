@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CustomExceptions;
 using Messages.Events;
 using NServiceBus;
 using Transaction.Data.Entities;
@@ -39,7 +40,7 @@ public class TransactionService : ITransactionService
         }
         catch
         {
-            return false;
+            throw new NsbNotPublishedException($"transaction not created from: {transactionEvent.FromAccountID} to: {transactionEvent.ToAccountID} of- {transactionEvent.Amount}");
         }
 
     }

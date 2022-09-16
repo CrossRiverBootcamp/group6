@@ -1,4 +1,4 @@
-﻿using CustomerAccount.Services.Exceptions;
+﻿using CustomExceptions;
 using System.Net;
 
 namespace CustomerAccount.WebAPI.Middlewares;

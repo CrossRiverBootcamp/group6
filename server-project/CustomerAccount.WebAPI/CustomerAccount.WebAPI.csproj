@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CustomerAccount.Services\CustomerAccount.Services.csproj" />
+    <ProjectReference Include="..\CustomExceptions\CustomExceptions.csproj" />
   </ItemGroup>
 
 </Project>
