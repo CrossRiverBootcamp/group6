@@ -6,8 +6,8 @@ using Transaction.Services.Interfaces;
 using Transaction.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiri");
-string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiri");
+string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
+string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiriam");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
 
 #region back-end-use-nservicebus
@@ -66,7 +66,7 @@ app.UseCors(options => {
     options.AllowAnyMethod();
     options.AllowAnyHeader();
 });
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

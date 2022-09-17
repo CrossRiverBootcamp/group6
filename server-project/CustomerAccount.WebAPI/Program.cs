@@ -3,15 +3,17 @@ using CustomerAccount.Services.Services;
 using CustomerAccount.Services.Extensions;
 using CustomerAccount.WebAPI.Middlewares;
 using CustomerAccount.Services.options;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using NServiceBus;
 using Microsoft.Data.SqlClient;
-using CustomerAccount.WebAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog();
 
 IConfigurationRoot configuration = new
             ConfigurationBuilder().AddJsonFile("appsettings.json",
@@ -30,7 +32,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     persistence.ConnectionBuilder(
         connectionBuilder: () =>
         {
-            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiri"));
+            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiriam"));
         });
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
@@ -51,15 +53,14 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
-builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiri"));
-builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+builder.Services.AddScoped<IAccountService, AccountService>(); 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
 builder.Services.AddScoped<IOperationsHistoryService, OperationsHistoryService>();
 builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 var key = Encoding.ASCII.GetBytes(configuration["JWT:key"]);
 builder.Services.AddAuthentication(x =>
 {
@@ -77,14 +78,38 @@ builder.Services.AddAuthentication(x =>
         ValidateAudience = false
     };
 });
-//authorize as customer-
-builder.Services.AddAuthorization(cfg =>
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
 {
-    cfg.AddPolicy("Customer", policy => policy.RequireClaim("Role", "customer"));
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrossRiverBank", Version = "v1" });
+
+    // To Enable authorization using Swagger (JWT)    
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
+
+                    }
+                });
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerSettings(); 
 
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration
             (configuration).CreateLogger();
@@ -103,14 +128,12 @@ app.UseHandlerErrorsMiddleware();
 
 
 app.UseHttpsRedirection();
-
-app.UseCors(options =>
-{
+app.UseCors(options => {
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();
 });
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

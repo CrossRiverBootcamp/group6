@@ -1,24 +1,25 @@
 ﻿using CustomerAccount.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Messages.Commands;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace CustomerAccount.WebAPI.Controllers
-{
+namespace CustomerAccount.WebAPI.Controllers;
+
+    [Authorize(Roles = "customer")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmailVerificationController : ControllerBase
     {
         private readonly IEmailVerificationService _emailVerificationService;
-        private readonly IMessageSession _session;
-
-        public EmailVerificationController(IEmailVerificationService emailVerificationService)//, IMessageSession session)
+        public EmailVerificationController(IEmailVerificationService emailVerificationService)
         {
             _emailVerificationService = emailVerificationService;
         }
-
+        
+  
 
         // POST api/<EmailVerificationController>
         [HttpPost]
@@ -26,12 +27,13 @@ namespace CustomerAccount.WebAPI.Controllers
         {
             try
             {
-                await _emailVerificationService.AddEmailVerification(email);
+                string emai =new string(email);
+                await _emailVerificationService.AddEmailVerification(emai);
                 return Ok(true);
             }
             catch
             {
-                return Ok(false);
+                return NotFound(false);
             }
         }
 

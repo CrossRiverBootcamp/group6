@@ -2,16 +2,19 @@
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
 using CustomerAccount.WebAPI.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerAccount.WebAPI.Controllers
 {
+
+   
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _accountService;
-        private  readonly IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public AccountController(IAccountService accountService)
         {
@@ -22,18 +25,20 @@ namespace CustomerAccount.WebAPI.Controllers
             });
             _mapper = config.CreateMapper();
         }
+        [Authorize(Roles = "customer")]
         [HttpGet("{accountID}")]
         public async Task<ActionResult<AccountInfoDTO>> GetAccountInfo(int accountID)
         {
-            if (accountID<=0)
+            if (accountID <= 0)
             {
                 return BadRequest();
             }
-          AccountModel account=await _accountService.GetAccountInfo(accountID);
-           
-           AccountInfoDTO accountInfo = _mapper.Map<AccountInfoDTO>(account);
+            AccountModel account = await _accountService.GetAccountInfo(accountID);
+
+            AccountInfoDTO accountInfo = _mapper.Map<AccountInfoDTO>(account);
             return Ok(accountInfo);
         }
+        [Authorize(Roles = "customer")]
         [HttpGet()]
         public async Task<ActionResult<ForeignAccountDetailsDTO>> GetForeignAccountDetails(int foreignAccountID)
         {
@@ -53,7 +58,7 @@ namespace CustomerAccount.WebAPI.Controllers
             {
                 LoginResultModel loginResult = await _accountService.Login(loginDTO.Email, loginDTO.Password);
 
-                if (loginResult.AccountID <=0)
+                if (loginResult.AccountID <= 0)
                 {
                     return Unauthorized();
                 }
