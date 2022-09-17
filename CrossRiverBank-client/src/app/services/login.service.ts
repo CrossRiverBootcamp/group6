@@ -17,6 +17,7 @@ export class LoginService {
   token: string = '';
   private card: BehaviorSubject<boolean> = new BehaviorSubject(this.isCustomer);
   private acountId: BehaviorSubject<number> = new BehaviorSubject(this.ID);
+  private tokenJWT: BehaviorSubject<string> = new BehaviorSubject(this.token);
 
   getCard() {
     return this.card.asObservable();
@@ -29,6 +30,12 @@ export class LoginService {
   }
   setAccountID(_id: number) {
     this.acountId.next(_id);
+  }
+  getToken() {
+    return this.tokenJWT.value;
+  }
+  setToken(_token: string) {
+    this.tokenJWT.next(_token);
   }
   logIn(loginUser: LoginDTO): Observable<LoginResultDTO> {
     debugger;

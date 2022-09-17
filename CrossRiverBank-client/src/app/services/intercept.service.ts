@@ -4,6 +4,7 @@ import { HttpRequest } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import { HttpHandler } from '@angular/common/http';
 import { HttpEvent } from '@angular/common/http';
+import { LoginService } from './login.service';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { HttpEvent } from '@angular/common/http';
 })
 export class InterceptService implements HttpInterceptor, OnDestroy {
 
-  constructor() { }
+  constructor(private _loginService:LoginService) { }
     ngOnDestroy(): void {
         throw new Error('Method not implemented.');
     }
@@ -21,11 +22,15 @@ export class InterceptService implements HttpInterceptor, OnDestroy {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     debugger;
-      const tokenreq = req.clone({ headers: req.headers.set('Authorization', 'Bearer '  ) });
-      return next.handle(tokenreq);
-    }
+    this.token=this._loginService.getToken()
+    if(this.token!=null){
+      const tokenreq = req.clone({ 
+        headers: req.headers.set('Authorization', 'Bearer '+this.token ) });
 
-  
+    return next.handle(tokenreq);
+    }
+return next.handle(req);
+}
 
   
 }

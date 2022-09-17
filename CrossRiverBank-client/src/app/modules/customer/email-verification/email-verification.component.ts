@@ -63,7 +63,7 @@ export class EmailVerificationComponent implements OnInit {
         else{
         this._loginService.setAccountID(res.accountID);
         this._loginService.setCard(true);
-        sessionStorage.setItem('token', res.token)
+        this._loginService.setToken(res.token);
         this._router.navigate(['/main']);
       }
     },

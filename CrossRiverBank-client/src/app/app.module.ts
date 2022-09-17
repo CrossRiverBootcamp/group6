@@ -4,8 +4,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CustomerModule } from './modules/customer/customer.module';
+import { LoginService } from './services/login.service';
+import { InterceptService } from './services/intercept.service';
 
 
 @NgModule({
@@ -20,7 +22,14 @@ import { CustomerModule } from './modules/customer/customer.module';
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    LoginService,{
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptService,
+      multi: true
+     }],
+  
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }
