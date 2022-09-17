@@ -13,6 +13,8 @@ using Microsoft.Data.SqlClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog();
+
 IConfigurationRoot configuration = new
             ConfigurationBuilder().AddJsonFile("appsettings.json",
             optional: false, reloadOnChange: true).Build();
@@ -30,7 +32,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
     persistence.ConnectionBuilder(
         connectionBuilder: () =>
         {
-            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiri"));
+            return new SqlConnection(builder.Configuration.GetConnectionString("CustomerAccountNSBConnectionMiriam"));
         });
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
@@ -49,18 +51,17 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 #endregion
 
 
-builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
-builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiri"));
+builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
 builder.Services.AddScoped<IAccountService, AccountService>(); 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
 builder.Services.AddScoped<IOperationsHistoryService, OperationsHistoryService>();
 builder.Services.AddScoped<IEmailVerificationService, EmailVerificationService>();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
 var key = Encoding.ASCII.GetBytes(configuration["JWT:key"]);
 builder.Services.AddAuthentication(x =>
 {
@@ -134,7 +135,7 @@ app.UseCors(options => {
     options.AllowAnyMethod();
     options.AllowAnyHeader();
 });
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

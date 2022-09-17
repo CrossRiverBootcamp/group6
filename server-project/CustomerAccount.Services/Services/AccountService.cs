@@ -127,7 +127,7 @@ namespace CustomerAccount.Services.Services;
             //create claims details based on the user information
             var claims = new[] {
                         new Claim("AccountID",accountID.ToString()),
-                        new Claim("Role", "customer")
+                        new Claim(ClaimTypes.Role, "customer")
                     };
             var issuer = "https://exemple.com";
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:key"]));
@@ -136,7 +136,7 @@ namespace CustomerAccount.Services.Services;
                 issuer,
                 issuer,
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(10),
+                expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: signIn);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

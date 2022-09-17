@@ -25,12 +25,13 @@ public class EmailVerificationService : IEmailVerificationService
             {
                 //check if this email tried allready to verifi
                 bool emailVerified = await _emailVerificationDal.CheckEmailVerifiedByEmail(emailVerificationAddress);
-                Guid verificationCode = Guid.NewGuid();
-               string verifiCode=verificationCode.ToString("D4");
+                //Guid verificationCode = Guid.NewGuid();
+               //string verifiCode=verificationCode.ToString(); 
+                var code = new Random(Guid.NewGuid().GetHashCode()).Next(0, 9999).ToString("D4");
                 EmailVerification emailVerification = new EmailVerification()
                 {
                     Email = emailVerificationAddress,
-                    VerificationCode = verifiCode,
+                    VerificationCode = code,
                     ExpirationTime = DateTime.UtcNow.AddMinutes(10),
                 };
                 if (!emailVerified)
@@ -41,7 +42,7 @@ public class EmailVerificationService : IEmailVerificationService
                 {
                     await _emailVerificationDal.UpdateEmailVerification(emailVerification);
                 }
-                await this.SendEmail(emailVerificationAddress, verifiCode);
+                await this.SendEmail(emailVerificationAddress, code);
             }
             else
             {

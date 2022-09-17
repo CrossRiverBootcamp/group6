@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NServiceBus;
 using Transaction.Services.Interfaces;
@@ -6,7 +7,7 @@ using Transaction.Services.Models;
 using Transaction.WebAPI.DTOs;
 
 namespace Transaction.WebAPI.Controllers;
-
+[Authorize(Roles = "customer")]
 [Route("api/[controller]")]
 [ApiController]
 public class TransactionController : ControllerBase
