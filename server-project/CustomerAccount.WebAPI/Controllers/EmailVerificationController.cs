@@ -1,5 +1,7 @@
 ﻿using CustomerAccount.Services.Interfaces;
+using Messages.Commands;
 using Microsoft.AspNetCore.Mvc;
+using NServiceBus;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -10,12 +12,13 @@ namespace CustomerAccount.WebAPI.Controllers
     public class EmailVerificationController : ControllerBase
     {
         private readonly IEmailVerificationService _emailVerificationService;
-        public EmailVerificationController(IEmailVerificationService emailVerificationService)
+        private readonly IMessageSession _session;
+
+        public EmailVerificationController(IEmailVerificationService emailVerificationService)//, IMessageSession session)
         {
             _emailVerificationService = emailVerificationService;
         }
-        
-  
+
 
         // POST api/<EmailVerificationController>
         [HttpPost]

@@ -16,10 +16,9 @@ namespace CustomerAccount.WebAPI.NSB.Handlers
         }
         public async Task Handle(DeleteExpiredCodes message, IMessageHandlerContext context)
         {
-            //should be the info???
-            //o
+
             _log.Info($"recieved ${typeof(DeleteExpiredCodes)} on ${DateTime.UtcNow}");
-            int numRowsEffected = await  _emailVerificationService.DeleteExpiredCodes();
+            int numRowsEffected =await  _emailVerificationService.DeleteExpiredCodes();
             if (numRowsEffected>0)
             {
                 _log.Info($"{numRowsEffected} rows is deleted");

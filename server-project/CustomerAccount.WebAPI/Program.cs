@@ -48,7 +48,6 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 });
 #endregion
 
-
 builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
