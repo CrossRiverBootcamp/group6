@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
-using CustomerAccount.Services.Exceptions;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
+using CustomExceptions;
 using Messages.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

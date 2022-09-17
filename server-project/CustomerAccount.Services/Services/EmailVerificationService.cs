@@ -1,7 +1,7 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
-using CustomerAccount.Services.Exceptions;
 using CustomerAccount.Services.Interfaces;
+using CustomExceptions;
 using System.Net.Mail;
 
 namespace CustomerAccount.Services.Services;
@@ -74,6 +74,10 @@ public class EmailVerificationService : IEmailVerificationService
     {
         return await _emailVerificationDal.CheckVerification(email, verifiCode);
 
+    }
+    public Task<int> DeleteExpiredCodes()
+    {
+        return _emailVerificationDal.DeleteExpiredCodes();
     }
 
 }

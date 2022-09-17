@@ -61,7 +61,12 @@ public class EmailVerificationDal : IEmailVerificationDal
         }
         return true;
     }
-
+    public async Task<int> DeleteExpiredCodes()
+    {
+        using var _context = _contextFactory.CreateDbContext();
+        int rowEffected = await _context.Database.ExecuteSqlRawAsync("exec cleanExpiredCodeRows");
+        return rowEffected;
+    }
 
 
 }
