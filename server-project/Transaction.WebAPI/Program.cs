@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using Transaction.Services.Extension;
 using Transaction.Services.Interfaces;
 using Transaction.Services.Services;
+using Transaction.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
@@ -58,7 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseHandlerErrorsMiddleware();
 app.UseHttpsRedirection();
 
 app.UseCors(options => {
