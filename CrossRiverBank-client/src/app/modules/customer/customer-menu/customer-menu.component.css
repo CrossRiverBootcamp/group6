@@ -37,10 +37,14 @@ ul {
     text-decoration: none;
   }
   
-  li a:hover:not(.active) {
+  li a:hover:not(.active),li .mat-icon:hover:not(.active) {
     color: #2f62be;
   }
   
   .active {
     background-color: rgb(141,194, 249);
   } 
+  li .transactionHistory{
+    padding-top: 30px;
+  }
+  

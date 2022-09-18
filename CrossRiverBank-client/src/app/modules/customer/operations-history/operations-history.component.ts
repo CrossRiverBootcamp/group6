@@ -15,21 +15,12 @@ import { ForeignAccountInfoComponent } from '../foreign-account-info/foreign-acc
   selector: 'app-operations-history',
   templateUrl: './operations-history.component.html',
   styleUrls: ['./operations-history.component.css'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
 })
 export class OperationsHistoryComponent implements OnInit {
   dataSource = new MatTableDataSource<OperationsHistoryDTO>();
   displayedColumns: string[] = ['credit', 'accountId', 'amount', 'balance', 'date'];
-  columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   numOfOperaitons: number = 0;
   pageSizeOptions = [2, 4, 6];
-  index1 = 0;
   currentAccountID = 0;
   pageNumber = 0;
   numberOfRecords = 4;
