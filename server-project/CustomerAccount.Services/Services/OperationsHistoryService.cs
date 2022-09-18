@@ -48,18 +48,10 @@ public class OperationsHistoryService : IOperationsHistoryService
 
         await _operationsHistoryDal.AddOperationsHistorys(operationsHistoryFrom, operationsHistoryTO);
     }
-    public async Task<List<OperationsHistoryModel>> GetOperations(int id, int page, int records)
+    public async Task<List<OperationsHistoryModel>> GetOperations(int accountID, int page, int records)
     {
-        try
-        {
-            List<OperationsHistory> ls = await _operationsHistoryDal.GetOperations(id, page, records);
-
-            return _mapper.Map<List<OperationsHistory>, List<OperationsHistoryModel>>(ls);
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
+        List<OperationsHistory> operationsHistories = await _operationsHistoryDal.GetOperations(accountID, page, records);
+        return _mapper.Map<List<OperationsHistory>, List<OperationsHistoryModel>>(operationsHistories);
     }
     public Task<int> GetNumOfOperations(int accountID)
     {

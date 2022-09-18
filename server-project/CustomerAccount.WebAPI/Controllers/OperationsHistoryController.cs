@@ -36,10 +36,6 @@ public class OperationsHistoryController : ControllerBase
     public async Task<ActionResult<int>> GetNumOfOperation(int accountID)
     {
         int numOfOperations = await _operationsHistoryService.GetNumOfOperations(accountID);
-        if (numOfOperations == 0)
-        {
-            return NoContent();
-        }
         return Ok(numOfOperations);
     }
 }
