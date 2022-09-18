@@ -5,9 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CustomerModule } from './modules/customer/customer.module';
 import { LoginService } from './services/login.service';
 import { InterceptService } from './services/intercept.service';
+import { CustomerModule } from './modules/customer/customer.module';
 
 
 @NgModule({
