@@ -1,7 +1,7 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
-using CustomExceptions;
+using System.Net;
 using System.Net.Mail;
 
 namespace CustomerAccount.Services.Services;
@@ -42,24 +42,24 @@ public class EmailVerificationService : IEmailVerificationService
         }
         await this.SendEmail(emailVerificationAddress, code);
         return true;
-
-
-
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-        String emailAddress = new string(email);
-        MailAddress from = new MailAddress("212648802@mby.co.il");
-        MailAddress to = new MailAddress(emailAddress);
-        MailMessage mail = new MailMessage(from, to);
-        SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
-        mail.Subject = "CrossRiverBank  your verification code is below";
-        mail.Body = verificationCode;
-        SmtpServer.Port = 587;
-        SmtpServer.Credentials = new System.Net.NetworkCredential("212648802@mby.co.il", "Student@264");
-        SmtpServer.EnableSsl = true;
-        SmtpServer.UseDefaultCredentials = false;
-        SmtpServer.Send(mail);
+        string from = "crbemail6@gmail.com";
+        string password = "0548433752";
+        MailMessage message = new MailMessage();
+        message.From = new MailAddress(from);
+        message.Subject = "CrossRiverBank  your verification code is below";
+        message.To.Add(new MailAddress(email));
+        message.Body = "<html><body> " + verificationCode + " </body></html>";
+        message.IsBodyHtml = true;
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential(from, password),
+            EnableSsl = true,
+        };
+        smtpClient.Send(message); ;
     }
     public Task<bool> CheckVerification(string email, string verifiCode)
     {

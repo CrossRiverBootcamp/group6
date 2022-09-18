@@ -1,5 +1,6 @@
 ﻿using CustomExceptions;
 using System.Net;
+using System.Net.Mail;
 
 namespace CustomerAccount.WebAPI.Middlewares;
 public class HandlerErrorsMiddleware
@@ -49,6 +50,9 @@ public class HandlerErrorsMiddleware
                 case NotSavedException e:
                     await response.WriteAsync("false");
                     // return false
+                    break;
+                case SmtpException e:
+                    await response.WriteAsync(e.Message);
                     break;
                 default:
                     // unhandled error
