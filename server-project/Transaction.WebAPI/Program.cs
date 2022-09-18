@@ -1,7 +1,6 @@
 using Messages.Commands;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using NServiceBus;
 using Serilog;
 using System.Data.SqlClient;
@@ -67,7 +66,6 @@ builder.Services.AddAuthentication(x =>
 })
 .AddJwtBearer(x =>
 {
-
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
@@ -77,7 +75,7 @@ builder.Services.AddAuthentication(x =>
     };
 });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerSettings(); 
+builder.Services.AddSwaggerSettings();
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration
             (configuration).CreateLogger();
 var app = builder.Build();

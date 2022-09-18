@@ -12,6 +12,5 @@ public interface IAccountDal
     Task UpdateAccounts(Account accountFrom, Account accountTo);
     Task<Account?> FindUpdateAccount(int ID);
     Task<int> GetBalanceByID(int accountID);
-
 }
 

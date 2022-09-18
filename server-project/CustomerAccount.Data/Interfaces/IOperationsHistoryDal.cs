@@ -7,5 +7,4 @@ public interface IOperationsHistoryDal
     Task AddOperationsHistorys(OperationsHistory operationsHistoryFrom, OperationsHistory operationsHistoryTo);
     Task<List<OperationsHistory>> GetOperations(int id, int page, int records);
     Task<int> GetNumOfOperations(int id);
-
 }

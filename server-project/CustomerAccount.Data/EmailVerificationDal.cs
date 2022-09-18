@@ -76,7 +76,5 @@ public class EmailVerificationDal : IEmailVerificationDal
         int rowEffected = await _context.Database.ExecuteSqlRawAsync("exec cleanExpiredCodeRows");
         return rowEffected;
     }
-
-
 }
 

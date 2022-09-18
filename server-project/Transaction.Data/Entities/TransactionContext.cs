@@ -1,15 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+namespace Transaction.Data.Entities;
 
-namespace Transaction.Data.Entities
+public class TransactionContext : DbContext
 {
-    public class TransactionContext :DbContext
+    public TransactionContext(DbContextOptions<TransactionContext> options) : base(options)
     {
-        public TransactionContext(DbContextOptions<TransactionContext> options) : base(options)
-        {
-            // Database.EnsureCreated();
-        }
-
-        public DbSet<Transaction> Transactions { get; set; }
+        
     }
+
+    public DbSet<Transaction> Transactions { get; set; }
 }

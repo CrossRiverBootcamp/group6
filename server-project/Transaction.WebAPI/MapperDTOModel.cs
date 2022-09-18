@@ -4,7 +4,7 @@ using Transaction.WebAPI.DTOs;
 
 namespace Transaction.WebAPI;
 
-    public class MapperDTOModel : Profile
+public class MapperDTOModel : Profile
 {
     public MapperDTOModel()
     {

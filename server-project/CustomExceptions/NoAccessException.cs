@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace CustomExceptions;
 
-namespace CustomExceptions
+public class NoAccessException : Exception
 {
-    public class NoAccessException : Exception
+    public NoAccessException(string? message) : base(message)
     {
-        public NoAccessException(string? message) : base(message)
-        {
-        }
     }
 }

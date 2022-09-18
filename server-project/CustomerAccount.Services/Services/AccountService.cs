@@ -3,7 +3,6 @@ using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
-using CustomExceptions;
 using Messages.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -45,7 +44,6 @@ public class AccountService : IAccountService
         Account account = await _accountDal.GetAccountInfo(accountID);
         return _mapper.Map<AccountModel>(account);
     }
-
     public async Task<LoginResultModel?> Login(string email, string password)
     {
         string? salt = await _accountDal.GetSaltByEmail(email);
@@ -67,7 +65,6 @@ public class AccountService : IAccountService
         };
         return loginResult;
     }
-
     public async Task<string?> UpdateAccounts(UpdateBalance updateBalanceModel)
     {
         //check correctness of accounts ids
@@ -89,7 +86,6 @@ public class AccountService : IAccountService
         await _accountDal.UpdateAccounts(accountFrom, accountTo);
         return null;
     }
-
     public async Task<string> GetToken(int accountID)
     {
         //create claims details based on the user information

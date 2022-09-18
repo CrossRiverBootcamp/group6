@@ -45,7 +45,6 @@ internal class TransactionPolicy : Saga<TransferData>, IAmStartedByMessages<Tran
         };
         await context.Send(update);
     }
-
     public async Task Handle(AccountsUpdated message, IMessageHandlerContext context)
     {
         log.Info($"recieved AccountUpdated id:{message.TransactionID} status: {message.Success}");

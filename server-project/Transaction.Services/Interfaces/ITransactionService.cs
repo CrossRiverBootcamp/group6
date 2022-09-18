@@ -1,12 +1,12 @@
 ﻿using NServiceBus;
 using Transaction.Services.Models;
 
-namespace Transaction.Services.Interfaces
+namespace Transaction.Services.Interfaces;
+
+public interface ITransactionService
 {
-    public interface ITransactionService
-    {
-        Task UpdateStatusTransaction(StausModel staus);
-        Task<bool> AddTransaction(TransactionModel transactionModel, IMessageSession session);
-        Task<int> AddTransactionToDB(TransactionModel transactionModel);
-    }
+    Task UpdateStatusTransaction(StausModel staus);
+    Task<bool> AddTransaction(TransactionModel transactionModel, IMessageSession session);
+    Task<int> AddTransactionToDB(TransactionModel transactionModel);
 }
+

@@ -41,8 +41,5 @@ public class Program
            });
         Console.ReadKey();
         await endpointInstance.Stop();
-
-
-
     }
 }

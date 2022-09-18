@@ -3,7 +3,6 @@ using CustomerAccount.Services.Services;
 using CustomerAccount.Services.Extensions;
 using CustomerAccount.WebAPI.Middlewares;
 using CustomerAccount.Services.options;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -54,8 +53,8 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 builder.Host.UseSerilog();
 builder.Services.Configure<Email>(builder.Configuration.GetSection(nameof(Email)));
 // Add services to the container.
-builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiri"));
-builder.Services.AddScoped<IAccountService, AccountService>(); 
+builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
 builder.Services.AddScoped<IOperationsHistoryService, OperationsHistoryService>();
@@ -95,10 +94,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHandlerErrorsMiddleware();
-
-
 app.UseHttpsRedirection();
-app.UseCors(options => {
+app.UseCors(options =>
+{
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();
