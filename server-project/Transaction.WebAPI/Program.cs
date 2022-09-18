@@ -27,14 +27,13 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 
     var dialect = persistence.SqlDialect<SqlDialect.MsSqlServer>();
     var subscriptions = persistence.SubscriptionSettings();
-    subscriptions.CacheFor(TimeSpan.FromMinutes(1));
+    subscriptions.CacheFor(TimeSpan.FromMinutes(5));
     dialect.Schema("nsb");
 
     var transport = endpointConfiguration.UseTransport<RabbitMQTransport>();
     transport.ConnectionString(rabbitMQConnection);
     transport.UseConventionalRoutingTopology(QueueType.Quorum);
     var routing = transport.Routing();
-    //change to a veriable
     routing.RouteToEndpoint(typeof(UpdateBalance), destination: "CustomerAccount");
 
     var conventions = endpointConfiguration.Conventions();

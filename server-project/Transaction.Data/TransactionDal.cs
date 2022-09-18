@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CustomExceptions;
+using Microsoft.EntityFrameworkCore;
 
 using Transaction.Data.Entities;
 using Transaction.Data.Interfaces;
@@ -23,25 +24,23 @@ public class TransactionDal : ITransactionDal
         }
         catch
         {
-            throw new Exception("didnt add transation");
+            throw new NotSavedException("didnt add transation");
         }
     }
-    //guid-אבטחה
-    //dbcontex
-    public async Task<bool> UpdateStatus(int transactionID, Status status, string? failureReason)
+
+    public async Task UpdateStatus(int transactionID, Status status, string? failureReason)
     {
         using var _context = _factory.CreateDbContext();
         try
         {
-            var transaction = await _context.Transactions.FirstAsync(t => t.TransactionID == transactionID).ConfigureAwait(false);
+            var transaction = await _context.Transactions.FirstAsync(t => t.TransactionID == transactionID);
             transaction.Status = status;
             transaction.FailureReason = failureReason;
             await _context.SaveChangesAsync();
-            return true;
         }
         catch
         {
-            return false;
+            throw new NoAccessException("fail to update status of transaction");
         }
     }
 }

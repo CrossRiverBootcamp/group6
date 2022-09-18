@@ -66,6 +66,9 @@ public class HandlerErrorsMiddleware
                     await response.WriteAsync("Oppps... \n not valied!");
                     response.StatusCode = 401;
                     break;
+                case NsbNotPublishedException e:
+                    await response.WriteAsync("false");
+                    break;
                 default:
                     // unhandled error
                     await response.WriteAsync("Oppps... \n we are trying to fix the problem!");

@@ -28,8 +28,9 @@ public class CustomerService : ICustomerService
         bool duplicated = await _accountDal.EmailExists(accountModel.Email);
         //email exsits
         if (duplicated)
-            throw new DuplicatedException("email address in use!!");
-
+        {
+            return false;
+        }
         accountModel.Balance = 1000;
         accountModel.OpenDate = DateTime.UtcNow;
         Account account = _mapper.Map<Account>(accountModel);
@@ -40,7 +41,7 @@ public class CustomerService : ICustomerService
         customer.Password = _passwordHashService.HashPassword(customer.Password, customer.Salt, 1000, 8);
         
        bool success = await _accountDal.CreateAccount(account, customer);
-        return success;
+       return success;
        
 
     }

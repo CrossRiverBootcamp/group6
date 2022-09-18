@@ -1,5 +1,6 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
+using CustomExceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerAccount.Data;
@@ -16,15 +17,15 @@ public class OperationsHistoryDal : IOperationsHistoryDal
     public async Task AddOperationsHistorys(OperationsHistory operationsHistoryFrom, OperationsHistory operationsHistoryTo)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        await _contect.OperationsHistorys.AddAsync(operationsHistoryFrom);
-        await _contect.OperationsHistorys.AddAsync(operationsHistoryTo);
         try
         {
+            await _contect.OperationsHistorys.AddAsync(operationsHistoryFrom);
+            await _contect.OperationsHistorys.AddAsync(operationsHistoryTo);
             await _contect.SaveChangesAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw new NotSavedException("fail to add to operation history");
         }
     }
 
@@ -51,9 +52,9 @@ public class OperationsHistoryDal : IOperationsHistoryDal
                                Balance = toOpt.Balance,
                                OperationTime = toOpt.OperationTime
                            };
-          var result = nextPage.Skip(position)
-                     .Take(records)
-                     .ToList();
+            var result = nextPage.Skip(position)
+                       .Take(records)
+                       .ToList();
 
 
             return result;

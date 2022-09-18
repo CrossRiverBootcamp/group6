@@ -12,9 +12,9 @@ namespace Transaction.WebAPI.Controllers;
 [ApiController]
 public class TransactionController : ControllerBase
 {
-    private ITransactionService _service;
-    private IMapper _mapper;
-    private IMessageSession _session;
+    private readonly ITransactionService _service;
+    private readonly IMapper _mapper;
+    private readonly IMessageSession _session;
 
     public TransactionController(ITransactionService service, IMessageSession session)
     {
@@ -29,16 +29,10 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<bool>> AddTransaction(AddTransactionDTO transactionDTO)
     {
-        try
-        {
+       
             TransactionModel model = _mapper.Map<TransactionModel>(transactionDTO);
             bool result = await _service.AddTransaction(model, _session);
             return Ok(result);
-        }
-        catch
-        {
-            return Ok(false);
-        }
 
     }
 }

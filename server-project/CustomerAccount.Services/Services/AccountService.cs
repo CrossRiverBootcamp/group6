@@ -49,48 +49,45 @@ public class AccountService : IAccountService
     public async Task<LoginResultModel?> Login(string email, string password)
     {
         string? salt = await _accountDal.GetSaltByEmail(email);
-        if(salt is null)
+        if (salt is null)
         {
             return null;
         }
         string hashPassword = _passwordHashService.HashPassword(password, salt, 1000, 8);
         int? accountID = await _accountDal.Login(email, hashPassword);
-        if(accountID is null)
+        if (accountID is null)
         {
             return null;
         }
         string token = await GetToken(accountID.Value);
         LoginResultModel loginResult = new LoginResultModel()
         {
-            AccountID = accountID,
+            AccountID = accountID.Value,
             Token = token,
         };
         return loginResult;
     }
 
-    public async Task<string> UpdateAccounts(UpdateBalance updateBalanceModel)
+    public async Task<string?> UpdateAccounts(UpdateBalance updateBalanceModel)
     {
-        //to add to handler imessagehadlercontext 
-        try
-        {
-            //not null obj
-            if (updateBalanceModel == null) { return "missing deatels"; }
-            //check correctness of accounts ids
-            Account accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
-            Account accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
-            if (accountFrom == null || accountTo == null) { return "not the right number account"; }
-            // check sender balance
-            if (accountFrom.Balance < updateBalanceModel.Amount) { return "not inof mony in the account"; }
-            //update balance
-            accountFrom.Balance -= updateBalanceModel.Amount;
-            accountTo.Balance += updateBalanceModel.Amount;
-            return await _accountDal.UpdateAccounts(accountFrom, accountTo);
-        }
-        catch (Exception ex)
-        {
-            throw ex;
+        //check correctness of accounts ids
+        Account? accountFrom = await _accountDal.FindUpdateAccount(updateBalanceModel.FromAccountID);
+        Account? accountTo = await _accountDal.FindUpdateAccount(updateBalanceModel.ToAccountID);
+        if (accountFrom is null || accountTo is null) {
+            return "not the right number account";
         }
 
+        // check sender balance
+        if (accountFrom.Balance < updateBalanceModel.Amount) 
+        { 
+            return "not enogh money in the account"; 
+        }
+
+        //update balance
+        accountFrom.Balance -= updateBalanceModel.Amount;
+        accountTo.Balance += updateBalanceModel.Amount;
+        await _accountDal.UpdateAccounts(accountFrom, accountTo);
+        return null;
     }
 
     public async Task<string> GetToken(int accountID)

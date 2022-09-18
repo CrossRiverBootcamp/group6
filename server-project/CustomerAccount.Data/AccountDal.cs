@@ -44,7 +44,7 @@ public class AccountDal : IAccountDal
 
 
 
-    public async Task<Account> GetAccountInfo(int accountID)
+    public async Task<Account?> GetAccountInfo(int accountID)
     {
         using var _contect = _contextFactory.CreateDbContext();
         Account? account;
@@ -59,40 +59,38 @@ public class AccountDal : IAccountDal
 
         if (account is null)
         {
-            throw new KeyNotFoundException("fail to get accountInfo by accountID");
+            return null;
         }
         return account;
     }
 
 
-    public async Task<Account> FindUpdateAccount(int ID)
+    public async Task<Account?> FindUpdateAccount(int ID)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        Account acccountToUpDate = await _contect.Accounts.Where(a => a.ID == ID).FirstOrDefaultAsync();
-        if (acccountToUpDate is null)
+        Account? acccountToUpDate;
+        try
         {
-            return null;
+           acccountToUpDate = await _contect.Accounts.Where(a => a.ID == ID).FirstOrDefaultAsync();
+        }
+        catch
+        {
+            throw new NoAccessException("coldnt access to get the account to update");
         }
         return acccountToUpDate;
-
     }
-    public async Task<string> UpdateAccounts(Account accountFrom, Account accountTo)
+    public async Task UpdateAccounts(Account accountFrom, Account accountTo)
     {
         using var _contect = _contextFactory.CreateDbContext();
         try
         {
-            if (accountFrom == null || accountTo == null)
-            {
-                return "not enough details";
-            }
             _contect.Accounts.Update(accountTo);
             _contect.Accounts.Update(accountFrom);
             await _contect.SaveChangesAsync();
-            return null;
         }
         catch
         {
-            return "the transaction systen had a temporry bug try again later";
+            throw new NoAccessException("failed to update accounts");
         }
 
 
@@ -136,13 +134,12 @@ public class AccountDal : IAccountDal
         using var _context = _contextFactory.CreateDbContext();
         try
         {
-
             Account account = await _context.Accounts.Where(a => a.ID == accountID).FirstAsync();
             return account.Balance;
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw new NoAccessException("failed to get balance by ID");
         }
     }
 
