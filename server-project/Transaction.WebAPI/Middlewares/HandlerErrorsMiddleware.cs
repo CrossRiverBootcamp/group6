@@ -1,8 +1,8 @@
 ﻿using CustomExceptions;
 using System.Net;
-using System.Net.Mail;
 
-namespace CustomerAccount.WebAPI.Middlewares;
+namespace Transaction.WebAPI.Middlewares;
+
 public class HandlerErrorsMiddleware
 {
     private readonly RequestDelegate _next;
@@ -45,14 +45,15 @@ public class HandlerErrorsMiddleware
                 case NoAccessException e:
                     // not found error
                     await response.WriteAsync("Oppps... \n no access!");
-                    response.StatusCode = 500;
+                    response.StatusCode = 401;
+
                     break;
                 case NotSavedException e:
                     await response.WriteAsync("false");
                     // return false
                     break;
-                case SmtpException e:
-                    await response.WriteAsync(e.Message);
+                case NsbNotPublishedException e:
+                    await response.WriteAsync("false");
                     break;
                 default:
                     // unhandled error
@@ -72,4 +73,3 @@ public static class HandlerErrorsMiddlewareExtensions
         return builder.UseMiddleware<HandlerErrorsMiddleware>();
     }
 }
-

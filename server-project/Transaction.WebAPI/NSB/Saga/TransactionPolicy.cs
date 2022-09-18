@@ -10,7 +10,7 @@ internal class TransactionPolicy : Saga<TransferData>, IAmStartedByMessages<Tran
        IHandleMessages<AccountsUpdated>
 {
     static ILog log = LogManager.GetLogger<TransactionPolicy>();
-    private ITransactionService _transactionService;
+    private readonly ITransactionService _transactionService;
 
     public TransactionPolicy(ITransactionService transactionService)
     {
@@ -32,15 +32,7 @@ internal class TransactionPolicy : Saga<TransferData>, IAmStartedByMessages<Tran
             FromAccountId = message.FromAccountID,
             Amount = message.Amount,
         };
-        int id;
-        try
-        {
-            id = await _transactionService.AddTransactionToDB(transactionModel);
-        }
-        catch(Exception ex)
-        {
-            throw ex;
-        }
+        int id = await _transactionService.AddTransactionToDB(transactionModel);
         #endregion 
         //update balance-command;
         UpdateBalance update = new UpdateBalance
@@ -64,7 +56,7 @@ internal class TransactionPolicy : Saga<TransferData>, IAmStartedByMessages<Tran
             Success = message.Success,
             FailureReason = message.FailureResult
         };
-        bool successUpdateStatus = await _transactionService.UpdateStatusTransaction(status);
+        await _transactionService.UpdateStatusTransaction(status);
         log.Info($"updateStatus status : {status.Success}");
         MarkAsComplete();
     }

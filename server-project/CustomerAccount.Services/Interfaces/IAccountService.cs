@@ -4,7 +4,7 @@ using Messages.Commands;
 namespace CustomerAccount.Services.Interfaces;
 public interface IAccountService
 {
-    Task<AccountModel> GetAccountInfo(int AccountID);  
-    Task<LoginResultModel> Login(string email, string Password);
-    Task<string> UpdateAccounts(UpdateBalance updateBalanceModel);
+    Task<AccountModel?> GetAccountInfo(int AccountID);  
+    Task<LoginResultModel?> Login(string email, string Password);
+    Task<string?> UpdateAccounts(UpdateBalance updateBalanceModel);
 }

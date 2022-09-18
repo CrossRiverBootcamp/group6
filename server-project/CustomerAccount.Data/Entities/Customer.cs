@@ -16,7 +16,7 @@ namespace CustomerAccount.Data.Entities;
         [Required]
         public string Password { get; set; }
         [Required]
-        public string? Salt { get; set; }
+        public string Salt { get; set; }
         [EmailAddress]
         [Required]
         public string Email { get; set; }

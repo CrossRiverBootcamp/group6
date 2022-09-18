@@ -5,8 +5,6 @@ using CustomerAccount.WebAPI.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace CustomerAccount.WebAPI.Controllers;
 
 [Authorize(Roles = "customer")]
@@ -19,42 +17,26 @@ public class OperationsHistoryController : ControllerBase
 
     public OperationsHistoryController(IOperationsHistoryService operationsHistoryService)
     {
-        _operationsHistoryService = operationsHistoryService;
         var config = new MapperConfiguration(cfg =>
         {
             cfg.AddProfile<MapperDtoModels>();
         });
         _mapper = config.CreateMapper();
+        _operationsHistoryService = operationsHistoryService;
     }
     // GET api/<OperationsHistory>/5
     [HttpGet("OperationsHistory")]
-    public async Task<ActionResult<List<OperationsHistoryDTO>>> Get(int id, int page, int records)
+    public async Task<ActionResult<List<OperationsHistoryDTO>>> Get(int accountID, int page, int records)
     {
-        try
-        {
-            List<OperationsHistoryModel> lsModel = await _operationsHistoryService.GetOperations(id, page, records);
-            List<OperationsHistoryDTO> results = _mapper.Map<List<OperationsHistoryModel>, List<OperationsHistoryDTO>>(lsModel);
-            return Ok(results);
-
-        }
-        catch
-        {
-            return NotFound();
-        }
+        List<OperationsHistoryModel> operationsModelList = await _operationsHistoryService.GetOperations(accountID, page, records);
+        List<OperationsHistoryDTO> operations = _mapper.Map<List<OperationsHistoryModel>, List<OperationsHistoryDTO>>(operationsModelList);
+        return Ok(operations);
     }
     [HttpGet("{accountID}")]
     public async Task<ActionResult<int>> GetNumOfOperation(int accountID)
     {
         int numOfOperations = await _operationsHistoryService.GetNumOfOperations(accountID);
-        if (numOfOperations == 0)
-        {
-            return NoContent();
-        }
         return Ok(numOfOperations);
     }
-
-
-
-
 }
 

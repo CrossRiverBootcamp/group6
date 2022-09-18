@@ -1,5 +1,6 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
+using CustomExceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerAccount.Data;
@@ -16,66 +17,63 @@ public class OperationsHistoryDal : IOperationsHistoryDal
     public async Task AddOperationsHistorys(OperationsHistory operationsHistoryFrom, OperationsHistory operationsHistoryTo)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        await _contect.OperationsHistorys.AddAsync(operationsHistoryFrom);
-        await _contect.OperationsHistorys.AddAsync(operationsHistoryTo);
         try
         {
+            await _contect.OperationsHistorys.AddAsync(operationsHistoryFrom);
+            await _contect.OperationsHistorys.AddAsync(operationsHistoryTo);
             await _contect.SaveChangesAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw new NotSavedException("fail to add to operation history");
         }
     }
 
-    public async Task<List<OperationsHistory>> GetOperations(int id, int page, int records)
+    public async Task<List<OperationsHistory>> GetOperations(int accountID, int page, int records)
     {
+
+        using var _contect = _contextFactory.CreateDbContext();
+
+        var position = page * records;
+
+        var nextPage = from toOpt in _contect.OperationsHistorys
+                       join fromOpt in _contect.OperationsHistorys
+                       on toOpt.TransactionID equals fromOpt.TransactionID
+                       where fromOpt.AccountId == accountID && toOpt.AccountId != fromOpt.AccountId
+                       orderby fromOpt.OperationTime
+                       select new OperationsHistory()
+                       {
+                           ID = fromOpt.ID,
+                           AccountId = toOpt.AccountId,
+                           TransactionID = fromOpt.TransactionID,
+                           Credit = fromOpt.Credit,
+                           TransactionAmount = fromOpt.TransactionAmount,
+                           Balance = fromOpt.Balance,
+                           OperationTime = fromOpt.OperationTime
+                       };
         try
         {
-            using var _contect = _contextFactory.CreateDbContext();
-
-            var position = page * records;
-
-            var nextPage = from toOpt in _contect.OperationsHistorys
-                           join fromOpt in _contect.OperationsHistorys
-                           on toOpt.TransactionID equals fromOpt.TransactionID
-                           where fromOpt.AccountId == id && toOpt.AccountId != fromOpt.AccountId
-                           orderby fromOpt.OperationTime
-                           select new OperationsHistory()
-                           {
-                               ID = toOpt.ID,
-                               AccountId = toOpt.AccountId,
-                               TransactionID = toOpt.TransactionID,
-                               Credit = toOpt.Credit,
-                               TransactionAmount = toOpt.TransactionAmount,
-                               Balance = toOpt.Balance,
-                               OperationTime = toOpt.OperationTime
-                           };
-          var result = nextPage.Skip(position)
-                     .Take(records)
-                     .ToList();
-
-
-            return result;
+            var operations = await nextPage.Skip(position)
+                            .Take(records)
+                            .ToListAsync();
+            return operations;
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw new NoAccessException("no access to get operations");
         }
     }
-    public async Task<int> GetNumOfOperations(int id)
+    public async Task<int> GetNumOfOperations(int accountID)
     {
         using var _context = _contextFactory.CreateDbContext();
         try
         {
-            return await _context.OperationsHistorys.Where(op => op.AccountId == id).CountAsync();
+            return await _context.OperationsHistorys.Where(op => op.AccountId == accountID).CountAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            throw;
+            throw new NoAccessException("no access to get num of operations");
         }
     }
-
-
 }
 

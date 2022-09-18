@@ -31,7 +31,6 @@ public class TransactionService : ITransactionService
             FromAccountID = transactionModel.FromAccountId,
             ToAccountID = transactionModel.ToAccountID,
             Amount = transactionModel.Amount
-
         };
         try
         {
@@ -45,22 +44,20 @@ public class TransactionService : ITransactionService
 
     }
 
-    public async Task<int> AddTransactionToDB(TransactionModel transactionModel)
+    public Task<int> AddTransactionToDB(TransactionModel transactionModel)
     {
         Data.Entities.Transaction transaction = _mapper.Map<Data.Entities.Transaction>(transactionModel);
         transaction.Status = Status.Processing;
         transaction.Date = DateTime.UtcNow;
-        int id = await _transactionDal.AddTransaction(transaction);
-        return id;
-
+        return _transactionDal.AddTransaction(transaction);
     }
-    public Task<bool> UpdateStatusTransaction(StausModel status)
+    public async Task UpdateStatusTransaction(StausModel status)
     {
         if (status.Success)
         {
-            return _transactionDal.UpdateStatus(status.TransactionID, Status.Success, null);
+            await _transactionDal.UpdateStatus(status.TransactionID, Status.Success, null);
         }
-        return _transactionDal.UpdateStatus(status.TransactionID, Status.Fail, status.FailureReason);
+        await _transactionDal.UpdateStatus(status.TransactionID, Status.Fail, status.FailureReason);
 
     }
 }

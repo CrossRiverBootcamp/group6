@@ -1,7 +1,6 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
-using CustomExceptions;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -17,64 +16,40 @@ public class EmailVerificationService : IEmailVerificationService
         _emailVerificationDal = emailVerificationDal;
         _accountDal = accountDal;
     }
-    public async Task AddEmailVerification(String emailVerificationAddress)
+    public async Task<bool> AddEmailVerification(String emailVerificationAddress)
     {
-        try
+        //check that this email is not  in use
+        bool exists = await _accountDal.EmailExists(emailVerificationAddress);
+        if (exists)
         {
-            //check that this  mail is not  in use
-            bool exists = await _accountDal.EmailExists(emailVerificationAddress);
-            if (!exists)
-            {
-                //check if this email tried allready to verifi
-                bool emailVerified = await _emailVerificationDal.CheckEmailVerifiedByEmail(emailVerificationAddress);
-                //Guid verificationCode = Guid.NewGuid();
-               //string verifiCode=verificationCode.ToString(); 
-                var code = new Random(Guid.NewGuid().GetHashCode()).Next(0, 9999).ToString("D4");
-                EmailVerification emailVerification = new EmailVerification()
-                {
-                    Email = emailVerificationAddress,
-                    VerificationCode = code,
-                    ExpirationTime = DateTime.UtcNow.AddMinutes(10),
-                };
-                if (!emailVerified)
-                {
-                    await _emailVerificationDal.AddEmailVerification(emailVerification);
-                }
-                else
-                {
-                    await _emailVerificationDal.UpdateEmailVerification(emailVerification);
-                }
-                await this.SendEmail(emailVerificationAddress, code);
-            }
-            else
-            {
-                throw new DuplicatedException("email address in use!!");
-            }
+            return false;
         }
-        catch (Exception ex)
+        //check if this email tried allready to verified
+        bool emailVerified = await _emailVerificationDal.CheckEmailVerifiedByEmail(emailVerificationAddress);
+        var code = new Random(Guid.NewGuid().GetHashCode()).Next(0, 9999).ToString("D4");
+        EmailVerification emailVerification = new EmailVerification()
         {
-            throw ex;
+            Email = emailVerificationAddress,
+            VerificationCode = code,
+            ExpirationTime = DateTime.UtcNow.AddMinutes(10),
+        };
+        if (!emailVerified)
+        {
+            await _emailVerificationDal.AddEmailVerification(emailVerification);
         }
-
+        else
+        {
+            await _emailVerificationDal.UpdateEmailVerification(emailVerification);
+        }
+        await this.SendEmail(emailVerificationAddress, code);
+        return true;
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-        /*MailAddress from = new MailAddress("212648802@mby.co.il");
-        MailAddress to = new MailAddress(email);
-        MailMessage mail = new MailMessage(from, to);
-        SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
-        mail.Subject = "CrossRiverBank  your verification code is below";
-        mail.Body = verificationCode;
-        SmtpServer.Port = 587;
-        //password
-        SmtpServer.Credentials = new System.Net.NetworkCredential("212648802@mby.co.il", "Student@264");
-        SmtpServer.EnableSsl = true;
-        SmtpServer.UseDefaultCredentials = false;
-        SmtpServer.Send(mail);*/
-        string fromMail = "sendemail081@gmail.com";
-        string fromPassword = "qsszgtsvvsukdxay";
+        string from = "crbemail6@gmail.com";
+        string password = "0548433752";
         MailMessage message = new MailMessage();
-        message.From = new MailAddress(fromMail);
+        message.From = new MailAddress(from);
         message.Subject = "CrossRiverBank  your verification code is below";
         message.To.Add(new MailAddress(email));
         message.Body = "<html><body> " + verificationCode + " </body></html>";
@@ -82,16 +57,14 @@ public class EmailVerificationService : IEmailVerificationService
         var smtpClient = new SmtpClient("smtp.gmail.com")
         {
             Port = 587,
-            Credentials = new NetworkCredential(fromMail, fromPassword),
+            Credentials = new NetworkCredential(from, password),
             EnableSsl = true,
         };
-        smtpClient.Send(message);
-
+        smtpClient.Send(message); ;
     }
-    public async Task<bool> CheckVerification(string email, string verifiCode)
+    public Task<bool> CheckVerification(string email, string verifiCode)
     {
-        return await _emailVerificationDal.CheckVerification(email, verifiCode);
-
+        return _emailVerificationDal.CheckVerification(email, verifiCode);
     }
     public Task<int> DeleteExpiredCodes()
     {

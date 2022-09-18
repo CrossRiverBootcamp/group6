@@ -1,5 +1,6 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
+using CustomExceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerAccount.Data;
@@ -14,34 +15,42 @@ public class EmailVerificationDal : IEmailVerificationDal
     public async Task AddEmailVerification(EmailVerification emailVerification)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        await _contect.EmailVerifications.AddAsync(emailVerification);
         try
         {
+            await _contect.EmailVerifications.AddAsync(emailVerification);
             await _contect.SaveChangesAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw new NotSavedException("faild to save new emailVerfication");
         }
     }
     public async Task UpdateEmailVerification(EmailVerification emailVerification)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        _contect.EmailVerifications.Update(emailVerification);
         try
         {
+            _contect.EmailVerifications.Update(emailVerification);
             await _contect.SaveChangesAsync();
         }
-        catch (Exception ex)
+        catch
         {
-            throw ex;
+            throw new NotSavedException("faild to save update for emailVerfication");
         }
     }
     public async Task<bool> CheckEmailVerifiedByEmail(string email)
     {
         using var _contect = _contextFactory.CreateDbContext();
-        var emailVerification = await _contect.EmailVerifications.Where(em => em.Email.Equals(email)).FirstOrDefaultAsync();
-        if(emailVerification == null)
+        EmailVerification? emailVerification;
+        try
+        {
+             emailVerification = await _contect.EmailVerifications.Where(em => em.Email.Equals(email)).FirstOrDefaultAsync();
+        }
+        catch
+        {
+            throw new NoAccessException("no access to Check EmailVerified By Email");
+        }
+        if(emailVerification is null)
         {
             return false;
         }
@@ -51,11 +60,11 @@ public class EmailVerificationDal : IEmailVerificationDal
     {
         using var _context = _contextFactory.CreateDbContext();
         DateTime dateTime = DateTime.UtcNow;
-        EmailVerification emailVerification = await _context.EmailVerifications.
+        EmailVerification? emailVerification = await _context.EmailVerifications.
             Where((em) => em.Email.Equals(email) && em.VerificationCode.Equals(verifiCode)
             && em.ExpirationTime >= dateTime).
             FirstOrDefaultAsync();
-        if (emailVerification == null)
+        if (emailVerification is null)
         {
             return false;
         }
