@@ -1,15 +1,15 @@
 ﻿namespace CustomerAccount.Services.Models;
 
-    public class RegisterModel
-    {
-        public string FirstName { get; set; }
+public class RegisterModel
+{
+    public string FirstName { get; set; }
 
-        public string LastName { get; set; }
+    public string LastName { get; set; }
 
-        public string Email { get; set; }
-        public string Password { get; set; }
+    public string Email { get; set; }
+    public string Password { get; set; }
 
-        public double Balance { get; set; }
-        public DateTime OpenDate { get; set; } 
-    }
+    public double Balance { get; set; }
+    public DateTime OpenDate { get; set; }
+}
 

@@ -1,8 +1,7 @@
-﻿namespace CustomerAccount.WebAPI.DTOs
+﻿namespace CustomerAccount.WebAPI.DTOs;
+
+public class LoginResultDTO
 {
-    public class LoginResultDTO
-    {
-        public int AccountID { get; set; }
-        public string? Token { get; set; }
-    }
+    public int AccountID { get; set; }
+    public string? Token { get; set; }
 }
