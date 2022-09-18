@@ -38,19 +38,14 @@ export class LoginService {
     this.tokenJWT.next(_token);
   }
   logIn(loginUser: LoginDTO): Observable<LoginResultDTO> {
-    debugger;
     return this._http.post<LoginResultDTO>(this.customerAcountUrl + '/login', loginUser);
   }
-
-
   GetAccountInfo(cardID: number): Observable<AccountInfoDTO> {
-    
     return this._http.get<AccountInfoDTO>(this.customerAcountUrl + `/${cardID}`);
   }
   //get name and email of other accountID
   GetForeignAccountDetails(accountID: number): Observable<ForeignAccountDTO> {
     return this._http.get<ForeignAccountDTO>(this.customerAcountUrl + `?foreignAccountID=${accountID}`);
   }
-
   constructor(private _http: HttpClient) { }
 }

@@ -68,7 +68,7 @@ export class OperationsHistoryComponent implements OnInit {
     }
     this._operationsService.getOperation(getOperationDT0).subscribe(
       (data) => {
-        if (data) {
+        if (data.length > 0) {
           this.dataSource.data = data;
           this.paginator.pageIndex = this.pageNumber;
           setTimeout(() => {
@@ -81,6 +81,7 @@ export class OperationsHistoryComponent implements OnInit {
         }
       }, (err) => {
         alert("faild to get your operations");
+        console.log(err);
       }
     );
   }
@@ -92,17 +93,14 @@ export class OperationsHistoryComponent implements OnInit {
   }
   //get foreign account details 
   getforeignAccountDetails(accountID: number) {
-      this.openDialog(accountID);
+    this.openDialog(accountID);
   }
 
-  openDialog(accountID: number){
-  const dialogRef=  this._dialog.open(ForeignAccountInfoComponent, {
+  openDialog(accountID: number) {
+    const dialogRef = this._dialog.open(ForeignAccountInfoComponent, {
       data: {
         accountID: accountID,
       },
     });
   }
-
-
-
 }

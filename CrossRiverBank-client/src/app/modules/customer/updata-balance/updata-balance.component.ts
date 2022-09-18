@@ -11,12 +11,12 @@ import { TransactionService } from 'src/app/services/transaction.service';
   styleUrls: ['./updata-balance.component.css']
 })
 export class UpdataBalanceComponent implements OnInit {
- accountID:number=0;
- addTransaction!:AddTransactionDTO;
-  constructor(private _router: Router,private _loginService: LoginService,private _transactionService: TransactionService) { }
+  accountID: number = 0;
+  addTransaction!: AddTransactionDTO;
+  constructor(private _router: Router, private _loginService: LoginService, private _transactionService: TransactionService) { }
 
   ngOnInit(): void {
-    this.accountID=this._loginService.getAccountID()
+    this.accountID = this._loginService.getAccountID()
   }
   updateBalanceForm: FormGroup = new FormGroup(
     {
@@ -24,25 +24,25 @@ export class UpdataBalanceComponent implements OnInit {
       'Amount': new FormControl("", [Validators.required]),
     }
   );
-  updateBalance(){
-    this.addTransaction=this.updateBalanceForm.value;
-    this.addTransaction.fromAccountID=this.accountID;
+  updateBalance() {
+    debugger;
+    this.addTransaction = this.updateBalanceForm.value;
+    this.addTransaction.fromAccountID = this.accountID;
     this._transactionService.addTransaction(this.addTransaction).subscribe(
-      (res)=>{
-        if(res==true){
-        this._router.navigate(['/main']);
-        alert("your transaction past sucssefuly");
+      (res) => {
+        if (res == true) {
+          this._router.navigate(['/main']);
+          alert("your transaction past sucssefuly");
         }
-        else{
+        else {
           alert("your transaction  didnt pass try again");
         }
       },
-      (err)=>{
+      (err) => {
         alert("sorry yor transaction faild check your details and try again");
+        console.log(err);
 
       }
     )
   }
-  
-
 }

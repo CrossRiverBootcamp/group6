@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ForeignAccountInfoComponent } from './foreign-account-info.component';
 
 describe('ForeignAccountInfoComponent', () => {

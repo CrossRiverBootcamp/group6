@@ -10,7 +10,6 @@ import { AccountInfoComponent } from './account-info/account-info.component';
 import { MainCustomerComponent } from './main-customer/main-customer.component';
 import { UpdataBalanceComponent } from './updata-balance/updata-balance.component';
 import { OperationsHistoryComponent } from './operations-history/operations-history.component';
-import { TransactionAccountDetailsComponent } from './transaction-account-details/transaction-account-details.component';
 import { EmailVerificationComponent } from './email-verification/email-verification.component';
 import { ForeignAccountInfoComponent } from './foreign-account-info/foreign-account-info.component';
 import { CustomerIsActiveGuard } from 'src/app/guards/customer-is-active.guard';
@@ -37,7 +36,6 @@ const _routes: Routes = [
     MainCustomerComponent,
     UpdataBalanceComponent,
     OperationsHistoryComponent,
-    TransactionAccountDetailsComponent,
     EmailVerificationComponent,
     ForeignAccountInfoComponent
   ],

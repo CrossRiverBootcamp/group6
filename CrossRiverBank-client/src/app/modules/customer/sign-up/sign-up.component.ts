@@ -14,13 +14,13 @@ import { EmailVerificationComponent } from '../email-verification/email-verifica
 })
 export class SignUPComponent implements OnInit {
 
-  constructor(private _router: Router,private _customerService: CustomerService,private _dialog:MatDialog,private _emailVerification: emailConfirmationService) {
-   }
-   openDialog(registerForm:RegisterDTO) {
+  constructor(private _router: Router, private _customerService: CustomerService, private _dialog: MatDialog, private _emailVerification: emailConfirmationService) {
+  }
+  openDialog(registerForm: RegisterDTO) {
     debugger;
-  const dialogRef=  this._dialog.open(EmailVerificationComponent, {
+    const dialogRef = this._dialog.open(EmailVerificationComponent, {
       data: {
-        registerForm:registerForm
+        registerForm: registerForm
       },
     });
   }
@@ -35,22 +35,20 @@ export class SignUPComponent implements OnInit {
       'VerifiCode': new FormControl("",),
     }
   );
-  register(){
+  register() {
     var newRegistration: RegisterDTO = this.signUpForm.value;
     this.sendEmail(newRegistration.email);
     this.openDialog(newRegistration);
   }
-  home(){
+  home() {
     this._router.navigate(['/login']);
   }
 
-sendEmail(email:string){
-  this._emailVerification.SendEmailCode(email).subscribe((res) => 
-  {
-    alert("send you a new code");
-  }, (err) => { 
-    alert("not confirmed your email")
-   
-  });
-}
+  sendEmail(email: string) {
+    this._emailVerification.SendEmailCode(email).subscribe((res) => {
+      alert("send you a code");
+    }, (err) => {
+      alert("not confirmed your email")
+    });
+  }
 }

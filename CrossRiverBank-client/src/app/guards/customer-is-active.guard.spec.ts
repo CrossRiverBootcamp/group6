@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { CustomerIsActiveGuard } from './customer-is-active.guard';
 
 describe('CustomerIsActiveGuard', () => {

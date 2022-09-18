@@ -25,12 +25,10 @@ export class InterceptService implements HttpInterceptor, OnDestroy {
     this.token=this._loginService.getToken()
     if(this.token!=null){
       const tokenreq = req.clone({ 
-        headers: req.headers.set('Authorization', 'Bearer '+this.token ) });
+        headers: req.headers.set('Authorization', 'Bearer '+this.token) });
 
     return next.handle(tokenreq);
     }
 return next.handle(req);
-}
-
-  
+}  
 }

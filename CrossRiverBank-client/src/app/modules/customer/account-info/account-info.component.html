@@ -1,27 +1,17 @@
 <body>
-    <!-- <mat-card class="example-card" >
-        <mat-card-title>{{accountInfoDTO.firstName}} {{accountInfoDTO.lastName}}
-        <img mat-card-sm-image src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg">
-        </mat-card-title>
-        <mat-card-subtitle>יתרת החשבון שלך היא: </mat-card-subtitle>
-        <mat-card-content>
-          <p>This card indeterminates progress bar.</p>
-          <p>{{accountInfoDTO.balance}}</p>
-          <p></p>
-        </mat-card-content>
-      </mat-card> -->
-      <mat-card class="example-card" *ngIf="accountInfoDTO">
-        <mat-card-title-group>
-          <mat-card-title>{{accountInfoDTO.firstName}} {{accountInfoDTO.lastName}}</mat-card-title>
-          <mat-card-subtitle>your balance is: {{accountInfoDTO.balance}}</mat-card-subtitle>
-          
-          <img mat-card-md-image src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg" >
-        </mat-card-title-group>
-        <mat-card-content>
-            <p class="title">  Leading the
-Future of Finance</p>
-<p>We're proud to accelerate our next stage of growth with a $620 million capital raise. Join us as we lead fintech into the future.</p>
-        </mat-card-content>
-      </mat-card>
-    
+  <mat-card class="example-card" *ngIf="accountInfoDTO">
+    <mat-card-title-group>
+      <mat-card-title>{{accountInfoDTO.firstName}} {{accountInfoDTO.lastName}}</mat-card-title>
+      <mat-card-subtitle>your balance is: {{accountInfoDTO.balance}}</mat-card-subtitle>
+      <img mat-card-md-image
+        src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg">
+    </mat-card-title-group>
+    <mat-card-content>
+      <p class="title"> Leading the
+        Future of Finance</p>
+      <p>We're proud to accelerate our next stage of growth with a $620 million capital raise. Join us as we lead
+        fintech into the future.</p>
+    </mat-card-content>
+  </mat-card>
+
 </body>

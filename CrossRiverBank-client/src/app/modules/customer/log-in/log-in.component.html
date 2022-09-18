@@ -1,38 +1,35 @@
-<html><body>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
-    
-    <div class="sidenav">
-             <div class="login-main-text">
-                <div id="div"></div>
-                
-             </div>
-          </div>
-          <div class="main">
-            <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg"/>
-             <div class="col-md-6 col-sm-12">
-                <div class="login-form">
-                  <div class="logo"></div>
-                   <form id="form" [formGroup]="logInForm">
-                      
-                      <div class="form-group">
-                         <label>email</label>
-                         <input type="text" class="form-control" placeholder="Email" formControlName="email">
-                      </div>
-                      <div class="form-group">
-                         <label>password</label>
-                         <input type="password" class="form-control" placeholder="Password" formControlName="password" >
-                      </div>
-                      <button type="submit" class="btn btn-black" (click)="logIn()">login</button>
-                      <button type="submit" class="btn btn-black" (click)="register()">register</button>
-  
-                   </form>
-                </div>
-             </div>
-          </div>
-          <!-- <div class="footer">
-          </div> -->
-         </body> 
-         </html>
+<html>
+
+<body>
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+   <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+   <div class="sidenav">
+      <div class="login-main-text">
+         <div id="div"></div>
+      </div>
+   </div>
+   <div class="main">
+      <img
+         src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg" />
+      <div class="col-md-6 col-sm-12">
+         <div class="login-form">
+            <div class="logo"></div>
+            <form id="form" [formGroup]="logInForm">
+
+               <div class="form-group">
+                  <label>email</label>
+                  <input type="text" class="form-control" placeholder="Email" formControlName="email">
+               </div>
+               <div class="form-group">
+                  <label>password</label>
+                  <input type="password" class="form-control" placeholder="Password" formControlName="password">
+               </div>
+               <button type="submit" class="btn btn-black" (click)="logIn()">login</button>
+               <button type="submit" class="btn btn-black" (click)="register()">register</button>
+            </form>
+         </div>
+      </div>
+   </div>
+</body>
+</html>

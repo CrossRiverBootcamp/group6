@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Route, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { AccountInfoDTO } from 'src/app/models/accountInfoDTO.models';
 import { LoginService } from 'src/app/services/login.service';
 
@@ -14,10 +12,7 @@ export class AccountInfoComponent implements OnInit {
   accountInfoDTO!: AccountInfoDTO;
   accountInfoID!: number;
 
-  constructor(private _loginService: LoginService, private _router: Router)
-  {
-
-  }
+  constructor(private _loginService: LoginService, private _router: Router) { }
 
   ngOnInit(): void {
     this.accountInfoID = this._loginService.getAccountID();
@@ -27,13 +22,14 @@ export class AccountInfoComponent implements OnInit {
     }
     this._loginService.GetAccountInfo(this.accountInfoID).subscribe(
       (res) => {
+        debugger;
         this.accountInfoDTO = res;
       },
       (err) => {
+        console.log(err);
         alert("faild to get your details");
       });
   }
-
 }
 
 

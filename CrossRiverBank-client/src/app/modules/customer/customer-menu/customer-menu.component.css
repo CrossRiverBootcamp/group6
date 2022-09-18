@@ -3,17 +3,10 @@ body{
     position: fixed;
     width: 100%;
 }
-
-
-
-/* classes */
-
-
 .mat-icon{
     font-size: 150%;
     color: white;
 }
-
 ul {
     list-style-type: none;
     margin: 0;
@@ -25,9 +18,7 @@ ul {
     top: 0;
     left: 0;
     right: 0;
-}
-  
-
+} 
   li a {
     float: right;
     display: block;

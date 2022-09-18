@@ -16,9 +16,10 @@
       <!-- AccountID Column -->
       <ng-container matColumnDef="accountId">
         <th mat-header-cell *matHeaderCellDef> AccountID </th>
-        <td class="account-cell" mat-cell *matCellDef="let operation" (click) = "getforeignAccountDetails(operation.accountId)">
-                {{operation.accountId}} 
-                <mat-icon>open_in_new</mat-icon>
+        <td class="account-cell" mat-cell *matCellDef="let operation"
+          (click)="getforeignAccountDetails(operation.accountId)">
+          {{operation.accountId}}
+          <mat-icon>open_in_new</mat-icon>
         </td>
       </ng-container>
 
@@ -44,11 +45,8 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <mat-paginator [pageSizeOptions]="pageSizeOptions" 
-     showFirstLastButtons aria-label="Select page of your operations"
-     [pageIndex]="pageNumber" 
-     [pageSize]="numberOfRecords"
-      (page)="getNextPage($event)">
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons aria-label="Select page of your operations"
+      [pageIndex]="pageNumber" [pageSize]="numberOfRecords" (page)="getNextPage($event)">
     </mat-paginator>
   </div>
 </div>

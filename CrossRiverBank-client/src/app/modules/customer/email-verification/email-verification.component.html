@@ -1,12 +1,14 @@
 <html>
-  <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg" alt="" width="20%" height="20%">
+<img
+  src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg"
+  alt="" width="20%" height="20%">
 <h1 mat-dialog-title>Hi {{registerFormDTO.firstName}} </h1>
 <h3>we just want to make sure its you</h3>
 <p> check your email and confirm</p>
 <div mat-dialog-content>
   <mat-form-field appearance="fill">
     <mat-label>VerifiCode</mat-label>
-    <input matInput [(ngModel)]="data.VerifiCode"> 
+    <input matInput [(ngModel)]="data.VerifiCode">
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
@@ -14,4 +16,5 @@
   <button mat-button color="primary" (click)="SendCodeAgain()">send again</button>
   <button mat-button color="primary" (click)="goToRegister()">reset-sign-up-form</button>
 </div>
+
 </html>
