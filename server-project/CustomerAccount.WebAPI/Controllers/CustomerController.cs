@@ -10,10 +10,9 @@ namespace CustomerAccount.WebAPI.Controllers;
 [ApiController]
 public class CustomerController : ControllerBase
 {
-
-    private ICustomerService _customerService;
-    private IEmailVerificationService _emailVerificationService;
-    private IMapper _mapper;
+    private readonly ICustomerService _customerService;
+    private readonly IEmailVerificationService _emailVerificationService;
+    private readonly IMapper _mapper;
 
     public CustomerController(ICustomerService customerService,IEmailVerificationService emailVerificationService)
     {
@@ -29,9 +28,10 @@ public class CustomerController : ControllerBase
     public async Task<ActionResult<bool>> Register(RegisterDTO register)
     {
         bool verified = await _emailVerificationService.CheckVerification(register.Email,register.VerifiCode);
-
         if (!verified)
+        {
             return BadRequest(false);
+        }
         RegisterModel registerModel = _mapper.Map<RegisterModel>(register);
         bool success = await _customerService.Register(registerModel);
         return Ok(success);

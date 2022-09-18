@@ -1,4 +1,7 @@
-﻿namespace Transaction.WebAPI.Middlewares;
+﻿using CustomExceptions;
+using System.Net;
+
+namespace Transaction.WebAPI.Middlewares;
 
 public class HandlerErrorsMiddleware
 {

@@ -1,5 +1,6 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
+using CustomExceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CustomerAccount.Data;
@@ -51,11 +52,11 @@ public class EmailVerificationDal : IEmailVerificationDal
     {
         using var _context = _contextFactory.CreateDbContext();
         DateTime dateTime = DateTime.UtcNow;
-        EmailVerification emailVerification = await _context.EmailVerifications.
+        EmailVerification? emailVerification = await _context.EmailVerifications.
             Where((em) => em.Email.Equals(email) && em.VerificationCode.Equals(verifiCode)
             && em.ExpirationTime >= dateTime).
             FirstOrDefaultAsync();
-        if (emailVerification == null)
+        if (emailVerification is null)
         {
             return false;
         }

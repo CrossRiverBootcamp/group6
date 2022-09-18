@@ -40,6 +40,10 @@ public class HandlerErrorsMiddleware
                     await response.WriteAsync("false");
                     // return False
                     break;
+                case NotVerifiedException e:
+                    await response.WriteAsync("false");
+                    response.StatusCode = 400;
+                    break;
                 case EmailNotFoundException e:
                     // not found error
                     await response.WriteAsync("Oppps... \n email Not Found!");
@@ -83,9 +87,4 @@ public static class HandlerErrorsMiddlewareExtensions
         return builder.UseMiddleware<HandlerErrorsMiddleware>();
     }
 }
-public class response
-{
-    public int StatusCode { get; set; }
-    public string ErrorMessage { get; set; }
-    public bool result { get; set; }
-}
+

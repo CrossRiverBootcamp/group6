@@ -8,7 +8,7 @@ public interface IAccountDal
     Task<int> Login(string email, string password);
     Task<Account> GetAccountInfo(int accountID);
     Task<bool> EmailExists(string email);
-    Task<Customer> GetCustomerByEmail(string email);
+    Task<string> GetSaltByEmail(string email);
     Task<string> UpdateAccounts(Account accountFrom, Account accountTo);
     Task<Account> FindUpdateAccount(int ID);
     Task<int> GetBalanceByID(int accountID);

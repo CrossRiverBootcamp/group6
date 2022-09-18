@@ -70,10 +70,9 @@ public class EmailVerificationService : IEmailVerificationService
         SmtpServer.UseDefaultCredentials = false;
         SmtpServer.Send(mail);
     }
-    public async Task<bool> CheckVerification(string email, string verifiCode)
+    public Task<bool> CheckVerification(string email, string verifiCode)
     {
-        return await _emailVerificationDal.CheckVerification(email, verifiCode);
-
+        return _emailVerificationDal.CheckVerification(email, verifiCode);
     }
     public Task<int> DeleteExpiredCodes()
     {

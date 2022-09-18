@@ -1,10 +1,6 @@
 ﻿using CustomerAccount.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Messages.Commands;
 using Microsoft.AspNetCore.Mvc;
-using NServiceBus;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace CustomerAccount.WebAPI.Controllers;
 
@@ -38,4 +34,4 @@ namespace CustomerAccount.WebAPI.Controllers;
         }
 
     }
-}
+
