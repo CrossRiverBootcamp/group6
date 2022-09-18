@@ -1,12 +1,21 @@
 using Messages.Commands;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NServiceBus;
 using System.Data.SqlClient;
+using System.Text;
 using Transaction.Services.Extension;
 using Transaction.Services.Interfaces;
 using Transaction.Services.Services;
 using Transaction.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+
+IConfigurationRoot configuration = new
+            ConfigurationBuilder().AddJsonFile("appsettings.json",
+            optional: false, reloadOnChange: true).Build();
+
 string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
 string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiriam");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
@@ -45,30 +54,75 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 // Add services to the container.
 builder.Services.AddServices(connection);
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+var key = Encoding.ASCII.GetBytes(configuration["JWT:key"]);
+builder.Services.AddAuthentication(x =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-app.UseHandlerErrorsMiddleware();
-app.UseHttpsRedirection();
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
 
-app.UseCors(options => {
-    options.AllowAnyOrigin();
-    options.AllowAnyMethod();
-    options.AllowAnyHeader();
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
 });
-app.UseAuthentication();
-app.UseAuthorization();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrossRiverBank", Version = "v1" });
 
-app.MapControllers();
+    // To Enable authorization using Swagger (JWT)    
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        }, new string[] { }
+        }
+    });
+});
 
-app.Run();
+    var app = builder.Build();
+
+    // Configure the HTTP request pipeline.
+    if (app.Environment.IsDevelopment())
+    {
+        app.UseSwagger();
+        app.UseSwaggerUI();
+    }
+    app.UseHandlerErrorsMiddleware();
+    app.UseHttpsRedirection();
+
+    app.UseCors(options =>
+    {
+        options.AllowAnyOrigin();
+        options.AllowAnyMethod();
+        options.AllowAnyHeader();
+    });
+    app.UseAuthentication();
+    app.UseAuthorization();
+
+    app.MapControllers();
+
+    app.Run();

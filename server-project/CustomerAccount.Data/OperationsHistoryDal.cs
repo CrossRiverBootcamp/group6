@@ -43,13 +43,13 @@ public class OperationsHistoryDal : IOperationsHistoryDal
                        orderby fromOpt.OperationTime
                        select new OperationsHistory()
                        {
-                           ID = toOpt.ID,
-                           AccountId = fromOpt.AccountId,
-                           TransactionID = toOpt.TransactionID,
-                           Credit = toOpt.Credit,
-                           TransactionAmount = toOpt.TransactionAmount,
-                           Balance = toOpt.Balance,
-                           OperationTime = toOpt.OperationTime
+                           ID = fromOpt.ID,
+                           AccountId = toOpt.AccountId,
+                           TransactionID = fromOpt.TransactionID,
+                           Credit = fromOpt.Credit,
+                           TransactionAmount = fromOpt.TransactionAmount,
+                           Balance = fromOpt.Balance,
+                           OperationTime = fromOpt.OperationTime
                        };
         try
         {

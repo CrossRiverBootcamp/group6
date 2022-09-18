@@ -15,7 +15,7 @@ public class EmailVerificationService : IEmailVerificationService
         _emailVerificationDal = emailVerificationDal;
         _accountDal = accountDal;
     }
-    public async Task<bool> AddEmailVerification(string emailVerificationAddress)
+    public async Task<bool> AddEmailVerification(String emailVerificationAddress)
     {
         //check that this email is not  in use
         bool exists = await _accountDal.EmailExists(emailVerificationAddress);
@@ -48,14 +48,15 @@ public class EmailVerificationService : IEmailVerificationService
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-        MailAddress from = new MailAddress("324103357@mby.co.il");
-        MailAddress to = new MailAddress(email);
+        String emailAddress = new string(email);
+        MailAddress from = new MailAddress("212648802@mby.co.il");
+        MailAddress to = new MailAddress(emailAddress);
         MailMessage mail = new MailMessage(from, to);
         SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
         mail.Subject = "CrossRiverBank  your verification code is below";
         mail.Body = verificationCode;
         SmtpServer.Port = 587;
-        SmtpServer.Credentials = new System.Net.NetworkCredential("324103357@mby.co.il", "Student@264");
+        SmtpServer.Credentials = new System.Net.NetworkCredential("212648802@mby.co.il", "Student@264");
         SmtpServer.EnableSsl = true;
         SmtpServer.UseDefaultCredentials = false;
         SmtpServer.Send(mail);

@@ -5,8 +5,8 @@ namespace Transaction.WebAPI.Middlewares;
 
 public class HandlerErrorsMiddleware
 {
-    private RequestDelegate _next;
-    private ILogger<HandlerErrorsMiddleware> _ILogger;
+    private readonly RequestDelegate _next;
+    private readonly ILogger<HandlerErrorsMiddleware> _ILogger;
 
     public HandlerErrorsMiddleware(RequestDelegate next, ILogger<HandlerErrorsMiddleware> ILogger)
     {

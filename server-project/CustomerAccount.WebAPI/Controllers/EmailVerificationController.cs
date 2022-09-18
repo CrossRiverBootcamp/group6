@@ -1,10 +1,8 @@
 ﻿using CustomerAccount.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerAccount.WebAPI.Controllers;
 
-[Authorize(Roles = "customer")]
 [Route("api/[controller]")]
 [ApiController]
 public class EmailVerificationController : ControllerBase
@@ -19,7 +17,8 @@ public class EmailVerificationController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] string email)
     {
-       bool success = await _emailVerificationService.AddEmailVerification(email);
+        String emailAdress=new String(email);
+        bool success = await _emailVerificationService.AddEmailVerification(emailAdress);
         if (!success)
         {
             return BadRequest();

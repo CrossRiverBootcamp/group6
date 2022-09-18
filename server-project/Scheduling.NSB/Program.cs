@@ -30,7 +30,7 @@ public class Program
         var endpointInstance = await Endpoint.Start(endpointConfiguration);
 
         await endpointInstance.ScheduleEvery(
-           timeSpan: TimeSpan.FromSeconds(2),
+           timeSpan: TimeSpan.FromHours(12),
            task: pipelineContext =>
            {
                var message = new DeleteExpiredCodes();

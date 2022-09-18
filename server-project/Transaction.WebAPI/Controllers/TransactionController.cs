@@ -29,10 +29,9 @@ public class TransactionController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<bool>> AddTransaction(AddTransactionDTO transactionDTO)
     {
-       
-            TransactionModel model = _mapper.Map<TransactionModel>(transactionDTO);
-            bool result = await _service.AddTransaction(model, _session);
-            return Ok(result);
+        TransactionModel model = _mapper.Map<TransactionModel>(transactionDTO);
+        bool result = await _service.AddTransaction(model, _session);
+        return Ok(result);
 
     }
 }

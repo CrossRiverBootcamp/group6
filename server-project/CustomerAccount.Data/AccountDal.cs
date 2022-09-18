@@ -50,7 +50,7 @@ public class AccountDal : IAccountDal
         Account? account;
         try
         {
-           account = await _contect.Accounts.FirstOrDefaultAsync(c => c.ID == accountID);       
+            account = await _contect.Accounts.Include(a => a.Customer).FirstOrDefaultAsync(c => c.ID == accountID);      
         }
         catch
         {
