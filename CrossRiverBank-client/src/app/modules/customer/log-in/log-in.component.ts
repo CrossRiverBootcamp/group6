@@ -17,7 +17,7 @@ export class LogInComponent implements OnInit {
   ngOnInit(): void {
     this._loginService.setCard(false);
     this._loginService.setAccountID(0);
-    sessionStorage.setItem('token',"");
+    this._loginService.setToken("");
   }
   logInForm: FormGroup = new FormGroup(
     {
@@ -37,8 +37,7 @@ export class LogInComponent implements OnInit {
         else{
         this._loginService.setAccountID(res.accountID);
         this._loginService.setCard(true);
-    
-        sessionStorage.setItem('token', res.token)
+        this._loginService.setToken(res.token);
         this._router.navigate(['/main']);
       }
     },
@@ -49,7 +48,7 @@ export class LogInComponent implements OnInit {
              });
       }
  register(){
-  this._router.navigate(['/signsUp']);
+  this._router.navigate(['/signUp']);
  }
 }
 
