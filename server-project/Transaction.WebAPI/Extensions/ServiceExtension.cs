@@ -1,4 +1,6 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 namespace Transaction.WebAPI.Extensions;
 
@@ -36,5 +38,6 @@ public static class ServiceExtension
                 }
             });
         });
+
     }
 }
