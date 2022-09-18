@@ -1,0 +1,79 @@
+body {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, sans-serif;
+    color:​ #2f62be ;
+} 
+
+
+.sidenav {
+    height: 100%;
+    background-image: url("https://lh3.googleusercontent.com/p/AF1QipOnqkq2JGa9n7DjuwVK88fqOwKQwmj_KrZyG09n=s1600-w400");
+    background-size:cover;
+    background-position:0% 30%,2%,1%; 
+    backface-visibility: hidden;
+ 
+}
+
+
+.main {
+    padding: 0px 100px;
+    border: #000;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {padding-top: 5px;}
+}
+
+@media screen and (max-width: 450px) {
+    .login-form{
+        margin-top: 1%;
+        border: #000;
+    }
+
+    .register-form{
+        margin-top: 10%;
+        
+    }
+}
+
+@media screen and (min-width: 768px){
+    .main{
+        margin-left:70%; 
+        margin-top: 0%;
+        height: 100%;
+    }
+
+    .sidenav{
+        width: 70%;
+        position: fixed;
+        z-index:auto;
+        top: 0;
+        left: 0;
+    }
+
+    .login-form{ 
+         width: 150px;
+         margin-top: 30%; 
+         color: #2f62be ;
+    }
+
+    .register-form{
+        margin-bottom: 2%;  
+    }
+}
+
+
+.login-main-text{
+    margin-top: 10%;
+    padding: 6%;
+    color:​ #2f62be ;
+}
+
+.login-main-text h2{
+    font-weight: 300;
+    color:​ #2f62be ;
+}
+
+.btn-black{
+    background-color: #180739 !important;
+    color:#ffffff;
+}

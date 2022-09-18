@@ -1,0 +1,14 @@
+body{
+    border-top: 50%;
+}
+.example-card {
+    max-width: 400px;
+}
+.mat-card{
+   margin: auto;
+   margin-top: 20%;
+   color:#2f62be; 
+}
+.title{
+    font-size: medium;
+}

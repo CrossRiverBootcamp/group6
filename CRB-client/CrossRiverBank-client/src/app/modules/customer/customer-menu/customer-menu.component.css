@@ -1,0 +1,47 @@
+body{
+    background-size: cover;
+    position: fixed;
+    width: 100%;
+}
+.mat-icon{
+    font-size: 150%;
+    color: white;
+}
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #180739;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+} 
+  li a {
+    float: right;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover:not(.active),li .mat-icon:hover:not(.active) {
+    color: #2f62be;
+  }
+  
+  .active {
+    background-color: rgb(141,194, 249);
+  } 
+  li .styling{
+    padding-top: 30px;
+  }
+  .crb{
+    color: #ffffff;
+    margin-left: 2%;
+    padding-top: 3%;
+
+  }
+  

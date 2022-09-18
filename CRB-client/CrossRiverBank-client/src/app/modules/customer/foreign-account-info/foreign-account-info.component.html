@@ -1,0 +1,15 @@
+<html>
+<button mat-button color="primary" (click)="CloseDialog()">X</button>
+<div class="header">
+    <img src="https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_256,w_256,f_auto,q_auto:eco,dpr_1/v1495251840/w1ypshrmua1ywkbxbdjo.jpg"
+        alt="" width="20%" height="10%">
+    <span class="title">The Account Details</span>
+</div>
+<div mat-dialog-content class="account-Details">
+    <mat-label>Name: </mat-label>
+    <span>{{foreignAccountDetails.firstName}} {{foreignAccountDetails.lastName}}</span>
+    <br />
+    <mat-label>Email: </mat-label>
+    <span>{{foreignAccountDetails.email}}</span>
+</div>
+</html>

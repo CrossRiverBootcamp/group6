@@ -1,0 +1,52 @@
+<div class="operations-container">
+  <h1>-your operations-</h1>
+  <div class="mat-elevation-z8 contain-table">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- Credit Column -->
+      <ng-container matColumnDef="credit">
+        <th mat-header-cell *matHeaderCellDef> Credit/Debit </th>
+        <!-- credit/debit -->
+        <td mat-cell *matCellDef="let operation">
+          {{operation.credit?"Creadit":"Debit"}}
+        </td>
+
+      </ng-container>
+
+      <!-- AccountID Column -->
+      <ng-container matColumnDef="accountId">
+        <th mat-header-cell *matHeaderCellDef> AccountID </th>
+        <td class="account-cell" mat-cell *matCellDef="let operation"
+          (click)="getforeignAccountDetails(operation.accountId)">
+          {{operation.accountId}}
+          <mat-icon>open_in_new</mat-icon>
+        </td>
+      </ng-container>
+
+      <!-- amount Column -->
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell *matCellDef="let operation"> {{operation.amount}} </td>
+      </ng-container>
+
+      <!-- balance Column -->
+      <ng-container matColumnDef="balance">
+        <th mat-header-cell *matHeaderCellDef> Balance </th>
+        <td mat-cell *matCellDef="let operation"> {{operation.balance}} </td>
+      </ng-container>
+
+      <!-- date Column -->
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef> Date </th>
+        <td mat-cell *matCellDef="let operation"> {{operation.date |date:'medium'}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="pageSizeOptions" showFirstLastButtons aria-label="Select page of your operations"
+      [pageIndex]="pageNumber" [pageSize]="numberOfRecords" (page)="getNextPage($event)">
+    </mat-paginator>
+  </div>
+</div>
