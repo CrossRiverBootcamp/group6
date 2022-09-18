@@ -1,6 +1,8 @@
 ﻿using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
+using CustomerAccount.Services.options;
+using Microsoft.Extensions.Options;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -10,11 +12,13 @@ namespace CustomerAccount.Services.Services;
 public class EmailVerificationService : IEmailVerificationService
 {
     private readonly IAccountDal _accountDal;
+    private readonly IOptions<Email> _emailAccount;
     private readonly IEmailVerificationDal _emailVerificationDal;
-    public EmailVerificationService(IEmailVerificationDal emailVerificationDal, IAccountDal accountDal)
+    public EmailVerificationService(IEmailVerificationDal emailVerificationDal, IAccountDal accountDal, IOptions<Email> emailAccout)
     {
         _emailVerificationDal = emailVerificationDal;
         _accountDal = accountDal;
+        _emailAccount = emailAccout;
     }
     public async Task<bool> AddEmailVerification(String emailVerificationAddress)
     {
@@ -46,8 +50,8 @@ public class EmailVerificationService : IEmailVerificationService
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-        string from = "crbemail6@gmail.com";
-        string password = "0548433752";
+        string from = _emailAccount.Value.emailAddress;
+        string password =_emailAccount.Value.password;
         MailMessage message = new MailMessage();
         message.From = new MailAddress(from);
         message.Subject = "CrossRiverBank  your verification code is below";

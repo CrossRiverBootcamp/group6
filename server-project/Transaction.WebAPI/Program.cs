@@ -18,8 +18,8 @@ IConfigurationRoot configuration = new
             ConfigurationBuilder().AddJsonFile("appsettings.json",
             optional: false, reloadOnChange: true).Build();
 
-string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiriam");
-string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiriam");
+string connection = builder.Configuration.GetConnectionString("TransactionConnectionMiri");
+string connectionNSB = builder.Configuration.GetConnectionString("TransactionConnectionNSBMiri");
 string rabbitMQConnection = builder.Configuration.GetConnectionString("RabbitMQConnection");
 
 #region back-end-use-nservicebus

@@ -52,7 +52,7 @@ builder.Host.UseNServiceBus(hostBuilderContext =>
 #endregion
 
 builder.Host.UseSerilog();
-builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
+builder.Services.Configure<Email>(builder.Configuration.GetSection(nameof(Email)));
 // Add services to the container.
 builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiri"));
 builder.Services.AddScoped<IAccountService, AccountService>(); 
@@ -81,98 +81,9 @@ builder.Services.AddAuthentication(x =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerSettings();
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrossRiverBank", Version = "v1" });
-
-    // To Enable authorization using Swagger (JWT)    
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-
-                    }
-                });
-});
-
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrossRiverBank", Version = "v1" });
-
-    // To Enable authorization using Swagger (JWT)    
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-
-                    }
-                });
-});
-
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CrossRiverBank", Version = "v1" });
-
-    // To Enable authorization using Swagger (JWT)    
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Enter 'Bearer' [space] and then your valid token in the text input below.\r\n\r\nExample: \"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\"",
-    });
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                          new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "Bearer"
-                                }
-                            },
-                            new string[] {}
-
-                    }
-                });
-});
-
 
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration
             (configuration).CreateLogger();
-
-
 
 var app = builder.Build();
 
