@@ -78,7 +78,6 @@ namespace CustomerAccount.Services.Services;
                         Token = token,
                     };
                     return loginResult;
-
                 }
                 else
                 {

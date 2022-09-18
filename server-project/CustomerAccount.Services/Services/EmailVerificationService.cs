@@ -2,7 +2,9 @@
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
 using CustomExceptions;
+using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace CustomerAccount.Services.Services;
 
@@ -57,18 +59,34 @@ public class EmailVerificationService : IEmailVerificationService
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-
-        MailAddress from = new MailAddress("324103357@mby.co.il");
+        /*MailAddress from = new MailAddress("212648802@mby.co.il");
         MailAddress to = new MailAddress(email);
         MailMessage mail = new MailMessage(from, to);
         SmtpClient SmtpServer = new SmtpClient("smtp.office365.com");
         mail.Subject = "CrossRiverBank  your verification code is below";
         mail.Body = verificationCode;
         SmtpServer.Port = 587;
-        SmtpServer.Credentials = new System.Net.NetworkCredential("324103357@mby.co.il", "Student@264");
+        //password
+        SmtpServer.Credentials = new System.Net.NetworkCredential("212648802@mby.co.il", "Student@264");
         SmtpServer.EnableSsl = true;
         SmtpServer.UseDefaultCredentials = false;
-        SmtpServer.Send(mail);
+        SmtpServer.Send(mail);*/
+        string fromMail = "sendemail081@gmail.com";
+        string fromPassword = "qsszgtsvvsukdxay";
+        MailMessage message = new MailMessage();
+        message.From = new MailAddress(fromMail);
+        message.Subject = "CrossRiverBank  your verification code is below";
+        message.To.Add(new MailAddress(email));
+        message.Body = "<html><body> " + verificationCode + " </body></html>";
+        message.IsBodyHtml = true;
+        var smtpClient = new SmtpClient("smtp.gmail.com")
+        {
+            Port = 587,
+            Credentials = new NetworkCredential(fromMail, fromPassword),
+            EnableSsl = true,
+        };
+        smtpClient.Send(message);
+
     }
     public async Task<bool> CheckVerification(string email, string verifiCode)
     {
@@ -77,7 +95,7 @@ public class EmailVerificationService : IEmailVerificationService
     }
     public Task<int> DeleteExpiredCodes()
     {
-        return _emailVerificationDal.DeleteExpiredCodes();
+       return _emailVerificationDal.DeleteExpiredCodes();
     }
 
 }

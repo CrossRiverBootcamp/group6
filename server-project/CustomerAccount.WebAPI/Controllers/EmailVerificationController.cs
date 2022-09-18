@@ -8,7 +8,6 @@ using NServiceBus;
 
 namespace CustomerAccount.WebAPI.Controllers;
 
-    [Authorize(Roles = "customer")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmailVerificationController : ControllerBase
@@ -38,4 +37,4 @@ namespace CustomerAccount.WebAPI.Controllers;
         }
 
     }
-}
+

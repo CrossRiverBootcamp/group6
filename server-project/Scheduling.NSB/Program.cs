@@ -27,6 +27,9 @@ public class Program
         var conventions = endpointConfiguration.Conventions();
         conventions.DefiningCommandsAs(type => type.Namespace == "Messages.Commands");
 
+        var defaultFactory = LogManager.Use<DefaultFactory>();
+        defaultFactory.Level(LogLevel.Fatal);
+
         var endpointInstance = await Endpoint.Start(endpointConfiguration);
 
         await endpointInstance.ScheduleEvery(
