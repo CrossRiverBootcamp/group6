@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NServiceBus;
+using Serilog;
 using System.Data.SqlClient;
 using System.Text;
 using Transaction.Services.Extension;
@@ -11,6 +12,7 @@ using Transaction.Services.Services;
 using Transaction.WebAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog();
 
 IConfigurationRoot configuration = new
             ConfigurationBuilder().AddJsonFile("appsettings.json",
@@ -102,27 +104,28 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration
+            (configuration).CreateLogger();
+var app = builder.Build();
 
-    var app = builder.Build();
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+app.UseHandlerErrorsMiddleware();
+app.UseHttpsRedirection();
 
-    // Configure the HTTP request pipeline.
-    if (app.Environment.IsDevelopment())
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI();
-    }
-    app.UseHandlerErrorsMiddleware();
-    app.UseHttpsRedirection();
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin();
+    options.AllowAnyMethod();
+    options.AllowAnyHeader();
+});
+app.UseAuthentication();
+app.UseAuthorization();
 
-    app.UseCors(options =>
-    {
-        options.AllowAnyOrigin();
-        options.AllowAnyMethod();
-        options.AllowAnyHeader();
-    });
-    app.UseAuthentication();
-    app.UseAuthorization();
+app.MapControllers();
 
-    app.MapControllers();
-
-    app.Run();
+app.Run();
