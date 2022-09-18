@@ -3,26 +3,25 @@ using Messages.Commands;
 using NServiceBus;
 using NServiceBus.Logging;
 
-namespace CustomerAccount.WebAPI.NSB.Handlers
+namespace CustomerAccount.WebAPI.NSB.Handlers;
+
+public class DeleteRowsExpiredHandler : IHandleMessages<DeleteExpiredCodes>
 {
-    public class DeleteRowsExpiredHandler : IHandleMessages<DeleteExpiredCodes>
+    static ILog _log = LogManager.GetLogger<DeleteRowsExpiredHandler>();
+    private IEmailVerificationService _emailVerificationService;
+
+    public DeleteRowsExpiredHandler(IEmailVerificationService emailVerificationService)
     {
-        static ILog _log = LogManager.GetLogger<DeleteRowsExpiredHandler>();
-        private IEmailVerificationService _emailVerificationService;
-
-        public DeleteRowsExpiredHandler(IEmailVerificationService emailVerificationService)
+        _emailVerificationService = emailVerificationService;
+    }
+    public async Task Handle(DeleteExpiredCodes message, IMessageHandlerContext context)
+    {
+        _log.Info($"recieved ${typeof(DeleteExpiredCodes)} on ${DateTime.UtcNow}");
+        int numRowsEffected = await _emailVerificationService.DeleteExpiredCodes();
+        if (numRowsEffected > 0)
         {
-            _emailVerificationService = emailVerificationService;
-        }
-        public async Task Handle(DeleteExpiredCodes message, IMessageHandlerContext context)
-        {
-
-            _log.Info($"recieved ${typeof(DeleteExpiredCodes)} on ${DateTime.UtcNow}");
-            int numRowsEffected =await  _emailVerificationService.DeleteExpiredCodes();
-            if (numRowsEffected>0)
-            {
-                _log.Info($"{numRowsEffected} rows is deleted");
-            }
+            _log.Info($"{numRowsEffected} rows is deleted");
         }
     }
 }
+

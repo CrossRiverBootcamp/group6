@@ -3,7 +3,6 @@ using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
-using CustomExceptions;
 
 namespace CustomerAccount.Services.Services;
 
@@ -44,7 +43,7 @@ public class OperationsHistoryService : IOperationsHistoryService
             Balance = balanceFrom,
             AccountId = operationsHistoryToAddModel.FromAccountID,
             Credit = false
-        }
+        };
 
         await _operationsHistoryDal.AddOperationsHistorys(operationsHistoryFrom, operationsHistoryTO);
     }

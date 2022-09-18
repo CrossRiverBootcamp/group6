@@ -15,49 +15,39 @@ public class EmailVerificationService : IEmailVerificationService
         _emailVerificationDal = emailVerificationDal;
         _accountDal = accountDal;
     }
-    public async Task AddEmailVerification(String emailVerificationAddress)
+    public async Task<bool> AddEmailVerification(string emailVerificationAddress)
     {
-        try
+        //check that this email is not  in use
+        bool exists = await _accountDal.EmailExists(emailVerificationAddress);
+        if (exists)
         {
-            //check that this  mail is not  in use
-            bool exists = await _accountDal.EmailExists(emailVerificationAddress);
-            if (!exists)
-            {
-                //check if this email tried allready to verifi
-                bool emailVerified = await _emailVerificationDal.CheckEmailVerifiedByEmail(emailVerificationAddress);
-                //Guid verificationCode = Guid.NewGuid();
-               //string verifiCode=verificationCode.ToString(); 
-                var code = new Random(Guid.NewGuid().GetHashCode()).Next(0, 9999).ToString("D4");
-                EmailVerification emailVerification = new EmailVerification()
-                {
-                    Email = emailVerificationAddress,
-                    VerificationCode = code,
-                    ExpirationTime = DateTime.UtcNow.AddMinutes(10),
-                };
-                if (!emailVerified)
-                {
-                    await _emailVerificationDal.AddEmailVerification(emailVerification);
-                }
-                else
-                {
-                    await _emailVerificationDal.UpdateEmailVerification(emailVerification);
-                }
-                await this.SendEmail(emailVerificationAddress, code);
-            }
-            else
-            {
-                throw new DuplicatedException("email address in use!!");
-            }
+            return false;
         }
-        catch (Exception ex)
+        //check if this email tried allready to verified
+        bool emailVerified = await _emailVerificationDal.CheckEmailVerifiedByEmail(emailVerificationAddress);
+        var code = new Random(Guid.NewGuid().GetHashCode()).Next(0, 9999).ToString("D4");
+        EmailVerification emailVerification = new EmailVerification()
         {
-            throw ex;
+            Email = emailVerificationAddress,
+            VerificationCode = code,
+            ExpirationTime = DateTime.UtcNow.AddMinutes(10),
+        };
+        if (!emailVerified)
+        {
+            await _emailVerificationDal.AddEmailVerification(emailVerification);
         }
+        else
+        {
+            await _emailVerificationDal.UpdateEmailVerification(emailVerification);
+        }
+        await this.SendEmail(emailVerificationAddress, code);
+        return true;
+
+
 
     }
     public async Task SendEmail(string email, string verificationCode)
     {
-
         MailAddress from = new MailAddress("324103357@mby.co.il");
         MailAddress to = new MailAddress(email);
         MailMessage mail = new MailMessage(from, to);

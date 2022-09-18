@@ -3,7 +3,6 @@ using CustomerAccount.Data.Entities;
 using CustomerAccount.Data.Interfaces;
 using CustomerAccount.Services.Interfaces;
 using CustomerAccount.Services.Models;
-using CustomExceptions;
 
 namespace CustomerAccount.Services.Services;
 
@@ -17,7 +16,7 @@ public class CustomerService : ICustomerService
     {
         var config = new MapperConfiguration(cfg =>
         {
-          cfg.AddProfile<MapperModelEntity>();
+            cfg.AddProfile<MapperModelEntity>();
         });
         _mapper = config.CreateMapper();
         _accountDal = accountDal;
@@ -36,13 +35,11 @@ public class CustomerService : ICustomerService
         Account account = _mapper.Map<Account>(accountModel);
         Customer customer = _mapper.Map<Customer>(accountModel);
         account.Customer = customer;
-        
         customer.Salt = _passwordHashService.GenerateSalt(8);
         customer.Password = _passwordHashService.HashPassword(customer.Password, customer.Salt, 1000, 8);
-        
-       bool success = await _accountDal.CreateAccount(account, customer);
-       return success;
-       
+        bool success = await _accountDal.CreateAccount(account, customer);
+        return success;
+
 
     }
 }

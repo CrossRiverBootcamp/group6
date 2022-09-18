@@ -31,7 +31,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest();
         }
-        AccountModel account = await _accountService.GetAccountInfo(accountID);
+        AccountModel? account = await _accountService.GetAccountInfo(accountID);
         AccountInfoDTO accountInfo = _mapper.Map<AccountInfoDTO>(account);
         return Ok(accountInfo);
     }
@@ -43,7 +43,7 @@ public class AccountController : ControllerBase
         {
             return BadRequest();
         }
-        AccountModel account = await _accountService.GetAccountInfo(foreignAccountID);
+        AccountModel? account = await _accountService.GetAccountInfo(foreignAccountID);
         ForeignAccountDetailsDTO accountInfo = _mapper.Map<ForeignAccountDetailsDTO>(account);
         return Ok(accountInfo);
     }

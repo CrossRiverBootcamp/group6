@@ -37,15 +37,6 @@ public class HandlerErrorsMiddleware
                     await response.WriteAsync("Oppps... \n the argument {e.Message} is null!");
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     break;
-                case DuplicatedException e:
-                    await response.WriteAsync("false");
-                    // return False
-                    break;
-                case EmailNotFoundException e:
-                    // not found error
-                    await response.WriteAsync("Oppps... \n email Not Found!");
-                    response.StatusCode = 401;
-                    break;
                 case KeyNotFoundException e:
                     // not found error
                     await response.WriteAsync("Oppps... \n Page Not Found!");
@@ -60,11 +51,6 @@ public class HandlerErrorsMiddleware
                 case NotSavedException e:
                     await response.WriteAsync("false");
                     // return false
-                    break;
-                case NotValidException e:
-                    // not found error
-                    await response.WriteAsync("Oppps... \n not valied!");
-                    response.StatusCode = 401;
                     break;
                 case NsbNotPublishedException e:
                     await response.WriteAsync("false");
@@ -86,10 +72,4 @@ public static class HandlerErrorsMiddlewareExtensions
     {
         return builder.UseMiddleware<HandlerErrorsMiddleware>();
     }
-}
-public class response
-{
-    public int StatusCode { get; set; }
-    public string ErrorMessage { get; set; }
-    public bool result { get; set; }
 }

@@ -4,34 +4,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CustomerAccount.WebAPI.Controllers;
 
-    [Authorize(Roles = "customer")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmailVerificationController : ControllerBase
+[Authorize(Roles = "customer")]
+[Route("api/[controller]")]
+[ApiController]
+public class EmailVerificationController : ControllerBase
+{
+    private readonly IEmailVerificationService _emailVerificationService;
+    public EmailVerificationController(IEmailVerificationService emailVerificationService)
     {
-        private readonly IEmailVerificationService _emailVerificationService;
-        public EmailVerificationController(IEmailVerificationService emailVerificationService)
-        {
-            _emailVerificationService = emailVerificationService;
-        }
-        
-  
-
-        // POST api/<EmailVerificationController>
-        [HttpPost]
-        public async Task<ActionResult<bool>> Post([FromBody] string email)
-        {
-            try
-            {
-                string emai =new string(email);
-                await _emailVerificationService.AddEmailVerification(emai);
-                return Ok(true);
-            }
-            catch
-            {
-                return NotFound(false);
-            }
-        }
-
+        _emailVerificationService = emailVerificationService;
     }
+
+    // POST api/<EmailVerificationController>
+    [HttpPost]
+    public async Task<ActionResult> Post([FromBody] string email)
+    {
+       bool success = await _emailVerificationService.AddEmailVerification(email);
+        if (!success)
+        {
+            return BadRequest();
+        }
+        return Ok();
+    }
+}
 
