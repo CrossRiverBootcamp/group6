@@ -28,9 +28,7 @@ public class AccountDal : IAccountDal
             throw new NotSavedException("create account faild");
         }
         return true;
-
     }
-
     public async Task<bool> EmailExists(string email)
     {
         using var _contect = _contextFactory.CreateDbContext();
@@ -41,9 +39,6 @@ public class AccountDal : IAccountDal
         }
         return true;
     }
-
-
-
     public async Task<Account?> GetAccountInfo(int accountID)
     {
         using var _contect = _contextFactory.CreateDbContext();
@@ -63,8 +58,6 @@ public class AccountDal : IAccountDal
         }
         return account;
     }
-
-
     public async Task<Account?> FindUpdateAccount(int ID)
     {
         using var _contect = _contextFactory.CreateDbContext();
@@ -92,12 +85,7 @@ public class AccountDal : IAccountDal
         {
             throw new NoAccessException("failed to update accounts");
         }
-
-
-
-
     }
-
     public async Task<string> GetSaltByEmail(string email)
     {
         using var _context = _contextFactory.CreateDbContext();
@@ -112,7 +100,6 @@ public class AccountDal : IAccountDal
             throw new NoAccessException("couldnt get customer by email");
         }
         return salt;
-
     }
     public async Task<int?> Login(string email, string password)
     {

@@ -28,7 +28,6 @@ public class OperationsHistoryDal : IOperationsHistoryDal
             throw new NotSavedException("fail to add to operation history");
         }
     }
-
     public async Task<List<OperationsHistory>> GetOperations(int accountID, int page, int records)
     {
 

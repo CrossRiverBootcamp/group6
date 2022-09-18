@@ -1,8 +1,5 @@
 ﻿using CustomerAccount.Services.Interfaces;
 using System.Security.Cryptography;
-using System.Text;
-
-
 
 namespace CustomerAccount.Services.Services;
 
@@ -13,11 +10,10 @@ public class PasswordHashService: IPasswordHashService
         byte[] saltBytes = new Byte[nSalt];
 
         RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider();
-        rng.GetNonZeroBytes(saltBytes); // The array is now filled with cryptographically strong random bytes, and none are zero.
-
+        // The array is now filled with cryptographically strong random bytes, and none are zero.
+        rng.GetNonZeroBytes(saltBytes);
         return Convert.ToBase64String(saltBytes);
     }
-
     public string HashPassword(string password, string salt, int nIterations, int nHash)
     {
         var saltBytes = Convert.FromBase64String(salt);

@@ -1,4 +1,6 @@
-﻿namespace Transaction.WebAPI.Extensions;
+﻿using Microsoft.OpenApi.Models;
+
+namespace Transaction.WebAPI.Extensions;
 
 public static class ServiceExtension
 {

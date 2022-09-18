@@ -3,7 +3,6 @@ using CustomerAccount.Services.Services;
 using CustomerAccount.Services.Extensions;
 using CustomerAccount.WebAPI.Middlewares;
 using CustomerAccount.Services.options;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -55,7 +54,7 @@ builder.Host.UseSerilog();
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection(nameof(ConnectionStrings)));
 // Add services to the container.
 builder.Services.AddServiceExtension(builder.Configuration.GetConnectionString("CustomerAccountConnectionMiriam"));
-builder.Services.AddScoped<IAccountService, AccountService>(); 
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IPasswordHashService, PasswordHashService>();
 builder.Services.AddScoped<IOperationsHistoryService, OperationsHistoryService>();
@@ -85,8 +84,6 @@ builder.Services.AddSwaggerSettings();
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration
             (configuration).CreateLogger();
 
-
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -97,10 +94,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHandlerErrorsMiddleware();
-
-
 app.UseHttpsRedirection();
-app.UseCors(options => {
+app.UseCors(options =>
+{
     options.AllowAnyOrigin();
     options.AllowAnyMethod();
     options.AllowAnyHeader();
